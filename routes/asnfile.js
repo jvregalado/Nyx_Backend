@@ -1,5 +1,6 @@
 const xlsx = require('xlsx');
 const path = require('path');
+const fs = require('fs');
 const router = require('express').Router();
 
 
@@ -21,10 +22,10 @@ function sortByProperty(property){
 //ASN Template for CIC
 router.post("/ASNConvert", async(req, res) => {
 	try {
-var data = xlsx.utils.sheet_to_json(WStempASN);
-
-var fromData = req.body.fromFront;
- const {WarehouseID,fileName} = req.query;
+    var data = xlsx.utils.sheet_to_json(WStempASN);
+    var fromData = req.body.fromFront;
+    const {WarehouseID,fileName,valcon} = req.query;
+    const datetime = new Date().toLocaleString();
 
 
 fromData.sort(sortByProperty("Product Code"));
@@ -70,18 +71,28 @@ data.push({
    'Total Price Item': '0',
    // 'Carrier Contact': fromData[x]['Trucker/Truck Plate Number'],
    // 'Carrier Fax': fromData[x]['Trip Waybill No.'],
-   'Carrier Telphone1': fromData[x]['Plant Code']
+   'Carrier Telphone1': fromData[x]['Plant Code'],
+   'Date Converted': datetime,
+   'Conversion Type': valcon
 
 })}
 }
 
+
 const newBook = xlsx.utils.book_new();
 const newSheet = xlsx.utils.json_to_sheet(data);
+const generated = path.join(__dirname, '../files/generatedTemplates/', `Generated${fileName}`);
 
-let fileOutputDir = path.join(__dirname, '../files/generatedTemplates/', `Generated${fileName}.xlsx`);
+let n = 0;
+let fileOutputDir = generated;
+while(fs.existsSync(fileOutputDir+".xlsx")){
+  n++;
+  fileOutputDir=generated+n;
+}
+
 xlsx.utils.book_append_sheet(newBook,newSheet,"ASN Details");
-xlsx.writeFile(newBook,fileOutputDir)
-return res.download(fileOutputDir);
+xlsx.writeFile(newBook,fileOutputDir+".xlsx")
+return res.download(fileOutputDir+".xlsx");
 }
 catch(e) {
     res.status(500).json({message:`${e}`});
@@ -93,7 +104,8 @@ router.post("/ASNConvertCMIP", async(req, res) => {
     try {
 var data = xlsx.utils.sheet_to_json(WStempASN);
 var fromData = req.body.fromFront;
-const {WarehouseID,fileName} = req.query;
+const {WarehouseID,fileName,valcon} = req.query;
+const datetime = new Date().toLocaleString();
   
         fromData.sort(sortByProperty("Plant Code"));
         fromData.sort(sortByProperty("Container Number"));
@@ -137,7 +149,9 @@ const {WarehouseID,fileName} = req.query;
            'Carrier Contact': fromData[x]['Container Number'],
            'Carrier Name': fromData[x]['PO or STO Reference'],
            'Carrier Fax': fromData[x]['DR Reference'],
-           'Carrier Telphone1': fromData[x]['Invoice Reference']
+           'Carrier Telphone1': fromData[x]['Invoice Reference'],
+           'Date Converted': datetime,
+           'Conversion Type': valcon
        
        })}
        }
@@ -145,10 +159,18 @@ const {WarehouseID,fileName} = req.query;
        const newBook = xlsx.utils.book_new();
        const newSheet = xlsx.utils.json_to_sheet(data);
        
-       let fileOutputDir = path.join(__dirname, '../files/generatedTemplates/', `Generated${fileName}.xlsx`);
-       xlsx.utils.book_append_sheet(newBook,newSheet,"ASN Details");
-       xlsx.writeFile(newBook,fileOutputDir)
-       return res.download(fileOutputDir);
+const generated = path.join(__dirname, '../files/generatedTemplates/', `Generated${fileName}`);
+
+let n = 0;
+let fileOutputDir = generated;
+while(fs.existsSync(fileOutputDir+".xlsx")){
+  n++;
+  fileOutputDir=generated+n;
+}
+
+xlsx.utils.book_append_sheet(newBook,newSheet,"ASN Details");
+xlsx.writeFile(newBook,fileOutputDir+".xlsx")
+return res.download(fileOutputDir+".xlsx");
 }
 catch(e) {
     console.log(e)
@@ -160,12 +182,9 @@ catch(e) {
 router.post("/ASNPo", async(req, res) => {
     try {
       var data = xlsx.utils.sheet_to_json(WStempASN);
-      var fromData = req.body.fromFront;
-      const {WarehouseID,fileName} = req.query;
- 
-        const fromSheet = xlsx.readFile(fileName);
- const WSfromSheet = fromSheet.Sheets["Sheet1"];
- var WSfromSheetd = xlsx.utils.sheet_to_json(WSfromSheet);
+      var WSfromSheetd = req.body.fromFront;
+      const {WarehouseID,fileName,valcon} = req.query;
+      const datetime = new Date().toLocaleString();
  
  let insertCount = WSfromSheetd.map(x => {
      return {
@@ -250,17 +269,27 @@ router.post("/ASNPo", async(req, res) => {
      'Carrier Contact': container,
      'Carrier Name': typeofcontainer,
      'Carrier Fax': sealno,
-     'Carrier Telphone1': invoiceno
+     'Carrier Telphone1': invoiceno,
+     'Date Converted': datetime,
+     'Conversion Type': valcon
  
  })}
  
  const newBook = xlsx.utils.book_new();
  const newSheet = xlsx.utils.json_to_sheet(data);
  
- let fileOutputDir = path.join(__dirname, '../files/generatedTemplates/', `Generated${fileName}.xlsx`);
+ const generated = path.join(__dirname, '../files/generatedTemplates/', `Generated${fileName}`);
+
+ let n = 0;
+ let fileOutputDir = generated;
+ while(fs.existsSync(fileOutputDir+".xlsx")){
+   n++;
+   fileOutputDir=generated+n;
+ }
+ 
  xlsx.utils.book_append_sheet(newBook,newSheet,"ASN Details");
- xlsx.writeFile(newBook,fileOutputDir)
- return res.download(fileOutputDir);
+ xlsx.writeFile(newBook,fileOutputDir+".xlsx")
+ return res.download(fileOutputDir+".xlsx");
  }
  catch(e) {
      console.log(e)
@@ -273,7 +302,8 @@ router.post("/ASNsto", async(req, res) => {
     try {
       var data = xlsx.utils.sheet_to_json(WStempASN);
       var fromData = req.body.fromFront;
-      const {WarehouseID,fileName} = req.query;
+      const {WarehouseID,fileName,valcon} = req.query;
+      const datetime = new Date().toLocaleString();
  
   fromData.sort(sortByProperty("Material Code"));
   fromData.sort(sortByProperty("STO Reference"));
@@ -313,7 +343,9 @@ router.post("/ASNsto", async(req, res) => {
      'Total Price Item': '0',
      'Carrier Contact': fromData[x]['Trucker/Truck Plate Number'],
      'Carrier Fax': fromData[x]['Trip Waybill No.'],
-     'Carrier Telphone1': fromData[x]['Delivery No.']
+     'Carrier Telphone1': fromData[x]['Delivery No.'],
+     'Date Converted': datetime,
+     'Conversion Type': valcon
  
  })}
  
@@ -321,10 +353,18 @@ router.post("/ASNsto", async(req, res) => {
  const newBook = xlsx.utils.book_new();
  const newSheet = xlsx.utils.json_to_sheet(data);
  
- let fileOutputDir = path.join(__dirname, '../files/generatedTemplates/', `Generated${fileName}.xlsx`);
- xlsx.utils.book_append_sheet(newBook,newSheet,"ASN Details");
- xlsx.writeFile(newBook,fileOutputDir)
- return res.download(fileOutputDir);
+const generated = path.join(__dirname, '../files/generatedTemplates/', `Generated${fileName}`);
+
+let n = 0;
+let fileOutputDir = generated;
+while(fs.existsSync(fileOutputDir+".xlsx")){
+  n++;
+  fileOutputDir=generated+n;
+}
+
+xlsx.utils.book_append_sheet(newBook,newSheet,"ASN Details");
+xlsx.writeFile(newBook,fileOutputDir+".xlsx")
+return res.download(fileOutputDir+".xlsx");
  }
  catch(e) {
      console.log(e)
