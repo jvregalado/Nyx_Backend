@@ -9,7 +9,7 @@ const TempASNwb = xlsx.readFile(TempASNHoneywell);
 const WStempASN = TempASNwb.Sheets["ASN Details"];
 
 function sortByProperty(property){  
-    return function(a,b){  
+    return function(b,a){  
        if(a[property] > b[property])  
           return 1;  
        else if(a[property] < b[property])  
