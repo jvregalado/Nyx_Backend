@@ -1,5 +1,6 @@
 const xlsx = require('xlsx');
 const path = require('path');
+const fs = require('fs');
 function sortByProperty(property){  
     return function(a,b){  
        if(a[property] > b[property])  
@@ -108,10 +109,16 @@ if(OrderStatus==='Shipping')
 
 const newBook = xlsx.utils.book_new();
 const newSheet = xlsx.utils.json_to_sheet(data);
-   
-let fileOutputDir = path.join('GeneratedODO.xlsx');
+
+const fileName = 'GeneratedODO';
+let n = 0;
+let fileOutputDir = fileName;
+while(fs.existsSync(fileOutputDir+".xlsx")){
+   n++;
+   fileOutputDir=fileName+n;
+}
 xlsx.utils.book_append_sheet(newBook,newSheet,"Shipment Order Details");
- xlsx.writeFile(newBook,fileOutputDir)
+ xlsx.writeFile(newBook,fileOutputDir+".xlsx")
 // return res.download(fileOutputDir);
 }
 catch(e) {

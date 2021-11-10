@@ -1,5 +1,6 @@
 const xlsx = require('xlsx');
 const path = require('path');
+const fs = require('fs');
 const router = require('express').Router();
 
 
@@ -22,7 +23,8 @@ function sortByProperty(property){
     try {
  var data = xlsx.utils.sheet_to_json(WStempODO);
 var WSfromSheetd = req.body.fromFront;
- const {WarehouseID,fileName} = req.query;
+const {WarehouseID,fileName,valcon} = req.query;
+const datetime = new Date().toLocaleString();
  let insertCount = WSfromSheetd.map(x => {
      return {
        "Seller SKU" : x["Seller SKU"]+"",
@@ -98,6 +100,7 @@ var WSfromSheetd = req.body.fromFront;
          c=1;
          refdoc=PrirefDoc;
      }
+     
  if(OrderStatus==='Pending')
  {
    data.push({
@@ -141,18 +144,28 @@ var WSfromSheetd = req.body.fromFront;
    'QTY Ordered': fromData[x]["countItem"],
    'Pack UOM': 'PCS',
    'QTY Ordered Each': fromData[x]["countItem"],
-   Price: fromData[x]["Unit Price"]
+   Price: fromData[x]["Unit Price"],
+   'Date Converted': datetime,
+   'Conversion Type': valcon
  })
  }
  }
 
  const newBook = xlsx.utils.book_new();
  const newSheet = xlsx.utils.json_to_sheet(data);
-     
- let fileOutputDir = path.join(__dirname, '../files/generatedTemplates/', `Generated${fileName}.xlsx`);
+  
+ const generated = path.join(__dirname, '../files/generatedTemplates/', `Generated${fileName}`);
+
+ let n = 0;
+let fileOutputDir = generated;
+while(fs.existsSync(fileOutputDir+".xlsx")){
+   n++;
+   fileOutputDir=generated+n;
+}
+
  xlsx.utils.book_append_sheet(newBook,newSheet,"Shipment Order Details");
- xlsx.writeFile(newBook,fileOutputDir)
- return res.download(fileOutputDir);
+ xlsx.writeFile(newBook,fileOutputDir+".xlsx")
+ return res.download(fileOutputDir+".xlsx");
  }
  catch(e) {
      res.status(500).json({message:`${e}`});
@@ -164,7 +177,8 @@ router.post("/ODOShopee", async(req, res) => {
     try {
  var data = xlsx.utils.sheet_to_json(WStempODO);
 var fromDataArray = req.body.fromFront;
- const {WarehouseID,fileName} = req.query;
+const {WarehouseID,fileName,valcon} = req.query;
+const datetime = new Date().toLocaleString();
  
  var c = 0;
  var refdoc='';
@@ -211,6 +225,7 @@ var fromDataArray = req.body.fromFront;
          c=1;
          refdoc=PrirefDoc;
      }
+     
  if(OrderStatus==='Shipping')
  {
    data.push({
@@ -237,7 +252,9 @@ var fromDataArray = req.body.fromFront;
    'QTY Ordered': fromData[x]["Quantity"],
    'Pack UOM': 'PCS',
    'QTY Ordered Each': fromData[x]["Quantity"],
-   Price: fromData[x]["Unit Price"]
+   Price: fromData[x]["Unit Price"],
+   'Date Converted': datetime,
+   'Conversion Type': valcon
  })
  }
  }
@@ -246,10 +263,19 @@ var fromDataArray = req.body.fromFront;
  const newBook = xlsx.utils.book_new();
  const newSheet = xlsx.utils.json_to_sheet(data);
      
- let fileOutputDir = path.join(__dirname, '../files/generatedTemplates/', `Generated${fileName}.xlsx`);
+ 
+ const generated = path.join(__dirname, '../files/generatedTemplates/', `Generated${fileName}`);
+
+ let n = 0;
+let fileOutputDir = generated;
+while(fs.existsSync(fileOutputDir+".xlsx")){
+   n++;
+   fileOutputDir=generated+n;
+}
+
  xlsx.utils.book_append_sheet(newBook,newSheet,"Shipment Order Details");
- xlsx.writeFile(newBook,fileOutputDir)
- return res.download(fileOutputDir);
+ xlsx.writeFile(newBook,fileOutputDir+".xlsx")
+ return res.download(fileOutputDir+".xlsx");
  }
  catch(e) {
      console.log(e)
@@ -262,7 +288,8 @@ var fromDataArray = req.body.fromFront;
     try {
       var data = xlsx.utils.sheet_to_json(WStempODO);
      var fromData = req.body.fromFront;
-      const {WarehouseID,fileName} = req.query;
+      const {WarehouseID,fileName,valcon} = req.query;
+      const datetime = new Date().toLocaleString();
  
  var c = 0;
  var refdoc='';
@@ -327,17 +354,27 @@ var fromDataArray = req.body.fromFront;
    'QTY Ordered': fromData[x]["Lineitem quantity"],
    'Pack UOM': 'PCS',
    'QTY Ordered Each': fromData[x]["Lineitem quantity"],
-   Price: fromData[x]["Unit Price"]
+   Price: fromData[x]["Unit Price"],
+   'Date Converted': datetime,
+   'Conversion Type': valcon
  })
  }
  
  const newBook = xlsx.utils.book_new();
  const newSheet = xlsx.utils.json_to_sheet(data);
      
- let fileOutputDir = path.join(__dirname, '../files/generatedTemplates/', `Generated${fileName}.xlsx`);
+ const generated = path.join(__dirname, '../files/generatedTemplates/', `Generated${fileName}`);
+
+ let n = 0;
+let fileOutputDir = generated;
+while(fs.existsSync(fileOutputDir+".xlsx")){
+   n++;
+   fileOutputDir=generated+n;
+}
+
  xlsx.utils.book_append_sheet(newBook,newSheet,"Shipment Order Details");
- xlsx.writeFile(newBook,fileOutputDir)
- return res.download(fileOutputDir);
+ xlsx.writeFile(newBook,fileOutputDir+".xlsx")
+ return res.download(fileOutputDir+".xlsx");
  }
  catch(e) {
      console.log(e)

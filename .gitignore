@@ -1,3 +1,4 @@
 node_modules
 ecosystem.config.js
-/conversionToolBack/files/*.*
+files/generatedTemplates/*.*
+files/generatedTemplates/*
