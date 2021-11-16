@@ -3,8 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const router = require('express').Router();
 
+const masterServices = require('../services/hw/master/masterServices');
 
-let TempOrderHoneywell = path.join(__dirname, '../files/temporaryTemplates/', 'TempOrderHoneywell.xlsx')
+const TempOrderHoneywell = path.join(__dirname, '../files/temporaryTemplates/', 'TempOrderHoneywell.xlsx')
 const TempODOwb = xlsx.readFile(TempOrderHoneywell);
 const WStempODO = TempODOwb.Sheets["Shipment Order Details"];
 
@@ -115,9 +116,14 @@ router.post("/ODOLazada", async (req, res) => {
 
         fromData.sort(sortByProperty("Seller SKU"));
         fromData.sort(sortByProperty("Order Number"));
+		let uniqueSKUs = [...new Set(fromData.map(x => `${x['Seller SKU']}`))];
+		var unmaintainedSKU = await masterServices.getHWunmaintainedSKUs({
+			skus: uniqueSKUs
+		})
 
         for (let x in fromData) {
-            PrirefDoc = fromData[x]["Order Number"];
+            let PrirefDoc = `${fromData[x]["Order Number"]}`;
+            let skuCode = `${fromData[x]["Seller SKU"]}`;
             let OrderStatus = fromData[x]["Status"];
             if (refdoc === PrirefDoc) {
                 c++;
@@ -132,7 +138,7 @@ router.post("/ODOLazada", async (req, res) => {
                     'Order Type': 'SO',
                     'SO Status': '00',
                     'Customer ID': 'CIC',
-                    'SO Reference1': PrirefDoc + "",
+                    'SO Reference1': PrirefDoc,
                     'Ship to': 'Lazada',
                     'Consignee Name': fromData[x]["Shipping Name"],
                     'Consignee Address1': fromData[x]["Shipping Address"],
@@ -163,8 +169,8 @@ router.post("/ODOLazada", async (req, res) => {
                     'Warehouse ID Item': WarehouseID,
                     'Order LineNO': c,
                     'Customer ID Item': 'CIC',
-                    SKU: fromData[x]["Seller SKU"] + "",
-                    'Line Status': '00',
+                    'SKU': unmaintainedSKU.includes(skuCode) ? `Error: Unmaintained SKU, ${ skuCode}` : skuCode,
+					'Line Status': '00',
                     'QTY Ordered': fromData[x]["countItem"],
                     'Pack UOM': 'PCS',
                     'QTY Ordered Each': fromData[x]["countItem"],
@@ -194,8 +200,6 @@ router.post("/ODOShopee", async (req, res) => {
         } = req.query;
         const datetime = new Date().toLocaleString();
 
-        var c = 0;
-        var refdoc = '';
 
 
         fromDataArray.sort(sortByProperty("SKU Reference No."));
@@ -226,8 +230,17 @@ router.post("/ODOShopee", async (req, res) => {
             return res;
         }, {});
 
+        var c = 0;
+        var refdoc = '';
+
+        let uniqueSKUs = [...new Set(fromData.map(x => `${x['SKU Reference No.']}`))];
+        var unmaintainedSKU = await masterServices.getHWunmaintainedSKUs({
+            skus: uniqueSKUs
+        })
+
         for (let x in fromData) {
-            PrirefDoc = fromData[x]["Order ID"];
+            var PrirefDoc = `${fromData[x]["Order ID"]}`;
+            var skuCode = `${fromData[x]['SKU Reference No.']}`;
             let OrderStatus = fromData[x]["Order Status"];
             if (refdoc === PrirefDoc) {
                 c++;
@@ -235,7 +248,6 @@ router.post("/ODOShopee", async (req, res) => {
                 c = 1;
                 refdoc = PrirefDoc;
             }
-
             if (OrderStatus === 'Shipping') {
                 data.push({
                     'Warehouse ID': WarehouseID,
@@ -256,8 +268,8 @@ router.post("/ODOShopee", async (req, res) => {
                     'Warehouse ID Item': WarehouseID,
                     'Order LineNO': c,
                     'Customer ID Item': 'CIC',
-                    SKU: fromData[x]["SKU Reference No."] + "",
-                    'Line Status': '00',
+                    'SKU': unmaintainedSKU.includes(skuCode) ? `Error: Unmaintained SKU, ${ skuCode}` : skuCode,
+					'Line Status': '00',
                     'QTY Ordered': fromData[x]["Quantity"],
                     'Pack UOM': 'PCS',
                     'QTY Ordered Each': fromData[x]["Quantity"],
@@ -295,8 +307,14 @@ router.post("/ODOShopify", async (req, res) => {
         fromData.sort(sortByProperty("Shipping Name"));
         fromData.sort(sortByProperty("Name"));
 
+        let uniqueSKUs = [...new Set(fromData.map(x => `${x['Lineitem sku']}`))];
+        var unmaintainedSKU = await masterServices.getHWunmaintainedSKUs({
+            skus: uniqueSKUs
+        })
+
         for (let x in fromData) {
-            PrirefDoc = fromData[x]["Name"];
+            let PrirefDoc = `${fromData[x]["Name"]}`;
+            let skuCode = `${fromData[x]["Lineitem sku"]}`;
             if (refdoc === PrirefDoc) {
                 c++;
             } else {
@@ -342,8 +360,8 @@ router.post("/ODOShopify", async (req, res) => {
                 'Warehouse ID Item': WarehouseID,
                 'Order LineNO': c,
                 'Customer ID Item': 'CIC',
-                SKU: fromData[x]["Lineitem sku"] + "",
-                'Line Status': '00',
+                'SKU': unmaintainedSKU.includes(skuCode) ? `Error: Unmaintained SKU, ${ skuCode}` : skuCode,
+				'Line Status': '00',
                 'QTY Ordered': fromData[x]["Lineitem quantity"],
                 'Pack UOM': 'PCS',
                 'QTY Ordered Each': fromData[x]["Lineitem quantity"],

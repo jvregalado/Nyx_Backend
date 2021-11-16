@@ -14,5 +14,6 @@ app.use('/conversion',require('./routes/index'));
 
 app.listen(
     PORT,
-    console.log(`It's alive on     ${PORT}`)
+    console.log(`It's alive on     ${PORT}`),
+    console.log(`It's alive on     ${process.env.PORT}`)
 )
