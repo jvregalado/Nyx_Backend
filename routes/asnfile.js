@@ -46,7 +46,7 @@ function sortByProperty(property) {
 }
 
 function ifBlank(PrirefDoc, res) {
-	if (PrirefDoc == null || PrirefDoc == "") {
+	if (PrirefDoc == null || PrirefDoc == "" || PrirefDoc=='undefined') {
 		return res.status(500).json({
 			message: "Reference Number cannot be empty"
 		})
@@ -74,6 +74,7 @@ router.post("/ASNConvert", async (req, res) => {
 			skus: uniqueSKUs
 		})
 
+		var c = 0;
 		var refdoc = '';
 		for (let x in fromData) {
 			let PrirefDoc = `${fromData[x]['Material Document Reference']}`;
@@ -98,6 +99,7 @@ router.post("/ASNConvert", async (req, res) => {
 					'ASN LineNO': c,
 					'Customer ID Item': 'CIC',
                     'SKU': unmaintainedSKU.includes(skuCode) ? `Error: Unmaintained SKU, ${ skuCode}` : skuCode,
+					'Pack ID':skuCode,
 					'SKU Descr(L)': fromData[x]['Description'],
 					'Line Status': '00',
 					'Expected QTY': fromData[x]['Qty'],
@@ -166,6 +168,7 @@ router.post("/ASNConvertCMIP", async (req, res) => {
 					'ASN LineNO': c,
 					'Customer ID Item': 'CIC',
 					'SKU': unmaintainedSKU.includes(skuCode) ? `Error: Unmaintained SKU, ${ skuCode}` : skuCode,
+					'Pack ID':skuCode,
 					'SKU Descr(L)': fromData[x]['Description'],
 					'Line Status': '00',
 					'Expected QTY': fromData[x]['Qty'],
@@ -279,6 +282,7 @@ router.post("/ASNPo", async (req, res) => {
 				'ASN LineNO': c,
 				'Customer ID Item': customer,
 				'SKU': unmaintainedSKU.includes(skuCode) ? `Error: Unmaintained SKU, ${skuCode}` : skuCode,
+				'Pack ID':skuCode,
 				'SKU Descr(L)': descr,
 				'Line Status': '00',
 				'Expected QTY': counts,
@@ -349,6 +353,7 @@ router.post("/ASNsto", async (req, res) => {
 				'ASN LineNO': c,
 				'Customer ID Item': 'CIC',
 				'SKU': unmaintainedSKU.includes(skuCode) ? `Error: Unmaintained SKU, ${ skuCode}` : skuCode,
+				'Pack ID':skuCode,
 				'SKU Descr(L)': fromData[x]['Material Description'],
 				'Line Status': '00',
 				'Expected QTY': fromData[x]['Quantity'],
