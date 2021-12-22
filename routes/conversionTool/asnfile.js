@@ -4,10 +4,10 @@ const path = require('path');
 const fs = require('fs');
 const router = require('express').Router();
 
-const masterServices = require('../services/hw/master/masterServices');
+const masterServices = require('../../services/hw/master/masterServices');
 
 
-const TempASNHoneywell = path.join(__dirname, '../files/temporaryTemplates/', 'TempASNHoneywell.xlsx')
+const TempASNHoneywell = path.join(__dirname, '../../files/temporaryTemplates/', 'TempASNHoneywell.xlsx')
 const TempASNwb = xlsx.readFile(TempASNHoneywell);
 const WStempASN = TempASNwb.Sheets["ASN Details"];
 
@@ -16,7 +16,7 @@ function generatingFile(res, fileName, data) {
 	try {
 		const newBook = xlsx.utils.book_new();
 		const newSheet = xlsx.utils.json_to_sheet(data);
-		const generated = path.join(__dirname, '../files/generatedTemplates/', `Generated${fileName}`);
+		const generated = path.join(__dirname, '../../files/generatedTemplates/', `Generated${fileName}`);
 		let n = 0;
 		let fileOutputDir = generated;
 		while (fs.existsSync(fileOutputDir + ".xlsx")) {
@@ -93,7 +93,7 @@ router.post("/ASNConvert", async (req, res) => {
 					'ASN Type': 'PO',
 					'ASN Status': '00',
 					'Customer ID': 'CIC',
-					'ASN Reference1': fromData[x]['Material Document Reference'],
+					'ASN Reference1': PrirefDoc.toUpperCase(),
 					'ASN Reference2': fromData[x]['Trucking Details'],
 					'Warehouse ID Item': WarehouseID,
 					'ASN LineNO': c,
@@ -104,7 +104,7 @@ router.post("/ASNConvert", async (req, res) => {
 					'Line Status': '00',
 					'Expected QTY': fromData[x]['Qty'],
 					'Expected QTY Each': fromData[x]['Qty'],
-					'Pack UOM': 'PCS',
+					'Pack UOM': 'EA',
 					'LOTATT08': 'QC',
 					'Total Cubic Item': '0',
 					'Total Gross Weight Item': '0',
@@ -163,7 +163,7 @@ router.post("/ASNConvertCMIP", async (req, res) => {
 					'ASN Type': 'PO',
 					'ASN Status': '00',
 					'Customer ID': 'CIC',
-					'ASN Reference1': fromData[x]['Container Number'],
+					'ASN Reference1': PrirefDoc.toUpperCase(),
 					'Warehouse ID Item': WarehouseID,
 					'ASN LineNO': c,
 					'Customer ID Item': 'CIC',
@@ -173,7 +173,7 @@ router.post("/ASNConvertCMIP", async (req, res) => {
 					'Line Status': '00',
 					'Expected QTY': fromData[x]['Qty'],
 					'Expected QTY Each': fromData[x]['Qty'],
-					'Pack UOM': 'PCS',
+					'Pack UOM': 'EA',
 					'LOTATT08': 'QC',
 					'Total Cubic Item': '0',
 					'Total Gross Weight Item': '0',
@@ -277,7 +277,7 @@ router.post("/ASNPo", async (req, res) => {
 				'ASN Type': 'PO',
 				'ASN Status': '00',
 				'Customer ID': customer,
-				'ASN Reference1': PrirefDoc,
+				'ASN Reference1': PrirefDoc.toUpperCase(),
 				'Warehouse ID Item': WarehouseID,
 				'ASN LineNO': c,
 				'Customer ID Item': customer,
@@ -287,7 +287,7 @@ router.post("/ASNPo", async (req, res) => {
 				'Line Status': '00',
 				'Expected QTY': counts,
 				'Expected QTY Each': counts,
-				'Pack UOM': 'PCS',
+				'Pack UOM': 'EA',
 				'LOTATT08': 'QC',
 				'Total Cubic Item': '0',
 				'Total Gross Weight Item': '0',
@@ -348,7 +348,7 @@ router.post("/ASNsto", async (req, res) => {
 				'ASN Type': 'STO',
 				'ASN Status': '00',
 				'Customer ID': 'CIC',
-				'ASN Reference1': fromData[x]['STO Reference'],
+				'ASN Reference1': PrirefDoc.toUpperCase(),
 				'Warehouse ID Item': WarehouseID,
 				'ASN LineNO': c,
 				'Customer ID Item': 'CIC',
@@ -358,7 +358,7 @@ router.post("/ASNsto", async (req, res) => {
 				'Line Status': '00',
 				'Expected QTY': fromData[x]['Quantity'],
 				'Expected QTY Each': fromData[x]['Quantity'],
-				'Pack UOM': 'PCS',
+				'Pack UOM': 'EA',
 				'LOTATT08': 'QC',
 				'Total Cubic Item': '0',
 				'Total Gross Weight Item': '0',

@@ -6,7 +6,6 @@ const basename = path.basename(__filename);
 const Sequelize = require('sequelize');
 
 const {hwConfig} = require('../../config/config');
-console.log(hwConfig);
 const sequelize = new Sequelize({
 	...hwConfig
 });
