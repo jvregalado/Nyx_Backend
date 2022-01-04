@@ -39,12 +39,17 @@ const User = sequelize.define("tbl_users", {
     type: DataTypes.BOOLEAN,
     defaultValue: true
   },
+  userAdmin: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
   createdBy: {
     type: DataTypes.STRING
   },
   createdAt: {
     allowNull: false,
-    type: DataTypes.DATE(6)
+    type: DataTypes.DATE(6),
+    defaultValue: DataTypes.NOW
   },
   updatedBy: {
     type: DataTypes.STRING

@@ -110,8 +110,6 @@ router.post("/ASNConvert", async (req, res) => {
 					'Total Gross Weight Item': '0',
 					'Total Net Weight Item': '0',
 					'Total Price Item': '0',
-					// 'Carrier Contact': fromData[x]['Trucker/Truck Plate Number'],
-					// 'Carrier Fax': fromData[x]['Trip Waybill No.'],
 					'Carrier Telphone1': fromData[x]['Plant Code'],
 					'Date Converted': datetime,
 					'Conversion Type': valcon

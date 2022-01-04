@@ -2,7 +2,6 @@ const express = require("express");
 const tbl_users = require("../../models/CT/tbl_users");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { route } = require(".");
 
 const router = express.Router();
 
@@ -23,8 +22,49 @@ const verifyJWT = (req,res,next)=>{
     }
 }
 router.get("/Authentication",verifyJWT,(req,res)=>{
-    console.log("working");
     res.send("Authenticated");
+})
+
+router.post("/createuser", async (req, res) => {
+    
+const password = 'logistikus';
+const hashed = bcrypt.hashSync(password, 10);
+    try{
+        const {
+        email_add,
+        first_name,
+        suffix,
+        last_name,
+        createdBy,
+        userAdmin,
+        contactNo
+    } = req.body;
+    const creatingUser = await tbl_users.create({
+        email_add,
+        first_name,
+        suffix,
+        last_name,
+        createdBy,
+        userAdmin,
+        password:hashed,
+        contactNo
+    })
+    res.status(200).json({
+        creatingUser
+    });
+}
+catch(e){
+    console.log(e,"console log error")
+    console.log(e.message, "original")
+        if(e.message === 'Validation error'){
+            return res.status(400).json({
+                message:'Email already exists!'
+            });
+        }
+        res.status(500).json({
+            message:`${e}`
+        });
+}
 })
 router.post("/", async (req, res) => {
     const {
@@ -68,7 +108,8 @@ router.post("/", async (req, res) => {
                     id: userWithEmail.id,
                     email_add: userWithEmail.email_add,
                     first_name: userWithEmail.first_name,
-                    last_name: userWithEmail.last_name
+                    last_name: userWithEmail.last_name,
+                    userAdmin: userWithEmail.userAdmin
                 }
             });
         }
