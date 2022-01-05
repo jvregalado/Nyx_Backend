@@ -2,8 +2,12 @@ const express = require("express");
 const tbl_users = require("../../models/CT/tbl_users");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const moment = require("moment");
 
 const router = express.Router();
+
+const defaultPassword = 'logistikus';
+const hashed = bcrypt.hashSync(defaultPassword, 10);
 
 const verifyJWT = (req,res,next)=>{
     const token = req.headers["x-access-token"]
@@ -21,14 +25,14 @@ const verifyJWT = (req,res,next)=>{
         })
     }
 }
+
+//Aunthentication of token
 router.get("/Authentication",verifyJWT,(req,res)=>{
     res.send("Authenticated");
 })
 
+//creating user
 router.post("/createuser", async (req, res) => {
-    
-const password = 'logistikus';
-const hashed = bcrypt.hashSync(password, 10);
     try{
         const {
         email_add,
@@ -66,6 +70,56 @@ catch(e){
         });
 }
 })
+
+
+router.post("/resetpassword", async (req, res) => {
+    const {
+        email_add,
+        id
+    } = req.body;
+
+    const userWithEmail = await tbl_users.findOne({
+        where: {
+            email_add
+        }
+    }).catch(
+        (err) => {
+            console.log("Error: ", err);
+        }
+    );
+    
+    if (!userWithEmail)
+        return res
+            .status(400)
+            .json({
+                message: "Email does not exist."
+            });
+            28
+
+var now = moment().format('YYYY-d-MM HH:mm:ss')
+    if (userWithEmail)
+    {
+        const resetPassword = await tbl_users.update(
+            { password:defaultPassword,
+                updatedBy: id,
+                updatedAt: now
+             },
+            { where: {
+                id:userWithEmail.id
+            }
+        }).catch(
+            (err) => {
+                console.log("Error: ", err);
+            }
+        );
+        res.status(200).json({
+            resetPassword,
+            message: "Password Reset!"
+        });
+    }
+})
+
+//login
 router.post("/", async (req, res) => {
     const {
         email_add,

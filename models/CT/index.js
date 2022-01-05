@@ -8,6 +8,15 @@ const sequelize = new Sequelize(
     database : process.env.DB_U_NAME,
     host: process.env.DB_U_HOST,
     dialect: "mysql",
+    charset: 'utf8',
+    collate: 'utf8_unicode_ci',
+    logging:true,
+    dialectOptions: {
+          useUTC: false, //for reading from database
+          dateStrings: true,
+          typeCast: true
+    },
+    timezone: '+08:00' //for writing to database
   }
 );
 

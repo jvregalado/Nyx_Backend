@@ -26,8 +26,9 @@ const convTool = {
         options : {
             requestTimeout: 3600
         }
-    }
+    },
+    // timezone: '+08:00',
     //,logging: false
-    ,port : parseInt(process.env.DB_U_PORT)
+    port : parseInt(process.env.DB_U_PORT)
 }
 module.exports = {hwConfig,convTool}
