@@ -60,7 +60,8 @@ router.post("/ASNConvert", async (req, res) => {
 		const {
 			WarehouseID,
 			fileName,
-			valcon
+			valcon,
+			userID
 		} = req.query;
 		const datetime = new Date().toLocaleString();
 
@@ -112,7 +113,8 @@ router.post("/ASNConvert", async (req, res) => {
 					'Total Price Item': '0',
 					'Carrier Telphone1': fromData[x]['Plant Code'],
 					'Date Converted': datetime,
-					'Conversion Type': valcon
+					'Conversion Type': valcon,
+                    'user':userID
 				})
 			}
 		}
@@ -132,7 +134,8 @@ router.post("/ASNConvertCMIP", async (req, res) => {
 		const {
 			WarehouseID,
 			fileName,
-			valcon
+			valcon,
+			userID
 		} = req.query;
 		const datetime = new Date().toLocaleString();
 
@@ -183,8 +186,8 @@ router.post("/ASNConvertCMIP", async (req, res) => {
 					'Carrier Fax': fromData[x]['DR Reference'],
 					'Carrier Telphone1': fromData[x]['Invoice Reference'],
 					'Date Converted': datetime,
-					'Conversion Type': valcon
-
+					'Conversion Type': valcon,
+                    'user':userID
 				})
 			}
 		}
@@ -205,7 +208,8 @@ router.post("/ASNPo", async (req, res) => {
 		const {
 			WarehouseID,
 			fileName,
-			valcon
+			valcon,
+			userID
 		} = req.query;
 		const datetime = new Date().toLocaleString();
 
@@ -296,8 +300,8 @@ router.post("/ASNPo", async (req, res) => {
 				'Carrier Fax': sealno,
 				'Carrier Telphone1': invoiceno,
 				'Date Converted': datetime,
-				'Conversion Type': valcon
-
+				'Conversion Type': valcon,
+				'user':userID
 			})
 		}
 		generatingFile(res, fileName, data);
@@ -317,7 +321,8 @@ router.post("/ASNsto", async (req, res) => {
 		const {
 			WarehouseID,
 			fileName,
-			valcon
+			valcon,
+			userID
 		} = req.query;
 		const datetime = new Date().toLocaleString();
 
@@ -366,8 +371,8 @@ router.post("/ASNsto", async (req, res) => {
 				'Carrier Fax': fromData[x]['Trip Waybill No.'],
 				'Carrier Telphone1': fromData[x]['Delivery No.'],
 				'Date Converted': datetime,
-				'Conversion Type': valcon
-
+				'Conversion Type': valcon,
+				'user':userID
 			})
 		}
 		generatingFile(res, fileName, data);
