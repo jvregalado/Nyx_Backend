@@ -14,4 +14,21 @@ const hwConfig = {
     //,logging: false
     ,port : parseInt(process.env.DB_HW_PORT)
 }
-module.exports = {hwConfig}
+const convTool = {
+    username : process.env.DB_U_USER,
+    password : process.env.DB_U_PASSWORD,
+    host :      process.env.DB_U_HOST,
+    database : process.env.DB_U_NAME,
+    dialect : 'mysql',
+    dialectOptions : {
+        trustedConnection : true,
+        encrypt: true,
+        options : {
+            requestTimeout: 3600
+        }
+    },
+    // timezone: '+08:00',
+    //,logging: false
+    port : parseInt(process.env.DB_U_PORT)
+}
+module.exports = {hwConfig,convTool}
