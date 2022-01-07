@@ -249,7 +249,7 @@ router.post("/ODOShopee", async (req, res) => {
                 c = 1;
                 refdoc = PrirefDoc;
             }
-            if (OrderStatus === 'Shipping') {
+            if (OrderStatus === 'To ship') {
                 data.push({
                     'Warehouse ID': WarehouseID,
                     'Order Type': 'SO',
