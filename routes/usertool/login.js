@@ -72,6 +72,49 @@ catch(e){
 })
 
 
+router.post("/changepassword", async (req, res) => {
+    const {
+        id,
+        newPassword,
+        oldPassword
+    } = req.body;
+    
+    const userWithID = await tbl_users.findOne({
+        where: {
+            id
+        }
+    }).catch(
+        (err) => {
+            console.log("Error: ", err);
+        }
+    );
+    const correctPass = await bcrypt.compare(oldPassword, userWithID.password);
+    if(correctPass)
+    {
+        const newPass = bcrypt.hashSync(newPassword, 10);
+        const changePassword = await tbl_users.update(
+            { password:newPass
+             },
+            { where: {
+                id:userWithID.id
+            }
+        }).catch(
+            (err) => {
+                console.log("Error: ", err);
+            }
+        );
+        res.status(200).json({
+            changePassword,
+            message: "Password has been changed!"
+        });
+    }
+    else{
+        return res.status(500).json({
+            message: "Incorrect old password!",
+            auth: false
+        })
+    }
+})
 router.post("/resetpassword", async (req, res) => {
     const {
         email_add,
@@ -100,7 +143,7 @@ var now = moment().format('YYYY-d-MM HH:mm:ss')
     if (userWithEmail)
     {
         const resetPassword = await tbl_users.update(
-            { password:defaultPassword,
+            { password:hashed,
                 updatedBy: id,
                 updatedAt: now
              },

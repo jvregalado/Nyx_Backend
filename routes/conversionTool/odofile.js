@@ -50,9 +50,10 @@ router.post("/ODOLazada", async (req, res) => {
         var data = xlsx.utils.sheet_to_json(WStempODO);
         var WSfromSheetd = req.body.fromFront;
         const {
-            WarehouseID,
-            fileName,
-            valcon
+			WarehouseID,
+			fileName,
+			valcon,
+			userID
         } = req.query;
         const datetime = new Date().toLocaleString();
         let insertCount = WSfromSheetd.map(x => {
@@ -177,7 +178,8 @@ router.post("/ODOLazada", async (req, res) => {
                     'QTY Ordered Each': fromData[x]["countItem"],
                     Price: fromData[x]["Unit Price"],
                     'Date Converted': datetime,
-                    'Conversion Type': valcon
+                    'Conversion Type': valcon,
+                    'user':userID
                 })
             }
         }
@@ -195,9 +197,10 @@ router.post("/ODOShopee", async (req, res) => {
         var data = xlsx.utils.sheet_to_json(WStempODO);
         var fromDataArray = req.body.fromFront;
         const {
-            WarehouseID,
-            fileName,
-            valcon
+			WarehouseID,
+			fileName,
+			valcon,
+			userID
         } = req.query;
         const datetime = new Date().toLocaleString();
 
@@ -277,7 +280,8 @@ router.post("/ODOShopee", async (req, res) => {
                     'QTY Ordered Each': fromData[x]["Quantity"],
                     Price: fromData[x]["Unit Price"],
                     'Date Converted': datetime,
-                    'Conversion Type': valcon
+                    'Conversion Type': valcon,
+                    'user':userID
                 })
             }
         }
@@ -296,9 +300,10 @@ router.post("/ODOShopify", async (req, res) => {
         var data = xlsx.utils.sheet_to_json(WStempODO);
         var fromData = req.body.fromFront;
         const {
-            WarehouseID,
-            fileName,
-            valcon
+			WarehouseID,
+			fileName,
+			valcon,
+			userID
         } = req.query;
         const datetime = new Date().toLocaleString();
 
@@ -370,7 +375,8 @@ router.post("/ODOShopify", async (req, res) => {
                 'QTY Ordered Each': fromData[x]["Lineitem quantity"],
                 Price: fromData[x]["Unit Price"],
                 'Date Converted': datetime,
-                'Conversion Type': valcon
+                'Conversion Type': valcon,
+                'user':userID
             })
         }
         generatingFile(res, fileName, data);
