@@ -32,6 +32,42 @@ router.get("/Authentication",verifyJWT,(req,res)=>{
 })
 
 //creating user
+router.post("/viewuser", async (req, res) => {
+    try{
+        const {
+        searchBar
+    } = req.body;
+    const searchUser = await tbl_users.sequelize.query(
+        "SELECT tu.id, tu.first_name, tu.suffix, tu.last_name, "+
+        "tu.email_add, tu.contactNo, case when tu.userStatus=1 then "+
+        "1 ELSE 0 END userStatus, case when tu.userAdmin = 1 "+
+        "then 1 else 0 end userAdmin, "+
+        "cu.email_add createdBy, tu.createdAt, pu.email_add updatedBy, "+
+        "tu.updatedAt FROM tbl_users tu LEFT JOIN tbl_users cu ON "+
+        "cu.id=tu.createdBy LEFT JOIN tbl_users pu ON pu.id=tu.updatedBy "+
+        "where tu.first_name like :searchBar or tu.suffix like :searchBar "+
+        "or tu.last_name like :searchBar"
+        , 
+        { replacements: { searchBar: '%'+searchBar+'%' }, type: tbl_users.sequelize.QueryTypes.SELECT });
+    res.json({searchUser
+    });
+}
+catch(e){
+    console.log(e,"console log error")
+    console.log(e.message, "original")
+        if(e.message === 'Validation error'){
+            return res.status(400).json({
+                message:'Email already exists!'
+            });
+        }
+        res.status(500).json({
+            message:`${e}`
+        });
+}
+})
+
+
+//creating user
 router.post("/createuser", async (req, res) => {
     try{
         const {
@@ -69,6 +105,66 @@ catch(e){
             message:`${e}`
         });
 }
+})
+
+router.post("/updateuserdetails", async (req, res) => {
+    const {
+        uEmail_add,
+        uID,
+        uFirst_name,
+        uLast_name,
+        uContact,
+        uStatus,
+        uAdmin,
+        uSuffix,
+        id
+    } = req.body;
+
+    const userWithEmail = await tbl_users.findOne({
+        where: {
+            email_add:uEmail_add
+        }
+    }).catch(
+        (err) => {
+            console.log("Error: ", err);
+        }
+    );
+    
+    if (!userWithEmail)
+        return res
+            .status(400)
+            .json({
+                message: "Email does not exist."
+            });
+            28
+
+var now = moment().format('YYYY-d-MM HH:mm:ss')
+    if (userWithEmail)
+    {
+        const updateDetails = await tbl_users.update(
+            { 
+                first_name:uFirst_name,
+                last_name:uLast_name,
+                suffix:uSuffix,
+                contactNo: uContact,
+                userAdmin: uAdmin,
+                userStatus: uStatus,
+                updatedBy: id,
+                updatedAt: now
+             },
+            { where: {
+                id:uID
+            }
+        }).catch(
+            (err) => {
+                console.log("Error: ", err);
+            }
+        );
+        res.status(200).json({
+            updateDetails,
+            message: "Details updated!"
+        });
+    }
 })
 
 
@@ -178,7 +274,7 @@ router.post("/", async (req, res) => {
             console.log("Error: ", err);
         }
     );
-
+    
     if (!userWithEmail)
         return res
             .status(400)
@@ -186,6 +282,13 @@ router.post("/", async (req, res) => {
                 message: "Email or password does not match!",
                 auth: false
             });
+    if (!userWithEmail.userStatus)
+    return res
+        .status(400)
+        .json({
+            message: "User is not active!",
+            auth: false
+        });
     if (userWithEmail) {
         const correctPass = await bcrypt.compare(password, userWithEmail.password);
         if (correctPass) {
@@ -212,7 +315,7 @@ router.post("/", async (req, res) => {
         }
         else {
             return res.status(500).json({
-                message: "Email or password does not match!",
+                message: "Email is not registered to the system. Please contact the admin.",
                 auth: false
             })
         }
