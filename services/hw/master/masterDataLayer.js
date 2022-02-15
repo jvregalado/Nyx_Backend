@@ -1,6 +1,6 @@
 "use strict";
 
-const models = require('../../../models/HW/index');
+const models = require('../../../models/hw/index');
 const { sequelize } = models;
 
 exports.getHWmaintainedSKUs = async({

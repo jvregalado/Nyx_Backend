@@ -1,5 +1,7 @@
 const express = require("express");
-const tbl_users = require("../../models/CT/tbl_users");
+const models = require("../models/nyx");
+const { sequelize, Sequelize } = models;
+
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const moment = require("moment");
@@ -37,7 +39,7 @@ router.post("/viewuser", async (req, res) => {
         const {
         searchBar
     } = req.body;
-    const searchUser = await tbl_users.sequelize.query(
+    const searchUser = await sequelize.query(
         "SELECT tu.id, tu.first_name, tu.suffix, tu.last_name, "+
         "tu.email_add, tu.contactNo, case when tu.userStatus=1 then "+
         "1 ELSE 0 END userStatus, case when tu.userAdmin = 1 "+
@@ -48,7 +50,7 @@ router.post("/viewuser", async (req, res) => {
         "where tu.first_name like :searchBar or tu.suffix like :searchBar "+
         "or tu.last_name like :searchBar"
         , 
-        { replacements: { searchBar: '%'+searchBar+'%' }, type: tbl_users.sequelize.QueryTypes.SELECT });
+        { replacements: { searchBar: '%'+searchBar+'%' }, type: Sequelize.QueryTypes.SELECT });
     res.json({searchUser
     });
 }
@@ -79,7 +81,7 @@ router.post("/createuser", async (req, res) => {
         userAdmin,
         contactNo
     } = req.body;
-    const creatingUser = await tbl_users.create({
+    const creatingUser = await models.tbl_users.create({
         email_add,
         first_name,
         suffix,
@@ -120,7 +122,7 @@ router.post("/updateuserdetails", async (req, res) => {
         id
     } = req.body;
 
-    const userWithEmail = await tbl_users.findOne({
+    const userWithEmail = await models.tbl_users.findOne({
         where: {
             email_add:uEmail_add
         }
@@ -141,7 +143,7 @@ router.post("/updateuserdetails", async (req, res) => {
 var now = moment().format('YYYY-d-MM HH:mm:ss')
     if (userWithEmail)
     {
-        const updateDetails = await tbl_users.update(
+        const updateDetails = await models.tbl_users.update(
             { 
                 first_name:uFirst_name,
                 last_name:uLast_name,
@@ -175,7 +177,7 @@ router.post("/changepassword", async (req, res) => {
         oldPassword
     } = req.body;
     
-    const userWithID = await tbl_users.findOne({
+    const userWithID = await models.tbl_users.findOne({
         where: {
             id
         }
@@ -188,7 +190,7 @@ router.post("/changepassword", async (req, res) => {
     if(correctPass)
     {
         const newPass = bcrypt.hashSync(newPassword, 10);
-        const changePassword = await tbl_users.update(
+        const changePassword = await models.tbl_users.update(
             { password:newPass
              },
             { where: {
@@ -217,7 +219,7 @@ router.post("/resetpassword", async (req, res) => {
         id
     } = req.body;
 
-    const userWithEmail = await tbl_users.findOne({
+    const userWithEmail = await models.tbl_users.findOne({
         where: {
             email_add
         }
@@ -238,7 +240,7 @@ router.post("/resetpassword", async (req, res) => {
 var now = moment().format('YYYY-d-MM HH:mm:ss')
     if (userWithEmail)
     {
-        const resetPassword = await tbl_users.update(
+        const resetPassword = await models.tbl_users.update(
             { password:hashed,
                 updatedBy: id,
                 updatedAt: now
@@ -265,7 +267,7 @@ router.post("/", async (req, res) => {
         password
     } = req.body;
 
-    const userWithEmail = await tbl_users.findOne({
+    const userWithEmail = await models.tbl_users.findOne({
         where: {
             email_add
         }

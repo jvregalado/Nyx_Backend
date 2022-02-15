@@ -5,30 +5,25 @@ const hwConfig = {
     database : process.env.DB_HW_NAME,
     dialect : 'mysql',
     dialectOptions : {
-        trustedConnection : true,
-        encrypt: true,
-        options : {
-            requestTimeout: 3600
-        }
+        dateStrings: true,
+        typeCast: true
     }
     //,logging: false
-    ,port : parseInt(process.env.DB_HW_PORT)
 }
-const convTool = {
+
+const nyxDBConfig = {
     username : process.env.DB_U_USER,
     password : process.env.DB_U_PASSWORD,
-    host :      process.env.DB_U_HOST,
     database : process.env.DB_U_NAME,
-    dialect : 'mysql',
-    dialectOptions : {
-        trustedConnection : true,
-        encrypt: true,
-        options : {
-            requestTimeout: 3600
-        }
+    host: process.env.DB_U_HOST,
+    dialect: "mysql",
+    charset: 'utf8',
+    collate: 'utf8_unicode_ci',
+    dialectOptions: {
+            dateStrings: true,
+            typeCast: true
     },
-    // timezone: '+08:00',
-    //,logging: false
-    port : parseInt(process.env.DB_U_PORT)
+    timezone: '+08:00' //for writing to database
 }
-module.exports = {hwConfig,convTool}
+
+module.exports = {hwConfig, nyxDBConfig}

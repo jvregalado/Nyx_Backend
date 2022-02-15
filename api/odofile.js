@@ -3,9 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const router = require('express').Router();
 
-const masterServices = require('../../services/hw/master/masterServices');
+const masterServices = require('../services/hw/master/masterService');
 
-const TempOrderHoneywell = path.join(__dirname, '../../files/temporaryTemplates/', 'TempOrderHoneywell.xlsx')
+const TempOrderHoneywell = path.join(__dirname, '../assets/templateFiles/', 'TempOrderHoneywell.xlsx')
 const TempODOwb = xlsx.readFile(TempOrderHoneywell);
 const WStempODO = TempODOwb.Sheets["Shipment Order Details"];
 
@@ -25,7 +25,7 @@ function generatingFile(res, fileName, data) {
         const newBook = xlsx.utils.book_new();
         const newSheet = xlsx.utils.json_to_sheet(data);
 
-        const generated = path.join(__dirname, '../../files/generatedTemplates/', `Generated${fileName}`);
+        const generated = path.join(__dirname, '../../assets/convertedFiles/', `Generated${fileName}`);
 
         let n = 0;
         let fileOutputDir = generated;
@@ -387,4 +387,5 @@ router.post("/ODOShopify", async (req, res) => {
         });
     }
 });
+
 module.exports = router;
