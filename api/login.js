@@ -68,7 +68,6 @@ catch(e){
 }
 })
 
-
 //creating user
 router.post("/createuser", async (req, res) => {
     try{
@@ -169,7 +168,6 @@ var now = moment().format('YYYY-d-MM HH:mm:ss')
     }
 })
 
-
 router.post("/changepassword", async (req, res) => {
     const {
         id,
@@ -213,6 +211,7 @@ router.post("/changepassword", async (req, res) => {
         })
     }
 })
+
 router.post("/resetpassword", async (req, res) => {
     const {
         email_add,

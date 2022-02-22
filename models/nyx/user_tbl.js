@@ -1,45 +1,42 @@
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
-	const tbl_users = sequelize.define("tbl_users", {
-		id: {
+	const user_tbl = sequelize.define("user_tbl", {
+		user_id: {
 			allowNull: false,
 			primaryKey: true,
 			type: DataTypes.UUID,
 			defaultValue: DataTypes.UUIDV4
 		},
-		first_name: {
-			allowNull: false,
-			type: DataTypes.STRING
-		},
-		last_name: {
-			allowNull: false,
-			type: DataTypes.STRING
-		},
-		suffix: {
-			type: DataTypes.STRING
-		},
-		email_add: {
+		user_email: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			unique: true
 		},
-		contactNo: {
-			type: DataTypes.STRING
-		},
-		password: {
-			type: DataTypes.STRING
-		},
-		role_id: {
-			type: DataTypes.STRING
-		},
-		userStatus: {
+		user_status: {
 			type: DataTypes.BOOLEAN,
 			defaultValue: true
 		},
-		userAdmin: {
-			type: DataTypes.BOOLEAN,
-			defaultValue: false
+		user_password: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
+		user_first_name: {
+			allowNull: false,
+			type: DataTypes.STRING
+		},
+		user_last_name: {
+			allowNull: false,
+			type: DataTypes.STRING
+		},
+		user_middle_name: {
+			type: DataTypes.STRING
+		},
+		user_contact_no: {
+			type: DataTypes.BIGINT(10)
+		},
+		role_id: {
+			type: DataTypes.STRING
 		},
 		createdBy: {
 			type: DataTypes.STRING
@@ -50,6 +47,7 @@ module.exports = (sequelize, DataTypes) => {
 			defaultValue: DataTypes.NOW
 		},
 		updatedBy: {
+			allowNull: true,
 			type: DataTypes.STRING
 		},
 		updatedAt: {
@@ -58,8 +56,9 @@ module.exports = (sequelize, DataTypes) => {
 		}
 	},
 	{
-		freezeTableName : true
+		freezeTableName : true,
+		hasTrigger: true
 	})
 
-	return tbl_users;
+	return user_tbl;
 }

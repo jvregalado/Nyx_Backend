@@ -12,18 +12,24 @@ const hwConfig = {
 }
 
 const nyxDBConfig = {
-    username : process.env.DB_U_USER,
-    password : process.env.DB_U_PASSWORD,
-    database : process.env.DB_U_NAME,
-    host: process.env.DB_U_HOST,
+    username : process.env.DB_NYX_USER,
+    password : process.env.DB_NYX_PASSWORD,
+    database : process.env.DB_NYX_NAME,
+    host: process.env.DB_NYX_HOST,
     dialect: "mysql",
     charset: 'utf8',
     collate: 'utf8_unicode_ci',
+    pool:{
+        max: 10,
+        min: 1,
+        idle: 2000000,
+        acquire: 2000000
+    },
     dialectOptions: {
-            dateStrings: true,
+            // dateStrings: true,
             typeCast: true
     },
-    timezone: '+08:00' //for writing to database
+    timezone: '+08:00' /**for writing to database**/
 }
 
 module.exports = {hwConfig, nyxDBConfig}

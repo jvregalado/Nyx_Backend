@@ -7,9 +7,9 @@ const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize({
 	...nyxDBConfig,
-	logging: function(str) {
-        console.log(`MSSQL ${moment().format('MM-DD HH:mm:ss')}: ${str}`)
-    },
+	// logging: function(str) {
+    //     console.log(`MSSQL ${moment().format('MM-DD HH:mm:ss')}: ${str}`)
+    // }
 });
 
 let db = {};
