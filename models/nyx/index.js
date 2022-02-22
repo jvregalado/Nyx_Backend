@@ -23,6 +23,8 @@ fs.readdirSync(__dirname)
 		db[model.name] = model;
 	});
 
+//sequelize.sync();
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
