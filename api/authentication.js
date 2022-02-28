@@ -2,7 +2,7 @@
 
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
-const { user, auth } = require('../services/nyx');
+const { userService, authService } = require('../services/nyx');
 
 router.post('/sign-out',(req, res) => {
 	res.status(200).end();
@@ -22,28 +22,38 @@ router.post('/connection',async(req,res) => {
 
 router.post('/token', async(req,res) => {
 	try{
-		const {email, password} = req.body;
+		const {user_email, user_password} = req.body;
+		// console.log(user_email, user_password)
 
-		const getUsers = await user.getUser({
+		const getUser = await userService.getUser({
 			filters:{
-				email
+				user_email
 			}
 		})
 
-		if(getUsers.length === 0){
+		// console.log(getUser.dataValues)
+
+		if(!getUser){
 			return res.status(404).json({
 				message:'Invalid Email or Password'
 			})
 		}
 
-		if(!bcrypt.compareSync(password,getUsers.password)){
+		if(!getUser.dataValues.user_status){
+			return res.status(404).json({
+				message:'User inactive'
+			})
+		}
+
+		if(!bcrypt.compareSync(user_password,getUser.user_password)){
 			return res.status(400).json({
 				message:'Invalid Email or Password'
 			})
 		}
 
-		const token = await auth.generateToken({
-			email
+		const token = await authService.generateToken({
+			user_email	: getUser['dataValues'].user_email,
+			user_id		:getUser['dataValues'].user_id
 		})
 
 		// const rawModules = await roles.getRoleModule({
@@ -59,6 +69,7 @@ router.post('/token', async(req,res) => {
 		// req.session.token_expiry = token.expiry
 
 		res.status(200).json({
+			user_email,
 			token
 			// ,modules
 		})
