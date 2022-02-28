@@ -95,7 +95,6 @@ router.post("/ASNConvert", async (req, res) => {
 					'ASN Status': '00',
 					'Customer ID': 'CIC',
 					'ASN Reference1': PrirefDoc.toUpperCase(),
-					'ASN Reference2': fromData[x]['Trucking Details'],
 					'Warehouse ID Item': WarehouseID,
 					'ASN LineNO': c,
 					'Customer ID Item': 'CIC',
@@ -111,7 +110,8 @@ router.post("/ASNConvert", async (req, res) => {
 					'Total Gross Weight Item': '0',
 					'Total Net Weight Item': '0',
 					'Total Price Item': '0',
-					'Carrier Telphone1': fromData[x]['Plant Code'],
+					'Carrier Name': fromData[x]['Trucking Details'],
+					'ASN Reference3': fromData[x]['Plant Code'],
 					'Date Converted': datetime,
 					'Conversion Type': valcon,
                     'user':userID
@@ -147,6 +147,7 @@ router.post("/ASNConvertCMIP", async (req, res) => {
 			skus: uniqueSKUs
 		})
 		var refdoc = '';
+		var c=0;
 		for (let x in fromData) {
 			let PrirefDoc = `${fromData[x]['Container Number']}`;
 			let skuCode = `${fromData[x]['Product Code']}`;
@@ -181,10 +182,10 @@ router.post("/ASNConvertCMIP", async (req, res) => {
 					'Total Net Weight Item': '0',
 					'Total Price Item': '0',
 
-					'Carrier Contact': fromData[x]['Container Number'],
-					'Carrier Name': fromData[x]['PO or STO Reference'],
+					'Carrier Contact': fromData[x]['PO or STO Reference'],
+					'Carrier Name': fromData[x]['Container Number'],
 					'Carrier Fax': fromData[x]['DR Reference'],
-					'Carrier Telphone1': fromData[x]['Invoice Reference'],
+					'ASN Reference3': fromData[x]['Invoice Reference'],
 					'Date Converted': datetime,
 					'Conversion Type': valcon,
                     'user':userID
@@ -219,10 +220,10 @@ router.post("/ASNPo", async (req, res) => {
 				"Customer": x.Customer,
 				"Model Code": x["Model Code"],
 				"Model Name": x["Model Name"],
-				"Carrier Contact": x["Container"],
-				"Carrier Name": x["Type of Container"],
+				"Carrier Contact": x["Type of Container"],
+				"Carrier Name": x["Container"],
 				"Carrier Fax": x['Seal No.'],
-				"Carrier Telphone1": x['Invoice No.'],
+				"ASN Reference3": x['Invoice No.'],
 				"countItem": 0
 			}
 		});
@@ -262,10 +263,10 @@ router.post("/ASNPo", async (req, res) => {
 			let skuCode = `${fromData[x]['Model Code']}`;
 			let descr = fromData[x]['Model Name'];
 			let counts = fromData[x]['countItem'];
-			let container = fromData[x]['Carrier Contact'];
-			let typeofcontainer = fromData[x]['Carrier Name'];
+			let typeofcontainer = fromData[x]['Carrier Contact'];
+			let container = fromData[x]['Carrier Name'];
 			let sealno = fromData[x]['Carrier Fax'];
-			let invoiceno = fromData[x]['Carrier Telphone1'];
+			let invoiceno = fromData[x]['ASN Reference3'];
 			if (refdoc === PrirefDoc) {
 				c++;
 			} else {
@@ -295,10 +296,10 @@ router.post("/ASNPo", async (req, res) => {
 				'Total Gross Weight Item': '0',
 				'Total Net Weight Item': '0',
 				'Total Price Item': '0',
-				'Carrier Contact': container,
-				'Carrier Name': typeofcontainer,
+				'Carrier Contact': typeofcontainer,
+				'Carrier Name': container,
 				'Carrier Fax': sealno,
-				'Carrier Telphone1': invoiceno,
+				'ASN Reference3': invoiceno,
 				'Date Converted': datetime,
 				'Conversion Type': valcon,
 				'user':userID
@@ -367,9 +368,9 @@ router.post("/ASNsto", async (req, res) => {
 				'Total Gross Weight Item': '0',
 				'Total Net Weight Item': '0',
 				'Total Price Item': '0',
-				'Carrier Contact': fromData[x]['Trucker/Truck Plate Number'],
+				'Carrier Name': fromData[x]['Trucker/Truck Plate Number'],
 				'Carrier Fax': fromData[x]['Trip Waybill No.'],
-				'Carrier Telphone1': fromData[x]['Delivery No.'],
+				'ASN Reference3': fromData[x]['Delivery No.'],
 				'Date Converted': datetime,
 				'Conversion Type': valcon,
 				'user':userID
