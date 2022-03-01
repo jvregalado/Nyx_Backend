@@ -24,3 +24,21 @@ exports.getHWmaintainedSKUs = async({
 		throw e
 	}
 }
+
+exports.getWhseID = async() => {
+	try {
+		return await sequelize.query(
+			`SELECT * FROM BSM_WAREHOUSE
+			WHERE activeFlag = 'Y'`,
+			{
+				type:sequelize.QueryTypes.SELECT
+			})
+		.then((result) => {
+			return JSON.parse(JSON.stringify(result))
+		})
+	}
+	catch(e) {
+		console.log(e)
+		throw e
+	}
+}

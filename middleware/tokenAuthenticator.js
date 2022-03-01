@@ -14,12 +14,19 @@ router.use(async(req,res,next) => {
 				throw Error('No token provided.')
 			}
 
-			let decode = jwt.verify(token, secret);
-			// console.log(decode)
+			let decode = jwt.verify(token, secret, (err, decoded) => {
+				if(err) {
+					if(err.name === 'TokenExpiredError') {
+						throw Error ('Token session expired, please relogin.')
+					}
+					throw Error ('Token authentication failed.')
+				}
+				return decoded
+			});
 
 			if(!decode.user_email){
 				return res.status(403).json({
-					message:'Invalid session.'
+					message:'Invalid user session.'
 				})
 			}
 			else{

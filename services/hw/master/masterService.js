@@ -39,3 +39,15 @@ exports.getSKUs = async({
 		throw e
 	}
 }
+
+exports.getWhseID = async() => {
+	try {
+
+		return await dataLayer.getWhseID();
+
+	}
+	catch(e) {
+		console.log(e)
+		throw e
+	}
+}
