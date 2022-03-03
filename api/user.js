@@ -29,7 +29,7 @@ router.get('/get', async(req,res) => {
 	try {
 		let query = req.query;
 
-		const {count,rows} = await userService.getPaginatedUser({
+		const {count, rows} = await userService.getPaginatedUser({
 			filters:{
 				...query
 			},
@@ -48,26 +48,50 @@ router.get('/get', async(req,res) => {
 	}
 })
 
+router.get('/details', async(req,res) => {
+	try {
+		let query = req.query;
+
+		const result = await userService.getAllUser({
+			filters:{
+				...query
+			}
+		})
+
+		res.status(200).json({
+			data:result
+		})
+	}
+	catch(e){
+		console.log(e);
+		res.status(500).json({
+			message:`${e}`
+		})
+	}
+})
+
 router.post('/update', async(req,res) => {
 	try{
 		const {data} = req.body;
-		console.log('data', data)
+		const processor = req.processor;
+
+		if(!data.user_id) {
+			throw new Error(`user_id and user_email is not provided.`)
+		}
 
 		if(!data.user_first_name || !data.user_last_name) {
 			throw new Error(`First and Last name cannot be empty.`)
 		}
 
-		// await userService.updateUser({...data})
-
-		// await userService.updateUser({
-		// 	filters:{
-		// 		user_email
-		// 	},
-		// 	data:{
-		// 		...req.body,
-		// 		// updatedBy:req.session.userId
-		// 	}
-		// })
+		await userService.updateUser({
+			filters:{
+				user_id : data.user_id
+			},
+			data:{
+				...data,
+				updatedBy:processor.user_id
+			}
+		})
 		res.status(200).end()
 	}
 	catch(e){

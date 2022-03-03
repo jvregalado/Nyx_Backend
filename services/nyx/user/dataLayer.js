@@ -135,6 +135,21 @@ exports.getUser = async({
 	}
 }
 
+exports.getAllUser = async({
+	filter
+}) => {
+	try{
+		return await models.user_tbl.findAll({
+			where:{
+				...filter
+			}
+		})
+	}
+	catch(e){
+		throw e
+	}
+}
+
 exports.updateUser = async({
 	filters,
 	data,

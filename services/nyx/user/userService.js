@@ -4,73 +4,88 @@ const bcrypt = require('bcryptjs');
 const dataLayer = require('./dataLayer');
 
 exports.createUser = async({
-    ...data
+	...data
 }) => {
-    try{
+	try{
 
-        const hashPassword = bcrypt.hashSync(data.password,10);
+		const hashPassword = bcrypt.hashSync(data.password,10);
 
-        return await dataLayer.createUser({
-            ...data,
-            user_password : hashPassword
-        })
+		return await dataLayer.createUser({
+			...data,
+			user_password : hashPassword
+		})
 
-    }
-    catch(e){
-        throw e
-    }
+	}
+	catch(e){
+		throw e
+	}
 }
 
 exports.getPaginatedUser = async({
-    filters
+	filters
 }) => {
-    try{
+	try{
 
-        let {orderBy,page,totalPage,...newFilters} = filters
-        return await dataLayer.getPaginatedUser({
-            orderBy:orderBy.split(','),
-            page,
-            totalPage,
-            filters:{
-                ...newFilters
-            }
-        })
+		let {orderBy,page,totalPage,...newFilters} = filters
+		return await dataLayer.getPaginatedUser({
+			orderBy:orderBy.split(','),
+			page,
+			totalPage,
+			filters:{
+				...newFilters
+			}
+		})
 
-    }
-    catch(e){
-        throw e
-    }
+	}
+	catch(e){
+		throw e
+	}
 }
 
 /**LOGIN SERVICE */
 exports.getUser = async({
-    filters
+	filters
 }) => {
-    try{
+	try{
 
-        return await dataLayer.getUser({
-            filter:filters
-        })
+		return await dataLayer.getUser({
+			filter:filters
+		})
 
-    }
-    catch(e){
-        throw e
-    }
+	}
+	catch(e){
+		throw e
+	}
+}
+
+exports.getAllUser = async({
+	filters
+}) => {
+	try{
+
+		return await dataLayer.getAllUser({
+			filter:filters
+		})
+		.then(result => JSON.parse(JSON.stringify(result)))
+	}
+	catch(e){
+		throw e
+	}
 }
 
 exports.updateUser = async({
-    filters,
-    data
+	filters,
+	data
 }) => {
-    try{
+	try{
 
-        return await dataLayer.updateUser({
-            filters,
-            data
-        })
+		return await dataLayer.updateUser({
+			filters,
+			data
+		})
 
-    }
-    catch(e){
-        throw e
-    }
+	}
+	catch(e){
+		throw e
+	}
 }
