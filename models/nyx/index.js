@@ -7,9 +7,9 @@ const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize({
 	...nyxDBConfig,
-	// logging: function(str) {
-    //     console.log(`MSSQL ${moment().format('MM-DD HH:mm:ss')}: ${str}`)
-    // }
+	logging: function(str) {
+	console.log(`MySQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`)
+	}
 });
 
 let db = {};
@@ -23,9 +23,18 @@ fs.readdirSync(__dirname)
 		db[model.name] = model;
 	});
 
-//sequelize.sync();
-
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+db.user_tbl.hasOne(db.role_hdr_tbl, {
+	foreignKey:'role_id',
+	sourceKey:'role_id',
+	as:'role'
+})
+
+db.role_hdr_tbl.belongsTo(db.user_tbl, {
+	foreignKey:'role_id'
+})
+
 
 module.exports = db;

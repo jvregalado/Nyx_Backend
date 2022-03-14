@@ -13,27 +13,37 @@ const formatFilters = ({
 			formattedFilters = {
 				[Sequelize.Op.or]: [
 					{
-						user_email: {
+						report_code: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
 					},
 					{
-						user_first_name: {
+						report_name: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
 					},
 					{
-						user_last_name: {
+						report_system_type: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
 					},
 					{
-						user_contact_no: {
+						report_type: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
 					},
 					{
-						role_id: {
+						report_remarks1: {
+							[Sequelize.Op.like]: `%${filters.search}%`
+						}
+					},
+					{
+						report_remarks2: {
+							[Sequelize.Op.like]: `%${filters.search}%`
+						}
+					},
+					{
+						report_remarks3: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
 					}
@@ -68,11 +78,11 @@ const formatFilters = ({
     }
 }
 
-exports.createUser = async({
+exports.createReport = async({
 	...data
 }) => {
 	try {
-		return await models.user_tbl.create({
+		return await models.report_tbl.create({
 			...data
 		})
 	}
@@ -81,7 +91,7 @@ exports.createUser = async({
 	}
 }
 
-exports.getPaginatedUser = async({
+exports.getPaginatedReport = async({
 	filters,
 	orderBy,
 	page,
@@ -90,11 +100,11 @@ exports.getPaginatedUser = async({
 	try {
 
 		let newFilter = formatFilters({
-			model:models.user_tbl.rawAttributes,
+			model:models.report_tbl.rawAttributes,
 			filters:filters
 		});
 
-		const {count,rows} = await models.user_tbl.findAndCountAll({
+		const {count,rows} = await models.report_tbl.findAndCountAll({
 			where:{
 				...newFilter
 			},
@@ -120,11 +130,11 @@ exports.getPaginatedUser = async({
 	}
 }
 
-exports.getUser = async({
+exports.getAllReport = async({
 	filter
 }) => {
 	try{
-		return await models.user_tbl.findOne({
+		return await models.report_tbl.findAll({
 			where:{
 				...filter
 			}
@@ -135,28 +145,13 @@ exports.getUser = async({
 	}
 }
 
-exports.getAllUser = async({
-	filter
-}) => {
-	try{
-		return await models.user_tbl.findAll({
-			where:{
-				...filter
-			}
-		})
-	}
-	catch(e){
-		throw e
-	}
-}
-
-exports.updateUser = async({
+exports.updateReport = async({
 	filters,
 	data,
 	option
 }) => {
     try{
-        return await models.user_tbl.update(
+        return await models.report_tbl.update(
             {
                 ...data
             },
