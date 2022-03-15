@@ -91,7 +91,21 @@ exports.getPaginatedReasonCode = async({
 			},
 			offset	:parseInt(page) * parseInt(totalPage),
 			limit	:parseInt(totalPage)
-			// ,order	:[[orderBy]]
+			,order	:[[orderBy]]
+			,include:[
+				{
+					model:models.user_tbl,
+					attributes:['user_email'],
+					as:'creator',
+					required:false
+				},
+				{
+					model:models.user_tbl,
+					attributes:['user_email'],
+					as:'modifier',
+					required:false
+				}
+			]
 		})
 		.then(result => {
 			let {count,rows} = JSON.parse(JSON.stringify(result))

@@ -2,9 +2,9 @@
 
 const router = require('express').Router();
 const { masterService } = require('../services/hw');
-const { roleService } = require('../services/nyx');
+const { moduleService, roleService, reasoncodeService } = require('../services/nyx');
 
-router.get('/whseLocation', async(req,res) => {
+router.get('/master/:type', async(req,res) => {
 	try {
 		let {systemType} = req.query;
 
@@ -16,7 +16,7 @@ router.get('/whseLocation', async(req,res) => {
 					value:item.warehouseId
 				}
 			})
-			console.log('selectData', selectData)
+			//console.log('selectData', selectData)
 			return res.status(200).json({
 				data:selectData
 			})
@@ -35,12 +35,12 @@ router.get('/admin/:type', async(req,res) => {
 	try {
 		const {type} = req.params;
 
-		let selectData;
+		let resultData, selectData;
 
 		switch(type) {
 			case 'role':
-				let data = await roleService.getAllRole({filters:{role_status:true}})
-				selectData = data.map(item => {
+				resultData = await roleService.getAllRole({filters:{role_status:true}})
+				selectData = resultData.map(item => {
 					return {
 						value :item.role_id,
 						label :item.role_name
@@ -48,8 +48,8 @@ router.get('/admin/:type', async(req,res) => {
 				})
 				break;
 			// case 'module':
-			// 	let data = await moduleService.getAllModule({filters:{module_status:true}})
-			// 	selectData = data.map(item => {
+			// 	resultData = await moduleService.getAllModule({filters:{module_status:true}})
+			// 	selectData = resultData.map(item => {
 			// 		return {
 			// 			value	:item.role_id,
 			// 			label	:item.role_name
@@ -57,7 +57,7 @@ router.get('/admin/:type', async(req,res) => {
 			// 	})
 			// 	break;
 			default:
-				console.log(`WAS NOT ABLE TO CHECK FOR TYPE`)
+				console.log(`WAS NOT ABLE TO CHECK FOR TYPE from ADMIN`)
 		}
 
 		// console.log('selectData', selectData)
@@ -78,23 +78,30 @@ router.get('/reasoncode/:type', async(req,res) => {
 	try {
 		const {type} = req.params;
 
-		let selectData;
+		let resultData, selectData;
 
 		switch(type) {
-			case 'role':
-				let data = await roleService.getAllRole({filters:{role_status:true}})
-				selectData = data.map(item => {
-					return {
-						value	:item.role_id,
-						label	:item.role_name
+			case 'Report System Type':
+				resultData = await reasoncodeService.getAllReasonCode({ filters : {rc_type:type, rc_status:true} })
+				selectData = resultData.map(item => {
+					return {value	:item.rc_id,
+							label	:item.rc_desc
+					}
+				})
+				break;
+			case 'Report Type':
+				resultData = await reasoncodeService.getAllReasonCode({ filters : {rc_type:type, rc_status:true} })
+				selectData = resultData.map(item => {
+					return {value	:item.rc_id,
+							label	:item.rc_desc
 					}
 				})
 				break;
 			default:
-				console.log(`WAS NOT ABLE TO CHECK FOR TYPE`)
+				console.log(`WAS NOT ABLE TO CHECK FOR TYPE from REASON CODE`)
 		}
 
-		console.log('selectData', selectData)
+		// console.log('selectData', selectData)
 
 		return res.status(200).json({
 			data:selectData

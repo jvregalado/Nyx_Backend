@@ -57,10 +57,10 @@ router.post('/token', async(req,res) => {
 		})
 
 		// const rawModules = await roles.getRoleModule({
-		// 	 filters:{
-		// 		 role_id:getUsers.user_role_id,
-		// 		 has_access:1
-		// 	 }
+		//  	filters:{
+		// 	 	role_id:getUsers.user_role_id,
+		// 	 	has_access:1
+		//  	}
 		// })
 
 		// const modules = await roles.formatRoleModules({data:rawModules})

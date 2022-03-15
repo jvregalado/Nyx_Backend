@@ -26,9 +26,10 @@ fs.readdirSync(__dirname)
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+/**USER TO ROLE ASSOCIATION */
 db.user_tbl.hasOne(db.role_hdr_tbl, {
-	foreignKey:'role_id',
 	sourceKey:'role_id',
+	foreignKey:'role_id',
 	as:'role'
 })
 
@@ -36,5 +37,74 @@ db.role_hdr_tbl.belongsTo(db.user_tbl, {
 	foreignKey:'role_id'
 })
 
+/**REPORT TO REASON CODE ASSOCIATION */
+db.report_tbl.hasOne(db.reason_code_tbl, {
+	sourceKey:'report_system_type',
+	foreignKey:'rc_id',
+	as:'report_system_type_fk'
+})
+
+db.report_tbl.hasOne(db.reason_code_tbl, {
+	sourceKey:'report_type',
+	foreignKey:'rc_id',
+	as:'report_type_fk'
+})
+
+/**createdBy and updatedBy Associations */
+/**1:USER */
+db.user_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'createdBy',
+	foreignKey: 'user_id',
+	as:'creator'
+})
+db.user_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'updatedBy',
+	foreignKey: 'user_id',
+	as:'modifier'
+})
+/**2: REASON CODE*/
+db.reason_code_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'createdBy',
+	foreignKey: 'user_id',
+	as:'creator'
+})
+db.reason_code_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'updatedBy',
+	foreignKey: 'user_id',
+	as:'modifier'
+})
+/**3: REPORT*/
+db.report_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'createdBy',
+	foreignKey: 'user_id',
+	as:'creator'
+})
+db.report_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'updatedBy',
+	foreignKey: 'user_id',
+	as:'modifier'
+})
+/**4: MODULE*/
+db.module_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'createdBy',
+	foreignKey: 'user_id',
+	as:'creator'
+})
+db.module_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'updatedBy',
+	foreignKey: 'user_id',
+	as:'modifier'
+})
+/**5: ROLE*/
+db.role_hdr_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'createdBy',
+	foreignKey: 'user_id',
+	as:'creator'
+})
+db.role_hdr_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'updatedBy',
+	foreignKey: 'user_id',
+	as:'modifier'
+})
 
 module.exports = db;

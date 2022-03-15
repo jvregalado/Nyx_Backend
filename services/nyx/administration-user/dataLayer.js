@@ -33,7 +33,7 @@ const formatFilters = ({
 						}
 					},
 					{
-						role_id: {
+						user_remarks: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
 					}
@@ -57,11 +57,11 @@ const formatFilters = ({
 			})
 		}
 
-        return formattedFilters
-    }
-    catch(e){
-        throw e
-    }
+		return formattedFilters
+	}
+	catch(e){
+		throw e
+	}
 }
 
 exports.createUser = async({
@@ -101,6 +101,18 @@ exports.getPaginatedUser = async({
 					model:models.role_hdr_tbl,
 					attributes:['role_name'],
 					as:'role'
+				},
+				{
+					model:models.user_tbl,
+					attributes:['user_email'],
+					as:'creator',
+					required:false
+				},
+				{
+					model:models.user_tbl,
+					attributes:['user_email'],
+					as:'modifier',
+					required:false
 				}
 			]
 			// ,order	:[[orderBy]]
@@ -173,19 +185,19 @@ exports.updateUser = async({
 	data,
 	option
 }) => {
-    try{
-        return await models.user_tbl.update(
-            {
-                ...data
-            },
-            {
-                where:{
-                    ...filters
-                }
-            }
-        )
-    }
-    catch(e){
-        throw e
-    }
+	try{
+		return await models.user_tbl.update(
+			{
+				...data
+			},
+			{
+				where:{
+					...filters
+				}
+			}
+		)
+	}
+	catch(e){
+		throw e
+	}
 }

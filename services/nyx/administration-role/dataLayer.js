@@ -26,16 +26,6 @@ const formatFilters = ({
 						role_remarks1: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
-					},
-					{
-						role_remarks2: {
-							[Sequelize.Op.like]: `%${filters.search}%`
-						}
-					},
-					{
-						role_remarks3: {
-							[Sequelize.Op.like]: `%${filters.search}%`
-						}
 					}
 				]
 			};
@@ -61,11 +51,11 @@ const formatFilters = ({
 
 
 
-        return formattedFilters
-    }
-    catch(e){
-        throw e
-    }
+		return formattedFilters
+	}
+	catch(e){
+		throw e
+	}
 }
 
 exports.createRole = async({
@@ -99,7 +89,21 @@ exports.getPaginatedRole = async({
 				...newFilter
 			},
 			offset	:parseInt(page) * parseInt(totalPage),
-			limit	:parseInt(totalPage)
+			limit	:parseInt(totalPage),
+			include:[
+				{
+					model:models.user_tbl,
+					attributes:['user_email'],
+					as:'creator',
+					required:false
+				},
+				{
+					model:models.user_tbl,
+					attributes:['user_email'],
+					as:'modifier',
+					required:false
+				}
+			]
 			// ,order	:[[orderBy]]
 		})
 		.then(result => {
@@ -140,19 +144,19 @@ exports.updateRole = async({
 	data,
 	option
 }) => {
-    try{
-        return await models.role_hdr_tbl.update(
-            {
-                ...data
-            },
-            {
-                where:{
-                    ...filters
-                }
-            }
-        )
-    }
-    catch(e){
-        throw e
-    }
+	try{
+		return await models.role_hdr_tbl.update(
+			{
+				...data
+			},
+			{
+				where:{
+					...filters
+				}
+			}
+		)
+	}
+	catch(e){
+		throw e
+	}
 }

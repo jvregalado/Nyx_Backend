@@ -36,16 +36,6 @@ const formatFilters = ({
 						report_remarks1: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
-					},
-					{
-						report_remarks2: {
-							[Sequelize.Op.like]: `%${filters.search}%`
-						}
-					},
-					{
-						report_remarks3: {
-							[Sequelize.Op.like]: `%${filters.search}%`
-						}
 					}
 				]
 			};
@@ -62,7 +52,7 @@ const formatFilters = ({
 						[Sequelize.Op.or]:fields
 					}
 
-					delete formattedFilters["search"]
+				 	delete formattedFilters["search"]
 				}
 			})
 		}
@@ -71,11 +61,11 @@ const formatFilters = ({
 
 
 
-        return formattedFilters
-    }
-    catch(e){
-        throw e
-    }
+		return formattedFilters
+	}
+	catch(e){
+		throw e
+	}
 }
 
 exports.createReport = async({
@@ -109,7 +99,33 @@ exports.getPaginatedReport = async({
 				...newFilter
 			},
 			offset	:parseInt(page) * parseInt(totalPage),
-			limit	:parseInt(totalPage)
+			limit	:parseInt(totalPage),
+			include:[
+				{
+					model:models.reason_code_tbl,
+					attributes:['rc_desc'],
+					as:'report_system_type_fk',
+					required:false
+				},
+				{
+					model:models.reason_code_tbl,
+					attributes:['rc_desc'],
+					as:'report_type_fk',
+					required:false
+				},
+				{
+					model:models.user_tbl,
+					attributes:['user_email'],
+					as:'creator',
+					required:false
+				},
+				{
+					model:models.user_tbl,
+					attributes:['user_email'],
+					as:'modifier',
+					required:false
+				}
+			]
 			// ,order	:[[orderBy]]
 		})
 		.then(result => {
@@ -137,7 +153,21 @@ exports.getAllReport = async({
 		return await models.report_tbl.findAll({
 			where:{
 				...filter
-			}
+			},
+			include:[
+				{
+					model:models.reason_code_tbl,
+					attributes:['rc_id','rc_code','rc_type','rc_desc'],
+					as:'report_system_type_fk',
+					required:false
+				},
+				{
+					model:models.reason_code_tbl,
+					attributes:['rc_id','rc_code','rc_type','rc_desc'],
+					as:'report_type_fk',
+					required:false
+				}
+			]
 		})
 	}
 	catch(e){
@@ -150,19 +180,19 @@ exports.updateReport = async({
 	data,
 	option
 }) => {
-    try{
-        return await models.report_tbl.update(
-            {
-                ...data
-            },
-            {
-                where:{
-                    ...filters
-                }
-            }
-        )
-    }
-    catch(e){
-        throw e
-    }
+	try{
+		return await models.report_tbl.update(
+			{
+				...data
+			},
+			{
+				where:{
+					...filters
+				}
+			}
+		)
+	}
+	catch(e){
+		throw e
+	}
 }
