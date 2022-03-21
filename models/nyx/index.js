@@ -37,6 +37,18 @@ db.role_hdr_tbl.belongsTo(db.user_tbl, {
 	foreignKey:'role_id'
 })
 
+/**USER TO REASON CODE ASSOCIATION */
+db.user_tbl.hasOne(db.reason_code_tbl, {
+	sourceKey:'user_position',
+	foreignKey:'rc_id',
+	as:'user_position_fk'
+})
+db.user_tbl.hasOne(db.reason_code_tbl, {
+	sourceKey:'user_whLocation',
+	foreignKey:'rc_id',
+	as:'user_whLocation_fk'
+})
+
 /**REPORT TO REASON CODE ASSOCIATION */
 db.report_tbl.hasOne(db.reason_code_tbl, {
 	sourceKey:'report_system_type',

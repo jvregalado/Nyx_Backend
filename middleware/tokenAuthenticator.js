@@ -3,6 +3,8 @@ const router = require('express').Router();
 
 const secret = process.env.JWT_SECRET;
 
+const { authService } = require('../services/nyx')
+
 router.use(async(req,res,next) => {
 	try{
 		const path = req.originalUrl
@@ -24,7 +26,13 @@ router.use(async(req,res,next) => {
 				return decoded
 			});
 
-			if(!decode.user_email){
+			let userSession = await authService.getUserSession({
+				user_id		:decode?.user_id,
+				user_email	:decode?.user_email,
+				user_token	:token
+			})
+
+			if(!userSession.user_id || !userSession.user_email){
 				return res.status(403).json({
 					message:'Invalid user session.'
 				})

@@ -103,6 +103,16 @@ exports.getPaginatedUser = async({
 					as:'role'
 				},
 				{
+					model:models.reason_code_tbl,
+					attributes:['rc_desc'],
+					as:'user_position_fk'
+				},
+				{
+					model:models.reason_code_tbl,
+					attributes:['rc_desc'],
+					as:'user_whLocation_fk'
+				},
+				{
 					model:models.user_tbl,
 					attributes:['user_email'],
 					as:'creator',
@@ -170,6 +180,18 @@ exports.getAllUser = async({
 					model:models.role_hdr_tbl,
 					attributes:['role_id','role_code','role_name'],
 					as:'role',
+					required:false
+				},
+				{
+					model:models.reason_code_tbl,
+					attributes:['rc_desc'],
+					as:'user_position_fk',
+					required:false
+				},
+				{
+					model:models.reason_code_tbl,
+					attributes:['rc_desc'],
+					as:'user_whLocation_fk',
 					required:false
 				}
 			]

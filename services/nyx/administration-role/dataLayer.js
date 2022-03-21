@@ -47,10 +47,6 @@ const formatFilters = ({
 			})
 		}
 
-
-
-
-
 		return formattedFilters
 	}
 	catch(e){

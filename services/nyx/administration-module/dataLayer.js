@@ -13,27 +13,22 @@ const formatFilters = ({
 			formattedFilters = {
 				[Sequelize.Op.or]: [
 					{
-						report_code: {
+						module_code: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
 					},
 					{
-						report_name: {
+						module_name: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
 					},
 					{
-						report_system_type: {
+						module_desc: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
 					},
 					{
-						report_type: {
-							[Sequelize.Op.like]: `%${filters.search}%`
-						}
-					},
-					{
-						report_remarks1: {
+						module_remarks1: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
 					}
@@ -64,11 +59,11 @@ const formatFilters = ({
 	}
 }
 
-exports.createReport = async({
+exports.createModule = async({
 	...data
 }) => {
 	try {
-		return await models.report_tbl.create({
+		return await models.module_tbl.create({
 			...data
 		})
 	}
@@ -77,7 +72,7 @@ exports.createReport = async({
 	}
 }
 
-exports.getPaginatedReport = async({
+exports.getPaginatedModule = async({
 	filters,
 	orderBy,
 	page,
@@ -86,42 +81,16 @@ exports.getPaginatedReport = async({
 	try {
 
 		let newFilter = formatFilters({
-			model:models.report_tbl.rawAttributes,
-			filters:filters
+			model	:models.module_tbl.rawAttributes,
+			filters	:filters
 		});
 
-		const {count,rows} = await models.report_tbl.findAndCountAll({
+		const {count,rows} = await models.module_tbl.findAndCountAll({
 			where:{
 				...newFilter
 			},
 			offset	:parseInt(page) * parseInt(totalPage),
-			limit	:parseInt(totalPage),
-			include:[
-				{
-					model:models.reason_code_tbl,
-					attributes:['rc_desc'],
-					as:'report_system_type_fk',
-					required:false
-				},
-				{
-					model:models.reason_code_tbl,
-					attributes:['rc_desc'],
-					as:'report_type_fk',
-					required:false
-				},
-				{
-					model:models.user_tbl,
-					attributes:['user_email'],
-					as:'creator',
-					required:false
-				},
-				{
-					model:models.user_tbl,
-					attributes:['user_email'],
-					as:'modifier',
-					required:false
-				}
-			]
+			limit	:parseInt(totalPage)
 			// ,order	:[[orderBy]]
 		})
 		.then(result => {
@@ -142,28 +111,14 @@ exports.getPaginatedReport = async({
 	}
 }
 
-exports.getAllReport = async({
+exports.getAllModule = async({
 	filter
 }) => {
 	try{
-		return await models.report_tbl.findAll({
+		return await models.module_tbl.findAll({
 			where:{
 				...filter
-			},
-			include:[
-				{
-					model:models.reason_code_tbl,
-					attributes:['rc_id','rc_code','rc_type','rc_desc'],
-					as:'report_system_type_fk',
-					required:false
-				},
-				{
-					model:models.reason_code_tbl,
-					attributes:['rc_id','rc_code','rc_type','rc_desc'],
-					as:'report_type_fk',
-					required:false
-				}
-			]
+			}
 		})
 	}
 	catch(e){
@@ -171,13 +126,13 @@ exports.getAllReport = async({
 	}
 }
 
-exports.updateReport = async({
+exports.updateModule = async({
 	filters,
 	data,
 	option
 }) => {
 	try{
-		return await models.report_tbl.update(
+		return await models.module_tbl.update(
 			{
 				...data
 			},

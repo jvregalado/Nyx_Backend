@@ -15,10 +15,11 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		module_name: {
 			type: DataTypes.STRING,
-			allowNull: false
+			allowNull: false,
+			unique: true
 		},
 		module_desc: {
-			type: DataTypes.STRING,
+			type: DataTypes.TEXT('tiny'),
 			allowNull: false
 		},
 		module_status: {

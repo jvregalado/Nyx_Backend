@@ -2,6 +2,8 @@
 
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
+const moment = require('moment');
+
 const { userService, authService } = require('../services/nyx');
 
 router.post('/sign-out',(req, res) => {
@@ -23,15 +25,12 @@ router.post('/connection',async(req,res) => {
 router.post('/token', async(req,res) => {
 	try{
 		const {user_email, user_password} = req.body;
-		// console.log(user_email, user_password)
 
 		const getUser = await userService.getUser({
 			filters:{
 				user_email
 			}
 		})
-
-		// console.log(getUser.dataValues)
 
 		if(!getUser){
 			return res.status(404).json({
@@ -53,25 +52,21 @@ router.post('/token', async(req,res) => {
 
 		const token = await authService.generateToken({
 			user_email	: getUser['dataValues'].user_email,
-			user_id		:getUser['dataValues'].user_id
+			user_id		: getUser['dataValues'].user_id
 		})
 
-		// const rawModules = await roles.getRoleModule({
-		//  	filters:{
-		// 	 	role_id:getUsers.user_role_id,
-		// 	 	has_access:1
-		//  	}
-		// })
+		let expiryDate = new moment(token?.expiry * 1000).format('YYYY-MM-DD HH:mm')
 
-		// const modules = await roles.formatRoleModules({data:rawModules})
-		// console.log(modules)
-		// req.session.userId = getUsers.id
-		// req.session.token_expiry = token.expiry
+		await authService.saveUserSession({
+			user_id				: getUser['dataValues'].user_id,
+			user_email			: getUser['dataValues'].user_email,
+			user_token			: token?.token,
+			user_token_expiry	: expiryDate
+		})
 
 		res.status(200).json({
 			user_email,
 			token
-			// ,modules
 		})
 	}
 	catch(e){

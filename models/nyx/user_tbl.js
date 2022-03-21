@@ -38,6 +38,15 @@ module.exports = (sequelize, DataTypes) => {
 		role_id: {
 			type: DataTypes.STRING
 		},
+		user_rank: {
+			type: DataTypes.INTEGER
+		},
+		user_position: {
+			type: DataTypes.STRING
+		},
+		user_whLocation: {
+			type: DataTypes.STRING
+		},
 		createdBy: {
 			type: DataTypes.STRING
 		},

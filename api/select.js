@@ -2,9 +2,9 @@
 
 const router = require('express').Router();
 const { masterService } = require('../services/hw');
-const { moduleService, roleService, reasoncodeService } = require('../services/nyx');
+const { roleService, reasoncodeService } = require('../services/nyx');
 
-router.get('/master/:type', async(req,res) => {
+router.get('/masterdata/:type', async(req,res) => {
 	try {
 		let {systemType} = req.query;
 
@@ -31,7 +31,7 @@ router.get('/master/:type', async(req,res) => {
 	}
 })
 
-router.get('/admin/:type', async(req,res) => {
+router.get('/administration/:type', async(req,res) => {
 	try {
 		const {type} = req.params;
 
@@ -57,7 +57,8 @@ router.get('/admin/:type', async(req,res) => {
 			// 	})
 			// 	break;
 			default:
-				console.log(`WAS NOT ABLE TO CHECK FOR TYPE from ADMIN`)
+				// console.log(`WAS NOT ABLE TO CHECK FOR TYPE from ADMIN`)
+				throw new Error(`Select was not able to check for TYPE:${type} from administration table.`)
 		}
 
 		// console.log('selectData', selectData)
@@ -81,24 +82,28 @@ router.get('/reasoncode/:type', async(req,res) => {
 		let resultData, selectData;
 
 		switch(type) {
+			case 'Warehouse Location':
+				resultData = await reasoncodeService.getAllReasonCode({ filters : {rc_type:type, rc_status:true} })
+				selectData = resultData.map(item => { return { value	:item.rc_id,
+																label	:item.rc_desc}})
+				break;
+			case 'Job Position':
+				resultData = await reasoncodeService.getAllReasonCode({ filters : {rc_type:type, rc_status:true} })
+				selectData = resultData.map(item => { return { value	:item.rc_id,
+																label	:item.rc_desc}})
+				break;
 			case 'Report System Type':
 				resultData = await reasoncodeService.getAllReasonCode({ filters : {rc_type:type, rc_status:true} })
-				selectData = resultData.map(item => {
-					return {value	:item.rc_id,
-							label	:item.rc_desc
-					}
-				})
+				selectData = resultData.map(item => { return { value	:item.rc_id,
+																label	:item.rc_desc}})
 				break;
 			case 'Report Type':
 				resultData = await reasoncodeService.getAllReasonCode({ filters : {rc_type:type, rc_status:true} })
-				selectData = resultData.map(item => {
-					return {value	:item.rc_id,
-							label	:item.rc_desc
-					}
-				})
+				selectData = resultData.map(item => { return { value	:item.rc_id,
+																label	:item.rc_desc}})
 				break;
 			default:
-				console.log(`WAS NOT ABLE TO CHECK FOR TYPE from REASON CODE`)
+				throw new Error(`Select was not able to check for TYPE:${type} from reason code table.`)
 		}
 
 		// console.log('selectData', selectData)
