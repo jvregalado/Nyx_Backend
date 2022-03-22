@@ -3,7 +3,7 @@
 const router = require('express').Router();
 const { reasoncodeService } = require('../services/nyx');
 
-router.post('/create', async(req,res) => {
+router.post('/', async(req,res) => {
 	try{
 		const {data} = req.body;
 		const processor = req.processor;
@@ -25,7 +25,7 @@ router.post('/create', async(req,res) => {
 	}
 })
 
-router.get('/get', async(req,res) => {
+router.get('/', async(req,res) => {
 	try {
 		let query = req.query;
 
@@ -70,7 +70,7 @@ router.get('/details', async(req,res) => {
 	}
 })
 
-router.post('/update', async(req,res) => {
+router.patch('/', async(req,res) => {
 	try{
 		const {data} = req.body;
 		const processor = req.processor;

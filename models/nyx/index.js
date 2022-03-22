@@ -2,13 +2,14 @@ const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
 const basename = path.basename(__filename);
-const { nyxDBConfig } = require('../../config/config');
 const Sequelize = require('sequelize');
+
+const { nyxDBConfig } = require('../../config/config');
 
 const sequelize = new Sequelize({
 	...nyxDBConfig,
 	logging: function(str) {
-	console.log(`MySQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`)
+	console.log(`\nNYX MySQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`);
 	}
 });
 
