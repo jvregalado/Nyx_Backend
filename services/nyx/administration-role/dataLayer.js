@@ -156,3 +156,64 @@ exports.updateRole = async({
 		throw e
 	}
 }
+
+exports.getRoleDetails = async({
+	filters
+}) => {
+	try {
+		return await models.role_hdr_tbl.findAll({
+			where:{
+				...filters
+			},
+			include:[
+				{
+					model:models.role_dtl_tbl,
+					attributes:['module_id','role_module_status'],
+					as:'role_dtl_fk',
+					required:false,
+					where:{
+						role_module_status : true
+					}
+				}
+
+			]
+		})
+	}
+	catch(e){
+		throw e
+	}
+}
+
+exports.getRoleDetailsAndAllModules = async({
+	filters
+}) => {
+	try {
+		return await sequelize.query(`
+			call sp_getRoleDetailsAndAllModules_cdi
+				('${filters?.role_code || '' }')
+			`,{
+				type:sequelize.QueryTypes.SELECT
+			})
+		.then((result) => {
+			return JSON.parse(JSON.stringify(result))
+		})
+	}
+	catch(e){
+		throw e
+	}
+}
+
+exports.putRoleDetails = async({
+	data
+}) => {
+	try {
+		return await models.role_dtl_tbl.bulkCreate(
+			data
+		,{
+			updateOnDuplicate: ["role_module_status", "updatedBy", "updatedAt"]
+		})
+	}
+	catch(e){
+		throw e
+	}
+}

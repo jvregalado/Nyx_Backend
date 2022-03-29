@@ -1,6 +1,6 @@
 {
  "name": "Nyx App",
- "version": "0.0.a",
+ "version": "0.0.1",
  "description": "Node js app for the internal reporting, interfacing of Kerry Logistikus Inc.",
  "main": "app.js",
  "scripts": {
@@ -28,6 +28,7 @@
   "helmet": "^5.0.2",
   "jsontoxml": "^1.0.1",
   "jsonwebtoken": "^8.5.1",
+  "lodash": "^4.17.21",
   "moment": "^2.29.1",
   "morgan": "^1.10.0",
   "mysql": "^2.18.1",

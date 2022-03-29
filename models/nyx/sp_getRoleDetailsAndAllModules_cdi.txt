@@ -1,0 +1,28 @@
+DELIMITER //
+CREATE PROCEDURE sp_getRoleDetailsAndAllModules_cdi (
+	IN role_code VARCHAR(255)
+)
+BEGIN
+SELECT rh.role_id,
+		rh.role_code,
+		rd.role_module_status,
+		module.module_id,
+		module.module_code,
+		module.module_name,
+		r.report_code,
+		r.report_name
+FROM role_hdr_tbl rh
+		LEFT JOIN role_dtl_tbl rd ON rd.role_id = rh.role_id
+		
+		LEFT JOIN LATERAL(
+			SELECT module_id FROM module_tbl WHERE NOT EXISTS (SELECT module_id FROM role_dtl_tbl WHERE role_dtl_tbl.role_id = rh.role_id)
+				) m ON 1=1
+				
+		LEFT JOIN module_tbl module ON module.module_id = rd.module_id OR module.module_id = m.module_id
+	
+		LEFT JOIN report_tbl r ON r.module_id = module.module_id
+		
+WHERE rh.role_code = role_code;
+
+END //
+DELIMITER ;

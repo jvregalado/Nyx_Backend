@@ -1,5 +1,6 @@
 "use strict";
 
+const _ = require('lodash')
 const dataLayer = require('./dataLayer');
 
 exports.createRole = async({
@@ -24,7 +25,7 @@ exports.getPaginatedRole = async({
 
 		let {orderBy,page,totalPage,...newFilters} = filters
 		return await dataLayer.getPaginatedRole({
-			orderBy:orderBy.split(','),
+			//orderBy:orderBy.split(','),
 			page,
 			totalPage,
 			filters:{
@@ -64,6 +65,51 @@ exports.updateRole = async({
 			data
 		})
 
+	}
+	catch(e){
+		throw e
+	}
+}
+
+exports.getRoleDetails = async({
+	filters
+}) => {
+	try{
+
+		return await dataLayer.getRoleDetails({
+			filters
+		})
+		.then(result => JSON.parse(JSON.stringify(result)))
+	}
+	catch(e){
+		throw e
+	}
+}
+
+exports.getRoleDetailsAndAllModules = async({
+	filters
+}) => {
+	try{
+
+		return await dataLayer.getRoleDetailsAndAllModules({
+			filters
+		})
+		.then(result => JSON.parse(JSON.stringify(result)))
+	}
+	catch(e){
+		throw e
+	}
+}
+
+exports.putRoleDetails = async({
+	data
+}) => {
+	try{
+
+		return await dataLayer.putRoleDetails({
+			data
+		})
+		.then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
 		throw e

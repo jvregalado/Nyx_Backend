@@ -2,19 +2,21 @@
 
 module.exports = (sequelize, DataTypes) => {
 	const role_dtl_tbl = sequelize.define("role_dtl_tbl", {
-		role_dtl_id: {
+		role_id: {
 			type: DataTypes.UUID,
 			primaryKey: true,
 			allowNull: false,
-			defaultValue: DataTypes.UUIDV4
+			unique: 'compositeIndex'
 		},
 		module_id: {
 			type: DataTypes.UUID,
-			allowNull: true
+			primaryKey: true,
+			allowNull: false,
+			unique: 'compositeIndex'
 		},
-		role_dtl_status: {
+		role_module_status: {
 			type: DataTypes.BOOLEAN,
-			defaultValue: true
+			defaultValue: false
 		},
 		role_dtl_remarks1: {
 			type: DataTypes.STRING

@@ -110,6 +110,12 @@ exports.getPaginatedReport = async({
 					required:false
 				},
 				{
+					model:models.module_tbl,
+					attributes:['module_name'],
+					as:'report_module_fk',
+					required:false
+				},
+				{
 					model:models.user_tbl,
 					attributes:['user_email'],
 					as:'creator',
@@ -162,7 +168,14 @@ exports.getAllReport = async({
 					attributes:['rc_id','rc_code','rc_type','rc_desc'],
 					as:'report_type_fk',
 					required:false
-				}
+				},
+				{
+					model:models.module_tbl,
+					attributes:['module_id','module_code','module_name'],
+					as:'report_module_fk',
+					required:false
+				},
+				
 			]
 		})
 	}
