@@ -8,9 +8,10 @@ const { nyxDBConfig } = require('../../config/config');
 
 const sequelize = new Sequelize({
 	...nyxDBConfig,
-	logging: function(str) {
-	console.log(`\nNYX MySQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`);
-	}
+	logging: false
+	// logging: function(str) {
+	// console.log(`\nNYX MySQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`);
+	// }
 });
 
 let db = {};

@@ -65,7 +65,7 @@ exports.createModule = async({
 	try {
 		return await models.module_tbl.create({
 			...data
-		})
+		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
 		throw e
@@ -79,7 +79,6 @@ exports.getPaginatedModule = async({
 	totalPage
 }) => {
 	try {
-
 		let newFilter = formatFilters({
 			model	:models.module_tbl.rawAttributes,
 			filters	:filters
@@ -119,7 +118,7 @@ exports.getAllModule = async({
 			where:{
 				...filter
 			}
-		})
+		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
 		throw e
@@ -141,7 +140,7 @@ exports.updateModule = async({
 					...filters
 				}
 			}
-		)
+		).then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
 		throw e

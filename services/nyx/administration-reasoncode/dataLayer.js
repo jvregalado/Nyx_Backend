@@ -65,7 +65,7 @@ exports.createReasonCode = async({
 	try {
 		return await models.reason_code_tbl.create({
 			...data
-		})
+		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
 		throw e
@@ -79,7 +79,6 @@ exports.getPaginatedReasonCode = async({
 	totalPage
 }) => {
 	try {
-
 		let newFilter = formatFilters({
 			model:models.reason_code_tbl.rawAttributes,
 			filters:filters
@@ -133,7 +132,7 @@ exports.getAllReasonCode = async({
 			where:{
 				...filter
 			}
-		})
+		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
 		throw e
@@ -155,7 +154,7 @@ exports.updateReasonCode = async({
 					...filters
 				}
 			}
-		)
+		).then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
 		throw e

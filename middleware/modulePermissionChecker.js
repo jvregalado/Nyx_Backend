@@ -1,32 +1,30 @@
-const jwt = require('jsonwebtoken');
 const router = require('express').Router();
 
-const secret = process.env.JWT_SECRET;
+const { lstatSync } = require('fs');
+const { userService } = require('../services/nyx')
 
 router.use(async(req,res,next) => {
 	try{
-		const path = req.originalUrl
-		if(!['/auth/token','/auth/sign-out'].includes(path))
-		{
-			const token = req.headers['x-access-token']
+		const path = req.originalUrl;
+		console.log('path',path)
 
-			if(!token){
-				throw Error('No token provided.')
-			}
+		const userRoles = await userService.getUser({ filters: { user_id		: req.processor.user_id,
+																user_email	: req.processor.user_email
+													}})
+		let userRole = JSON.parse(JSON.stringify(userRoles))
 
-			let decode = jwt.verify(token, secret);
+		if(!userRole.role?.role_code === 'Superadmin') {
+			console.log('SUPERRRRRRRRRRRRRR')
+			next()
+		}
+		else {
+			//if(path.slice(0,16) === '/administration/') { throw new Error(`You do not have access in administration module.`) }
 
-			if(!decode.user_email){
-				return res.status(403).json({
-					message:'Invalid session.'
-				})
-			}
-			else{
-				req.user_email = decode.user_email
-			}
+			console.log(userRole)
+
+			next()
 		}
 
-		next()
 	}
 	catch(e){
 		console.log(e)

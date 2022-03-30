@@ -33,7 +33,7 @@ const formatFilters = ({
 						}
 					},
 					{
-						user_remarks: {
+						user_remarks1: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
 					}
@@ -70,7 +70,7 @@ exports.createUser = async({
 	try {
 		return await models.user_tbl.create({
 			...data
-		})
+		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
 		throw e
@@ -84,10 +84,9 @@ exports.getPaginatedUser = async({
 	totalPage
 }) => {
 	try {
-
 		let newFilter = formatFilters({
 			model:models.user_tbl.rawAttributes,
-			filters:filters
+			filters
 		});
 
 		const {count,rows} = await models.user_tbl.findAndCountAll({
@@ -104,12 +103,12 @@ exports.getPaginatedUser = async({
 				},
 				{
 					model:models.reason_code_tbl,
-					attributes:['rc_desc'],
+					attributes:['rc_id','rc_desc'],
 					as:'user_position_fk'
 				},
 				{
 					model:models.reason_code_tbl,
-					attributes:['rc_desc'],
+					attributes:['rc_id','rc_desc'],
 					as:'user_whLocation_fk'
 				},
 				{
@@ -153,14 +152,30 @@ exports.getPaginatedUser = async({
 }
 
 exports.getUser = async({
-	filter
+	filters
 }) => {
 	try{
 		return await models.user_tbl.findOne({
 			where:{
-				...filter
-			}
-		})
+				...filters
+			},
+			include:[
+				{
+					model:models.role_hdr_tbl,
+					attributes:['role_id','role_code'],
+					as:'role',
+					required:false,
+					include:[
+						{
+							model:models.role_dtl_tbl,
+							attributes:['module_id'],
+							as:'role_dtl_fk',
+							required:false
+						}
+					]
+				}
+			]
+		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
 		throw e
@@ -168,12 +183,12 @@ exports.getUser = async({
 }
 
 exports.getAllUser = async({
-	filter
+	filters
 }) => {
 	try{
 		return await models.user_tbl.findAll({
 			where:{
-				...filter
+				...filters
 			},
 			include:[
 				{
@@ -184,18 +199,18 @@ exports.getAllUser = async({
 				},
 				{
 					model:models.reason_code_tbl,
-					attributes:['rc_desc'],
+					attributes:['rc_id','rc_desc'],
 					as:'user_position_fk',
 					required:false
 				},
 				{
 					model:models.reason_code_tbl,
-					attributes:['rc_desc'],
+					attributes:['rc_id','rc_desc'],
 					as:'user_whLocation_fk',
 					required:false
 				}
 			]
-		})
+		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
 		throw e
@@ -217,7 +232,7 @@ exports.updateUser = async({
 					...filters
 				}
 			}
-		)
+		).then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
 		throw e

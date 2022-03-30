@@ -12,10 +12,12 @@ router.use(async(req,res,next) => {
 		{
 			const token = req.headers['x-access-token']
 
+			/**CHECK if token is available*/
 			if(!token){
 				throw Error('No token provided.')
 			}
 
+			/**DECODE token using the secret key*/
 			let decode = jwt.verify(token, secret, (err, decoded) => {
 				if(err) {
 					if(err.name === 'TokenExpiredError') {
@@ -26,15 +28,17 @@ router.use(async(req,res,next) => {
 				return decoded
 			});
 
+			/**Get the user session */
 			let userSession = await authService.getUserSession({
 				user_id		:decode?.user_id,
 				user_email	:decode?.user_email,
 				user_token	:token
 			})
 
-			if(!userSession.user_id || !userSession.user_email){
+			/**Check if session is the latest one available in the user_session_tbl */
+			if(!userSession?.user_id || !userSession?.user_email){
 				return res.status(403).json({
-					message:'Invalid user session.'
+					message:'Invalid user session, please relogin.'
 				})
 			}
 			else{

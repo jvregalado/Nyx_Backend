@@ -47,6 +47,15 @@ module.exports = (sequelize, DataTypes) => {
 		user_whLocation: {
 			type: DataTypes.STRING
 		},
+		user_remarks1: {
+			type: DataTypes.STRING
+		},
+		user_remarks2: {
+			type: DataTypes.STRING
+		},
+		user_remarks3: {
+			type: DataTypes.STRING
+		},
 		createdBy: {
 			type: DataTypes.STRING
 		},

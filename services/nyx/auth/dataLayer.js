@@ -21,12 +21,12 @@ exports.getUserSession = async({
 }) => {
 	try {
 		return await models.user_session_tbl.findOne({
-			filters : {...data}
+			where : {
+				...data
+			}
 		})
 	}
 	catch(e){
 		throw e
 	}
 }
-
-

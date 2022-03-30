@@ -70,7 +70,7 @@ exports.createReport = async({
 	try {
 		return await models.report_tbl.create({
 			...data
-		})
+		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
 		throw e
@@ -99,13 +99,13 @@ exports.getPaginatedReport = async({
 			include:[
 				{
 					model:models.reason_code_tbl,
-					attributes:['rc_desc'],
+					attributes:['rc_id','rc_desc'],
 					as:'report_system_type_fk',
 					required:false
 				},
 				{
 					model:models.reason_code_tbl,
-					attributes:['rc_desc'],
+					attributes:['rc_id','rc_desc'],
 					as:'report_type_fk',
 					required:false
 				},
@@ -149,12 +149,12 @@ exports.getPaginatedReport = async({
 }
 
 exports.getAllReport = async({
-	filter
+	filters
 }) => {
 	try{
 		return await models.report_tbl.findAll({
 			where:{
-				...filter
+				...filters
 			},
 			include:[
 				{
@@ -177,7 +177,7 @@ exports.getAllReport = async({
 				},
 				
 			]
-		})
+		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
 		throw e
@@ -199,7 +199,7 @@ exports.updateReport = async({
 					...filters
 				}
 			}
-		)
+		).then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
 		throw e

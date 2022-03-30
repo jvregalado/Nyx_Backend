@@ -47,11 +47,9 @@ exports.getUser = async({
 	filters
 }) => {
 	try{
-
 		return await dataLayer.getUser({
-			filter:filters
+			filters
 		})
-
 	}
 	catch(e){
 		throw e
@@ -62,11 +60,9 @@ exports.getAllUser = async({
 	filters
 }) => {
 	try{
-
 		return await dataLayer.getAllUser({
-			filter:filters
+			filters
 		})
-		.then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
 		throw e
@@ -78,12 +74,15 @@ exports.updateUser = async({
 	data
 }) => {
 	try{
+		const user_password = data.user_new_password ? bcrypt.hashSync(data.user_new_password,10) : undefined;
 
 		return await dataLayer.updateUser({
 			filters,
-			data
+			data : {
+				...data,
+				user_password
+			}
 		})
-
 	}
 	catch(e){
 		throw e

@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const moment = require('moment');
 
-const tokenAuthenticator = require('./middleware');
+const middleware = require('./middleware');
 const api = require('./api');
 
 const app = express();
@@ -25,8 +25,10 @@ app.use(cors({
 }))
 app.use(helmet());
 
+/**middleware setups here */
+app.use(middleware);
+
 /**app setup API here */
-app.use(tokenAuthenticator);
 app.use(api);
 
 /**app listens to PORT*/
