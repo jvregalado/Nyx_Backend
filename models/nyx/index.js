@@ -60,11 +60,6 @@ db.user_tbl.hasOne(db.reason_code_tbl, {
 
 /**REPORT TO REASON CODE ASSOCIATION */
 db.report_tbl.hasOne(db.reason_code_tbl, {
-	sourceKey:'report_system_type',
-	foreignKey:'rc_id',
-	as:'report_system_type_fk'
-})
-db.report_tbl.hasOne(db.reason_code_tbl, {
 	sourceKey:'report_type',
 	foreignKey:'rc_id',
 	as:'report_type_fk'
@@ -73,6 +68,13 @@ db.report_tbl.hasOne(db.module_tbl, {
 	sourceKey:'module_id',
 	foreignKey:'module_id',
 	as:'report_module_fk'
+})
+
+/**MODULE to REASON CODE Association */
+db.module_tbl.hasOne(db.reason_code_tbl, {
+	sourceKey:'module_system_type',
+	foreignKey:'rc_id',
+	as:'module_system_type_fk'
 })
 
 /**createdBy and updatedBy Associations */

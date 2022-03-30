@@ -24,8 +24,8 @@ router.get('/administration/:type', async(req,res) => {
 				resultData = await moduleService.getAllModule({filters:{module_status:true}})
 				selectData = resultData.map(item => {
 					return {
-						value	:item.module_id,
-						label	:item.module_name
+						value :item.module_id,
+						label :item.module_name
 					}
 				})
 				break;
@@ -62,7 +62,7 @@ router.get('/reasoncode/:type', async(req,res) => {
 				selectData = resultData.map(item => { return { value	:item.rc_id,
 																label	:item.rc_desc}})
 				break;
-			case 'Report System Type':
+			case 'Module System Type':
 				resultData = await reasoncodeService.getAllReasonCode({ filters : {rc_type:type, rc_status:true} })
 				selectData = resultData.map(item => { return { value	:item.rc_id,
 																label	:item.rc_desc}})

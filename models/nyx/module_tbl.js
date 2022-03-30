@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			unique: true
 		},
+		module_system_type: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
 		module_desc: {
 			type: DataTypes.TEXT('tiny'),
 			allowNull: false

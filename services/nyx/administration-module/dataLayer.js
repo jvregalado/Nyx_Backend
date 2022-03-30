@@ -88,6 +88,13 @@ exports.getPaginatedModule = async({
 			where:{
 				...newFilter
 			},
+			include:[
+				{
+					model:models.reason_code_tbl,
+					attributes:['rc_id','rc_desc'],
+					as:'module_system_type_fk'
+				}
+			],
 			offset	:parseInt(page) * parseInt(totalPage),
 			limit	:parseInt(totalPage)
 			// ,order	:[[orderBy]]
@@ -117,7 +124,14 @@ exports.getAllModule = async({
 		return await models.module_tbl.findAll({
 			where:{
 				...filter
-			}
+			},
+			include:[
+				{
+					model:models.reason_code_tbl,
+					attributes:['rc_id','rc_desc'],
+					as:'module_system_type_fk'
+				}
+			]
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
