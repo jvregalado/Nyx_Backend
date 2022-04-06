@@ -147,18 +147,16 @@ exports.getAllReport = async({
 			},
 			include:[
 				{
+					model:models.module_tbl,
+					attributes:['module_id','module_code','module_name'],
+					as:'report_module_fk'
+				},
+				{
 					model:models.reason_code_tbl,
 					attributes:['rc_id','rc_code','rc_type','rc_desc'],
 					as:'report_type_fk',
 					required:false
-				},
-				{
-					model:models.module_tbl,
-					attributes:['module_id','module_code','module_name'],
-					as:'report_module_fk',
-					required:false
-				},
-				
+				}
 			]
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}

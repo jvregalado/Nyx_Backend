@@ -7,7 +7,7 @@
   "server": "env-cmd -f ./.env nodemon app.js",
   "dev": "env-cmd -f ./.env nodemon app.js"
  },
- "author": " (CDI)",
+ "author": "(CDI) Daniel Manalo, Vincent Lindayag, Romualdo Regalado",
  "license": "ISC",
  "dependencies": {
   "bcrypt": "^5.0.1",

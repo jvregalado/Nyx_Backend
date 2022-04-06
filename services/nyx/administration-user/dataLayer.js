@@ -170,7 +170,18 @@ exports.getUser = async({
 							model:models.role_dtl_tbl,
 							attributes:['module_id'],
 							as:'role_dtl_fk',
-							required:false
+							required:false,
+							where:{
+								role_module_status:true
+							},
+							include:[
+								{
+									model:models.module_tbl,
+									attributes:['module_id','module_code'],
+									as:'role_module_fk',
+									required:false
+								}
+							]
 						}
 					]
 				}

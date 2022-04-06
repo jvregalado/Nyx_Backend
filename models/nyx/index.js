@@ -39,11 +39,17 @@ db.role_hdr_tbl.belongsTo(db.user_tbl, {
 	foreignKey:'role_id'
 })
 
-/**ROLE_HDR TO ROLE_DTL ASSOCIATION */
+/**ROLE_HDR TO ROLE_DTL TO MODULE_TBL ASSOCIATION */
 db.role_hdr_tbl.hasMany(db.role_dtl_tbl, {
 	sourceKey:'role_id',
 	foreignKey:'role_id',
 	as:'role_dtl_fk'
+})
+
+db.role_dtl_tbl.hasMany(db.module_tbl, {
+	sourceKey:'module_id',
+	foreignKey:'module_id',
+	as:'role_module_fk'
 })
 
 /**USER TO REASON CODE ASSOCIATION */
@@ -64,10 +70,14 @@ db.report_tbl.hasOne(db.reason_code_tbl, {
 	foreignKey:'rc_id',
 	as:'report_type_fk'
 })
+/**REPORT TO MODULE Associations */
 db.report_tbl.hasOne(db.module_tbl, {
 	sourceKey:'module_id',
 	foreignKey:'module_id',
 	as:'report_module_fk'
+})
+db.module_tbl.belongsTo(db.report_tbl, {
+	foreignKey:'module_id'
 })
 
 /**MODULE to REASON CODE Association */
