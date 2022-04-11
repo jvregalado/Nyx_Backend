@@ -89,7 +89,7 @@ router.get('/reasoncode/:type', async(req,res) => {
 				throw new Error(`Select was not able to check for TYPE:${type} from reason code table.`)
 		}
 
-		// console.log('selectData', selectData)
+		 console.log('selectData')
 
 		return res.status(200).json({
 			data:selectData

@@ -1,7 +1,5 @@
 const router = require('express').Router();
 
-const { lstatSync } = require('fs');
-const { find } = require('lodash');
 const { userService } = require('../services/nyx')
 
 router.use(async(req,res,next) => {
@@ -25,14 +23,15 @@ router.use(async(req,res,next) => {
 			if(path.split('/')[1] === 'administration') {
 				throw new Error(`You do not have access on module: administration`)
 			}
-
-			let allowed_modules = await userRole?.role?.role_dtl_fk?.map(x => x.role_module_fk[0]?.module_code)
-
-			/**DERIVED FROM request path="/wms/reporthub" output will be  "wms reporthub" */
-			const req_module_code = `${path.split('/')[1]} ${path.split('/')[2]}`
-
-			if(!allowed_modules.includes(req_module_code)){
-				throw new Error(`You do not have access on module: ${req_module_code}`)
+			else {
+				let allowed_modules = await userRole?.role?.role_dtl_fk?.map(x => x.role_module_fk[0]?.module_code)
+	
+				/**DERIVED FROM request path="/wms/reporthub" output will be  "wms reporthub" */
+				const req_module_code = `${path.split('/')[1]} ${path.split('/')[2]}`
+	
+				if(!allowed_modules.includes(req_module_code)){
+					throw new Error(`You do not have access on module: ${req_module_code}`)
+				}
 			}
 		}
 
