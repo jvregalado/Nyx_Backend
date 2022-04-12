@@ -1,38 +1,28 @@
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
-	const reason_code_tbl = sequelize.define("reason_code_tbl", {
-		rc_id: {
+	const data_sync_dtl_log_tbl = sequelize.define("data_sync_dtl_log_tbl", {
+		data_sync_id: {
 			allowNull: false,
 			primaryKey: true,
 			type: DataTypes.UUID,
 			defaultValue: DataTypes.UUIDV4
 		},
-		rc_type: {
+		report_id: {
 			type: DataTypes.STRING(50),
-			allowNull: false,
-			unique: 'compositeIndex'
-		},
-		rc_code: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			unique: 'compositeIndex'
-		},
-		rc_desc: {
-			type: DataTypes.STRING,
 			allowNull: false
 		},
-		rc_status: {
+		data_sync_status: {
 			type: DataTypes.BOOLEAN,
-			defaultValue: true
+			defaultValue: false
 		},
-		rc_remarks1: {
+		data_sync_remarks1: {
 			type: DataTypes.STRING
 		},
-		rc_remarks2: {
+		data_sync_remarks2: {
 			type: DataTypes.STRING
 		},
-		rc_remarks3: {
+		data_sync_remarks3: {
 			type: DataTypes.STRING
 		},
 		createdBy: {
@@ -57,5 +47,5 @@ module.exports = (sequelize, DataTypes) => {
 		hasTrigger: true
 	})
 
-	return reason_code_tbl;
+	return data_sync_dtl_log_tbl;
 }

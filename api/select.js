@@ -25,7 +25,7 @@ router.get('/administration/:type', async(req,res) => {
 				//console.log('resultData',resultData.length)
 				selectData = await resultData.reduce((acc, cur) => {
 					if(cur.report_module_fk?.module_code === module_code) {
-						acc.push({ value : cur.report_id,
+						acc.push({	value : cur.report_id,
 									label : `${cur.report_code} : ${cur.report_name}`
 						})
 					}
@@ -43,7 +43,7 @@ router.get('/administration/:type', async(req,res) => {
 				})
 				break;
 			default:
-				throw new Error(`Select was not able to check for TYPE:${type} from administration table.`)
+				throw new Error(`Select was not able to check for TYPE:${type} from administration tables.`)
 		}
 
 		return res.status(200).json({
@@ -67,23 +67,23 @@ router.get('/reasoncode/:type', async(req,res) => {
 		switch(type) {
 			case 'Warehouse Location':
 				resultData = await reasoncodeService.getAllReasonCode({ filters : {rc_type:type, rc_status:true} })
-				selectData = resultData.map(item => { return { value	:item.rc_id,
-																label	:item.rc_desc}})
+				selectData = resultData.map(item => { return {	value	:item.rc_id,
+																label	:`${item.rc_code} : ${item.rc_desc}`}})
 				break;
 			case 'Job Position':
 				resultData = await reasoncodeService.getAllReasonCode({ filters : {rc_type:type, rc_status:true} })
-				selectData = resultData.map(item => { return { value	:item.rc_id,
-																label	:item.rc_desc}})
+				selectData = resultData.map(item => { return {	value	:item.rc_id,
+																label	:`${item.rc_code} : ${item.rc_desc}`}})
 				break;
 			case 'Module System Type':
 				resultData = await reasoncodeService.getAllReasonCode({ filters : {rc_type:type, rc_status:true} })
-				selectData = resultData.map(item => { return { value	:item.rc_id,
-																label	:item.rc_desc}})
+				selectData = resultData.map(item => { return {	value	:item.rc_id,
+																label	:`${item.rc_code} : ${item.rc_desc}`}})
 				break;
 			case 'Report Type':
 				resultData = await reasoncodeService.getAllReasonCode({ filters : {rc_type:type, rc_status:true} })
-				selectData = resultData.map(item => { return { value	:item.rc_id,
-																label	:item.rc_desc}})
+				selectData = resultData.map(item => { return {	value	:item.rc_id,
+																label	:`${item.rc_code} : ${item.rc_desc}`}})
 				break;
 			default:
 				throw new Error(`Select was not able to check for TYPE:${type} from reason code table.`)

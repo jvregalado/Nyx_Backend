@@ -1,5 +1,6 @@
 const moment = require('moment');
 const winston = require('winston');
+const path = require('path')
 
 exports.logger = async({
 	log_level, // info, error
@@ -21,8 +22,8 @@ exports.logger = async({
 			format: winston.format.json(),
 			defaultMeta: { service: 'web-service' },
 			transports: [
-				new winston.transports.File({ filename: `error_${mmyyyy}.log`, level: 'error' }),
-				new winston.transports.File({ filename: `combined_${mmyyyy}.log` }),
+				new winston.transports.File({ filename: path.join(__dirname, `../logs/error_${mmyyyy}.log`), level: 'error' }),
+				new winston.transports.File({ filename: path.join(__dirname, `../logs/combined_${mmyyyy}.log`)}),
 			],
 		});
 
