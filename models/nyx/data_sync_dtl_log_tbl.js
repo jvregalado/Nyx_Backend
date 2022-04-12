@@ -16,13 +16,13 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.BOOLEAN,
 			defaultValue: false
 		},
-		data_sync_remarks1: {
+		data_sync_dtl_remarks1: {
 			type: DataTypes.STRING
 		},
-		data_sync_remarks2: {
+		data_sync_dtl_remarks2: {
 			type: DataTypes.STRING
 		},
-		data_sync_remarks3: {
+		data_sync_dtl_remarks3: {
 			type: DataTypes.STRING
 		},
 		createdBy: {
