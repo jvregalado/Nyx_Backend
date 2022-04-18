@@ -40,7 +40,7 @@ app.listen(
 )
 
 /**load DB here */
-// sequelize.sync()
+sequelize.sync()
 
 
 /**load CRON here */

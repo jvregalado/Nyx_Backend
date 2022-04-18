@@ -3,6 +3,6 @@ ecosystem.config.js
 assets/convertedFiles/*
 assets/templateFiles/*
 assets/uploadedFiles/*
-./logs/combined_*.log
-./logs/error_*.log
+./logs/*.log
+./logs/*.log
 .env

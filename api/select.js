@@ -62,34 +62,18 @@ router.get('/reasoncode/:type', async(req,res) => {
 	try {
 		const {type} = req.params;
 
-		let resultData, selectData;
-
-		switch(type) {
-			case 'Warehouse Location':
-				resultData = await reasoncodeService.getAllReasonCode({ filters : {rc_type:type, rc_status:true} })
-				selectData = resultData.map(item => { return {	value	:item.rc_id,
-																label	:`${item.rc_code} : ${item.rc_desc}`}})
-				break;
-			case 'Job Position':
-				resultData = await reasoncodeService.getAllReasonCode({ filters : {rc_type:type, rc_status:true} })
-				selectData = resultData.map(item => { return {	value	:item.rc_id,
-																label	:`${item.rc_code} : ${item.rc_desc}`}})
-				break;
-			case 'Module System Type':
-				resultData = await reasoncodeService.getAllReasonCode({ filters : {rc_type:type, rc_status:true} })
-				selectData = resultData.map(item => { return {	value	:item.rc_id,
-																label	:`${item.rc_code} : ${item.rc_desc}`}})
-				break;
-			case 'Report Type':
-				resultData = await reasoncodeService.getAllReasonCode({ filters : {rc_type:type, rc_status:true} })
-				selectData = resultData.map(item => { return {	value	:item.rc_id,
-																label	:`${item.rc_code} : ${item.rc_desc}`}})
-				break;
-			default:
-				throw new Error(`Select was not able to check for TYPE:${type} from reason code table.`)
+		if(!type) {
+			throw new Error(`Select type: '${type}', was not provided to lookup in reason code table.`)
 		}
 
-		 console.log('selectData')
+		let resultData = await reasoncodeService.getAllReasonCode({ filters : {rc_type:type, rc_status:true} });
+
+		if(resultData.length === 0) {
+			throw new Error(`Select type: '${type}', found 0 results from reason code table.`)
+		}
+
+		let selectData = await resultData.map(item => { return {value	:item.rc_id,
+																label	:`${item.rc_code} : ${item.rc_desc}`}})
 
 		return res.status(200).json({
 			data:selectData

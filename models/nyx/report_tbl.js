@@ -37,6 +37,9 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.BOOLEAN,
 			defaultValue: true
 		},
+		report_source_code: {
+			type: DataTypes.TEXT
+		},
 		report_remarks1: {
 			type: DataTypes.STRING
 		},
