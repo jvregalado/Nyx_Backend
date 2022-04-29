@@ -3,8 +3,7 @@ ecosystem.config.js
 assets/convertedFiles/*
 assets/templateFiles/*
 assets/uploadedFiles/*
-./logs/*.log
-./logs/*.log
+logs/*
 .env
 TemplateFiles/*
 SavedFiles/*
