@@ -5,5 +5,6 @@ module.exports = {
 	roleService			: require('./administration-role'),
 	moduleService		: require('./administration-module'),
 	reportService		: require('./administration-report'),
-	reasoncodeService	: require('./administration-reasoncode')
+	reasoncodeService	: require('./administration-reasoncode'),
+	tmsconverterService		: require('./tms-converter')
 }

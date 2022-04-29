@@ -6,3 +6,5 @@ assets/uploadedFiles/*
 ./logs/*.log
 ./logs/*.log
 .env
+TemplateFiles/*
+SavedFiles/*
