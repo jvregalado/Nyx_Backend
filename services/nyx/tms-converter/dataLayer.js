@@ -64,8 +64,7 @@ exports.getAllrtv = async({
 			{
 				model:models.user_tbl,
 				attributes:['user_email'],
-				as:'creator',
-				required:false
+				as:'creator'
 			},
 			{
 				model:models.user_tbl,
@@ -144,10 +143,9 @@ exports.getPaginatedRTV = async({
 		
 			return {
 				rows: rows.map(item => {
-					const {role,...users} = item
+					const {...rtv} = item
 					return {
-						...users,
-						role_name:role?.role_name
+						...rtv
 					}
 				}), 
 				count

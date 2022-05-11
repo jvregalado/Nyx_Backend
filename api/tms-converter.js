@@ -4,6 +4,7 @@ const router = require('express').Router();
 const { reportService,tmsconverterService } = require('../services/nyx');
 const path = require('path');
 const fs = require('fs');
+const { Console } = require('console');
 const NOW = new Date();
 
 router.get('/report-sourcecode', async(req,res) => {
@@ -25,38 +26,13 @@ router.get('/report-sourcecode', async(req,res) => {
 	}
 })
 
-
-router.get('/', async(req,res) => {
-	try {
-		let query = req.query;
-		console.log(query)
-		// const conversionType = value.rtvType.label
-
-		// if(!conversionType) {
-		// 	throw new Error(`Select Conversion Type!`)
-		// }
-		// const customerCode = conversionType.split('-')[0];
-		// const {rows} = await tmsconverterService.getPreConverter({pdfFile,customerCode})
-		
-		// res.status(200).json({
-		// 	data:rows
-		// })
-	}
-	catch(e){
-		console.log(e);
-		res.status(500).json({
-			message:`${e}`
-		})
-	}
-})
-
 router.post('/', async(req,res) => {
 	try 
 	{
 
 		const {data} = req.body;
 		const processor = req.processor;
-
+		console.log(data)
 		if(!data.fileName){
 			throw new Error(`Please upload a file`)
 		}
@@ -64,15 +40,15 @@ router.post('/', async(req,res) => {
 		const file = data.file;
 		const JSONExcel = data.JSONExcel;
 		//console.log(data);
-		const value = data.value;
+		const value = data?.value;
 		const fileDir = data.id;
 		const ext = data.fileName.split('.').pop().toLowerCase();
 		const reupload = data.reupload;
-
+		console.log(value)
 		if((ext!='csv') && (reupload))
 			throw new Error(`You can only re-upload the CSV file!`)
 
-		const conversionType = value.rtvType.label
+		const conversionType = value?.rtvType?.label||data.rtvType
 		if(!conversionType) {
 			throw new Error(`Select Conversion Type!`)
 		}
@@ -163,7 +139,7 @@ router.post('/', async(req,res) => {
 				...query
 			},
 		})
-		
+		//console.log(rows);
 		res.status(200).json({
 			data:rows,
 			rows:count
