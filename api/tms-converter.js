@@ -32,7 +32,7 @@ router.post('/', async(req,res) => {
 
 		const {data} = req.body;
 		const processor = req.processor;
-		console.log(data)
+		
 		if(!data.fileName){
 			throw new Error(`Please upload a file`)
 		}
@@ -44,13 +44,18 @@ router.post('/', async(req,res) => {
 		const fileDir = data.id;
 		const ext = data.fileName.split('.').pop().toLowerCase();
 		const reupload = data.reupload;
-		console.log(value)
 		if((ext!='csv') && (reupload))
 			throw new Error(`You can only re-upload the CSV file!`)
-
+		// console.log("data",data)
+		// console.log("data.id",data.id)
+		// console.log("data.c_status",data.c_status)
+		// console.log("data.rtvType",data.rtvType)
 		const conversionType = value?.rtvType?.label||data.rtvType
 		if(!conversionType) {
 			throw new Error(`Select Conversion Type!`)
+		}
+		if(!data?.c_status=='Generated'){
+			throw new Error(`Unable to Re-upload or check, status is already generated!`)
 		}
 
 		const customerCode = conversionType.split('-')[0];
@@ -104,7 +109,7 @@ router.post('/', async(req,res) => {
 			});
 		}
 		else{
-			console.log(fileDir)
+			//console.log(fileDir)
 			//console.log("dir",dir,"customerCode",customerCode,"ConversionCode",ConversionCode,"reupload",reupload);
 			tmsconverterService.rtv_converter_to_excel({pdfFile:dir,customerCode,ConversionCode,reupload,JSONExcel,res})
 			

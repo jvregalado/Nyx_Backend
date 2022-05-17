@@ -17,6 +17,7 @@ router.use('/administration/reasoncode',	require('./administration-reasoncode'))
 
 /**API for reports generation */
 router.use('/wms/reporthub',				require('./wms-reporthub'));
+router.use('/tms/reporthub',				require('./tms-reporthub'));
 // router.use('/wms/converter',				require('./wms-converter'));
 // router.use('/wms/dashboard',				require('./wms-dashboard'));
 // router.use('/wms/interface',				require('./wms-interface'));

@@ -22,6 +22,7 @@ exports.getAllrtv = async({
 		throw e
 	}
 }
+
 exports.getPaginatedRTV = async({
 	filters
 }) => {
@@ -70,6 +71,7 @@ exports.createRTVhdr = async({
 		throw e
 	}
 }
+
 exports.createRTVdtl = async({
 	...data
 }) => {
@@ -100,7 +102,7 @@ exports.rtv_converter_to_excel = async({
 	try {
 		
 		const getMaintainedSTC = async({
-			siteCode,
+			siteName,
 			customerCode
 		}) => {
 			try {
@@ -108,12 +110,14 @@ exports.rtv_converter_to_excel = async({
 				let maintainedSTCs = await helper.getData_from_other_API({customerCode});
 			
 				let getSTC = maintainedSTCs.data.items;
-			
-				let ship_to_code_primary = getSTC.filter( i => siteCode.includes(i.ship_to_code_primary));
-				
-				let ship_to_code_logistikus = getSTC.filter( i => siteCode.includes(i.ship_to_code_logistikus ))
 
-				let uniqueSTCs =ship_to_code_primary.concat(ship_to_code_logistikus);
+				let uniqueSTCs = getSTC.filter( i => siteName.includes((i.ship_to_name).toLowerCase()));
+				
+				//console.log("uniqueSTCs",uniqueSTCs)
+				
+				//let ship_to_code_logistikus = getSTC.filter( i => siteName.includes(i.name_trade))
+
+				//let uniqueSTCs =ship_to_code_primary.concat(ship_to_code_logistikus);
 				//console.log("uniqueSTCs",uniqueSTCs)
 				return uniqueSTCs
 			}
@@ -124,16 +128,16 @@ exports.rtv_converter_to_excel = async({
 		}
 
 		const getStoredRTV = async({
-			rtvno,
+			rtvnoArray,
 			customerCode
 		}) => {
 			try {
 		
-				let storedRTV = await dataLayer.getStoredRTV({ rtvno,customerCode });
+				let storedRTV = await dataLayer.getStoredRTV({ rtvnoArray,customerCode });
 		
 				let uniqueRTV = [... new Set(storedRTV.map(x => x.rtv_no))];
 		
-				let difference = rtvno.filter(x => !uniqueRTV.includes(x));
+				let difference = rtvnoArray.filter(x => uniqueRTV.includes(x));
 		
 				return difference
 			}
@@ -396,24 +400,27 @@ exports.rtv_converter_to_excel = async({
 		
 		let findUnique = JSONExcel||toExcel;
 
-		let uniqueSiteCode = [...new Set(findUnique.map(x => `${x['Site Code'].replace('\'','')}`))];
+		let uniqueSiteName = [...new Set(findUnique.map(x => `${x['Site Name'].toLowerCase().replace('\'','')}`))];
 
 		let uniqueRTV = [...new Set(findUnique.map(x => `${x['RTV'].replace('\'','')}`))];
 
-		let getMaintined = await getMaintainedSTC({siteCode:uniqueSiteCode,customerCode})
+		let getMaintined = await getMaintainedSTC({siteName:uniqueSiteName,customerCode})
+		
+		let getStored = await getStoredRTV({rtvnoArray:uniqueRTV,customerCode})
+		//console.log("getStored",getStored)
 
-		let getStored = await getStoredRTV({rtvno:uniqueRTV,customerCode})
 		for (let x in findUnique) 
 		{
+			//console.log("(getStored.includes(findUnique[x].RTV.replace('\'','')))",(getStored.includes(findUnique[x].RTV.replace('\'',''))))
 			findUnique[x].Status=(getStored.includes(findUnique[x].RTV.replace('\'','')))?'Duplicate':'Unmaintained'
 		}
-
+		
 		for (let x in getMaintined) 
 		{
 			//Find the position of unmaintained STC
 			//let pos = findUnique.multiIndexOf(v => v['Site Code'].replace('\'','') == getMaintined[x]['ship_to_code_primary'])
 			//let pos = findUnique.map((elm, idx) => elm['Site Code'].replace('\'','') ==  getMaintined[x]['ship_to_code_primary'] ? idx : '').filter(String);
-			let pos = findUnique.reduce((c, v, i) => v['Site Code'].replace('\'','') == getMaintined[x]['ship_to_code_primary'] ? c.concat(i) : c, []);
+			let pos = findUnique.reduce((c, v, i) => v['Site Name'].replace('\'','') == getMaintined[x]['ship_to_name'] ? c.concat(i) : c, []);
 			//Change value of Status 
 			if(pos)
 			{

@@ -3,7 +3,6 @@
 const models = require('../../../models/nyx');
 const {sequelize,Sequelize} = models;
 
-
 const formatFilters = ({
 	model,
 	filters
@@ -49,8 +48,6 @@ const formatFilters = ({
 		throw e
 	}
 }
-
-
 
 exports.getAllrtv = async({
 	filters
@@ -188,14 +185,14 @@ exports.createRTVdtl = async({
 }
 
 exports.getStoredRTV = async({
-	rtvno,
+	rtvnoArray,
 	customerCode
 }) => {
 	try {
 		return await sequelize.query(
 			`SELECT * FROM rtv_stored_converted_dtl
 			WHERE customer_code = '${customerCode}'
-				AND rtv_no in (${rtvno.map(x => '\''+x+'\'').join(',')})`,
+				AND rtv_no in (${rtvnoArray.map(x => '\''+x+'\'').join(',')})`,
 			{
 				type:sequelize.QueryTypes.SELECT
 			})
