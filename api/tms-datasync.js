@@ -8,9 +8,6 @@ router.post('/', async(req,res) => {
 		let {data} = req.body;
 		let processor = req.processor;
 
-		// console.log('1',processor)
-		// console.log('2',req.query)
-		// console.log('3',req.body.data)
 
 		res.status(200).end()
 	}
