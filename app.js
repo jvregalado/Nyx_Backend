@@ -15,6 +15,7 @@ const modulePermisionChecker = require('./middleware/modulePermissionChecker');
 const api = require('./api');
 
 const { sequelize } = require('./models/nyx')
+// const db = require('./models/crossdock')
 
 const PORT = process.env.PORT || 31000;
 
@@ -41,6 +42,7 @@ app.listen(
 
 /**load DB here */
 sequelize.sync()
+
 
 
 /**load CRON here */

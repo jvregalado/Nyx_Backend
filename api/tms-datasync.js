@@ -8,7 +8,6 @@ router.post('/', async(req,res) => {
 		let {data} = req.body;
 		let processor = req.processor;
 
-
 		res.status(200).end()
 	}
 	catch(e){
@@ -18,6 +17,5 @@ router.post('/', async(req,res) => {
 		})
 	}
 })
-
 
 module.exports = router;

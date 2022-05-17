@@ -32,4 +32,67 @@ const hwConfig = {
 	//,logging: false
 }
 
-module.exports = {hwConfig, nyxDBConfig}
+const aelousZeus2_DBConfig = {
+	username : process.env.DB_AELOUS_ZEUS2_USER,
+	password : process.env.DB_AELOUS_ZEUS2_PASSWORD,
+	database : process.env.DB_AELOUS_ZEUS2_NAME,
+	host: process.env.DB_AELOUS_ZEUS2_HOST,
+	dialect: "mysql",
+	pool:{
+		max: 10,
+		min: 1,
+		idle: 2000000,
+		acquire: 2000000
+	}
+}
+
+const aelousZeus1_DBConfig = {
+	username : process.env.DB_AELOUS_ZEUS1_USER,
+	password : process.env.DB_AELOUS_ZEUS1_PASSWORD,
+	database : process.env.DB_AELOUS_ZEUS1_NAME,
+	host: process.env.DB_AELOUS_ZEUS1_HOST,
+	dialect: "mysql",
+	pool:{
+		max: 10,
+		min: 1,
+		idle: 2000000,
+		acquire: 2000000
+	}
+}
+
+const aelousArtemis_DBConfig = {
+	username : process.env.DB_AELOUS_ARTEMIS_USER,
+	password : process.env.DB_AELOUS_ARTEMIS_PASSWORD,
+	database : process.env.DB_AELOUS_ARTEMIS_NAME,
+	host: process.env.DB_AELOUS_ARTEMIS_HOST,
+	dialect: "mysql",
+	pool:{
+		max: 10,
+		min: 1,
+		idle: 2000000,
+		acquire: 2000000
+	}
+}
+
+const aelousEros_DBConfig = {
+	username : process.env.DB_AELOUS_EROS_USER,
+	password : process.env.DB_AELOUS_EROS_PASSWORD,
+	database : process.env.DB_AELOUS_EROS_NAME,
+	host: process.env.DB_AELOUS_EROS_HOST,
+	dialect: "mysql",
+	pool:{
+		max: 10,
+		min: 1,
+		idle: 2000000,
+		acquire: 2000000
+	}
+}
+
+module.exports = {
+	hwConfig,
+	nyxDBConfig,
+	aelousZeus2_DBConfig,
+	aelousZeus1_DBConfig,
+	aelousArtemis_DBConfig,
+	aelousEros_DBConfig
+}
