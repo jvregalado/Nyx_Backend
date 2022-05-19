@@ -57,7 +57,6 @@ for(let i in db) {
 			db[i][model.name] = model;
 		});
 }
-
 db.Sequelize = Sequelize;
 
 module.exports = db;
