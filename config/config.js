@@ -32,6 +32,32 @@ const hwConfig = {
 	//,logging: false
 }
 
+const scmdb_tms = {
+	username : process.env.DB_SCMDB_TMS_USER,
+	password : process.env.DB_SCMDB_TMS_PASSWORD,
+	database : process.env.DB_SCMDB_TMS_NAME,
+	host : process.env.DB_SCMDB_TMS_HOST,
+	dialect: "mssql",
+	pool:{
+		max: 100,
+		min: 1,
+		idle: 2000000,
+		acquire: 2000000
+	},
+	dialectOptions: {
+			// dateStrings: true,
+			typeCast: true
+	},
+}
+
+const kronosDBConfig = {
+	username : 	process.env.DB_KRONOS_USER,
+	password : 	process.env.DB_KRONOS_PASSWORD,
+	host : 		process.env.DB_KRONOS_HOST,
+	database : 	process.env.DB_KRONOS_NAME,
+	dialect : 'mysql'
+}
+
 const aelousZeus2_DBConfig = {
 	username : process.env.DB_AELOUS_ZEUS2_USER,
 	password : process.env.DB_AELOUS_ZEUS2_PASSWORD,
@@ -94,5 +120,7 @@ module.exports = {
 	aelousZeus2_DBConfig,
 	aelousZeus1_DBConfig,
 	aelousArtemis_DBConfig,
-	aelousEros_DBConfig
+	aelousEros_DBConfig,
+	scmdb_tms,
+	kronosDBConfig
 }
