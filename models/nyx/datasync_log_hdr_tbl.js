@@ -1,24 +1,27 @@
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
-	const data_sync_hdr_log_tbl = sequelize.define("data_sync_hdr_log_tbl", {
-		report_id: {
+	const datasync_log_hdr_tbl = sequelize.define("datasync_log_hdr_tbl", {
+		datasync_id: {
 			type: DataTypes.STRING(50),
 			allowNull: false,
-			unique: true
+			primaryKey: true
 		},
-		last_sync_At: {
-			allowNull: false,
-			type: DataTypes.DATE(6),
-			defaultValue: DataTypes.NOW
+		report_id: {
+			type: DataTypes.STRING,
+			allowNull: false
 		},
-		data_sync_hdr_remarks1: {
+		report_code: {
+			type: DataTypes.STRING,
+			allowNull:false
+		},
+		datasync_hdr_remarks1: {
 			type: DataTypes.STRING
 		},
-		data_sync_hdr_remarks2: {
+		datasync_hdr_remarks2: {
 			type: DataTypes.STRING
 		},
-		data_sync_hdr_remarks3: {
+		datasync_hdr_remarks3: {
 			type: DataTypes.STRING
 		},
 		createdBy: {
@@ -43,5 +46,5 @@ module.exports = (sequelize, DataTypes) => {
 		hasTrigger: true
 	})
 
-	return data_sync_hdr_log_tbl;
+	return datasync_log_hdr_tbl;
 }

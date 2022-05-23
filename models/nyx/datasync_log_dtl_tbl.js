@@ -1,28 +1,36 @@
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
-	const data_sync_dtl_log_tbl = sequelize.define("data_sync_dtl_log_tbl", {
-		data_sync_id: {
+	const datasync_log_dtl_tbl = sequelize.define("datasync_log_dtl_tbl", {
+		datasync_dtl_id: {
 			allowNull: false,
 			primaryKey: true,
 			type: DataTypes.UUID,
 			defaultValue: DataTypes.UUIDV4
 		},
-		report_id: {
-			type: DataTypes.STRING(50),
+		datasync_id: {
+			type: DataTypes.STRING,
 			allowNull: false
 		},
-		data_sync_status: {
+		datasync_master_table: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
+		datasync_latest_upsert: {
+			type: DataTypes.DATE,
+			allowNull: false
+		},
+		datasync_status: {
 			type: DataTypes.BOOLEAN,
 			defaultValue: false
 		},
-		data_sync_dtl_remarks1: {
+		datasync_dtl_remarks1: {
 			type: DataTypes.STRING
 		},
-		data_sync_dtl_remarks2: {
+		datasync_dtl_remarks2: {
 			type: DataTypes.STRING
 		},
-		data_sync_dtl_remarks3: {
+		datasync_dtl_remarks3: {
 			type: DataTypes.STRING
 		},
 		createdBy: {
@@ -47,5 +55,5 @@ module.exports = (sequelize, DataTypes) => {
 		hasTrigger: true
 	})
 
-	return data_sync_dtl_log_tbl;
+	return datasync_log_dtl_tbl;
 }

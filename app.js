@@ -19,7 +19,7 @@ const { sequelize } = require('./models/nyx')
 
 const PORT = process.env.PORT || 31000;
 
-//app.use(morgan('dev'));
+app.use(morgan('dev'));
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb', extended:true}));
 app.use(cors({ credentials: true, origin: true }))
@@ -41,7 +41,7 @@ app.listen(
 )
 
 /**load DB here */
-sequelize.sync()
+// sequelize.sync()
 
 
 
