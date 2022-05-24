@@ -1,1 +1,10 @@
 node_modules
+ecosystem.config.js
+assets/convertedFiles/*
+assets/dump/*
+assets/SavedFiles/*
+assets/ReportGenerated/*
+assets/uploadedFiles/*
+logs/*
+.env
+*.log

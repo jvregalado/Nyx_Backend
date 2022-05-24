@@ -1,33 +1,48 @@
-const express  = require('express');
-const path  = require('path');
-const bodyParser = require('body-parser')
+"use sctrict";
 
-
+const express = require('express');
 const app = express();
+const cors = require('cors');
+const morgan = require('morgan');
+const helmet = require('helmet');
+const moment = require('moment');
 
+const addRequestID = require('./middleware/addRequestID');
+const tokenAuthenticator = require('./middleware/tokenAuthenticator');
+const responseRequestID = require('./middleware/responseRequestID');
+const modulePermisionChecker = require('./middleware/modulePermissionChecker');
 
-app.use(express.json());
-// app.use(bodyParser.text({ limit: '200mb' }));
-// app.use(bodyParser.json({limit: '200mb'}));
-// app.use(bodyParser.urlencoded({limit: '200mb', extended: true}));
+const api = require('./api');
 
-app.use(express.static(path.join(__dirname,'public')));
+// const { sequelize } = require('./models/nyx')
+// const db = require('./models/crossdock')
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+const PORT = process.env.PORT || 31000;
 
-app.get('/', (req,res) => res.send('INDEX'))
+app.use(morgan('dev'));
+app.use(express.json({limit: '200mb'}));
+app.use(express.urlencoded({limit: '200mb', extended:true}));
+app.use(cors({ credentials: true, origin: true }))
+app.use(helmet());
 
-const PORT = process.env.PORT || 5000;
+/**app setup here */
+app.use(tokenAuthenticator); 		/**middleware setups here {40-50ms increase in response time} */
+app.use(addRequestID); 				/**middleware setups here {1-2ms increase in response time} */ 
+app.use(responseRequestID); 		/**middleware setups here {1-2ms increase in response time} */
+app.use(modulePermisionChecker); 	/**middleware setups here */
 
-app.use('/conversion',require('./routes/index'));
+/**app setup of API here */
+app.use(api);
 
-
-
+/**app listens to PORT*/
 app.listen(
-    PORT,
-    console.log(`It's alive on     ${PORT}`)
+	PORT,
+	console.log(`Server running on port ${PORT}; as of ${moment().format('YYYY-MM-DD HH:mm:ss.SSS')}`)
 )
+
+/**load DB here */
+// sequelize.sync()
+
+
+
+/**load CRON here */
