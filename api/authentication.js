@@ -24,13 +24,15 @@ router.post('/connection',async(req,res) => {
 
 router.post('/token', async(req,res) => {
 	try{
-		const {user_email, user_password} = req.body;
+		const {user_email, user_password, system} = req.body;
 
 		const getUser = await userService.getUser({
 			filters:{
 				user_email
 			}
 		})
+
+		// console.log(getUser)
 
 		if(!getUser){
 			return res.status(404).json({
@@ -48,6 +50,14 @@ router.post('/token', async(req,res) => {
 			return res.status(400).json({
 				message:'Invalid Email or Password'
 			})
+		}
+
+		if(String(system).toUpperCase() === 'WBS'){
+			if(!getUser.has_wbs){
+				return res.status(400).json({
+					message:'User has no access to wbs'
+				})
+			}
 		}
 
 		const token = await authService.generateToken({
@@ -69,6 +79,8 @@ router.post('/token', async(req,res) => {
 		res.status(200).json({
 			user_email,
 			token,
+			has_wbs:getUser.has_wbs,
+			system,
 			role
 		})
 	}

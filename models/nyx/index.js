@@ -8,7 +8,7 @@ const { nyxDBConfig } = require('../../config/config');
 
 const sequelize = new Sequelize({
 	...nyxDBConfig,
-	logging: false
+	// logging: false
 	// logging: function(str) {
 	// console.log(`\nNYX MySQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`);
 	// }
@@ -127,21 +127,39 @@ db.module_tbl.hasOne(db.user_tbl, {
 	foreignKey: 'user_id',
 	as:'creator'
 })
+
 db.module_tbl.hasOne(db.user_tbl, {
 	sourceKey: 'updatedBy',
 	foreignKey: 'user_id',
 	as:'modifier'
 })
+
 /**5: ROLE*/
 db.role_hdr_tbl.hasOne(db.user_tbl, {
 	sourceKey: 'createdBy',
 	foreignKey: 'user_id',
 	as:'creator'
 })
+
 db.role_hdr_tbl.hasOne(db.user_tbl, {
 	sourceKey: 'updatedBy',
 	foreignKey: 'user_id',
 	as:'modifier'
+})
+
+
+//wbs-employee
+db.wbs_employee_tbl.hasOne(db.user_tbl,{
+	sourceKey:'emp_nyx_user_id',
+	foreignKey:'user_id',
+	as:'user_tbl'
+})
+
+//wbs-role-detail
+db.wbs_employee_role_dtl_tbl.hasOne(db.wbs_employee_tbl,{
+	sourceKey:'emp_id',
+	foreignKey:'emp_id',
+	as:'emp_tbl'
 })
 
 module.exports = db;

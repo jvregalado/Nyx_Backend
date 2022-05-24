@@ -23,7 +23,11 @@ router.use('/wms/reporthub',				require('./wms-reporthub'));
 
 // router.use('/tms/reporthub',				require('./tms-reporthub'));
 // router.use('/tms/converter',				require('./tms-converter'));
-router.use('/tms/datasync',				require('./tms-datasync'));
+router.use('/tms/datasync',				    require('./tms-datasync'));
 // router.use('/tms/interface',				require('./tms-interface'));
 
+router.use('/wbs/employee',                 require('./wbs-employee'));
+router.use('/wbs/role',                     require('./wbs-role'));
+router.use('/wbs/calendar',                 require('./wbs-calendar'));
+router.use('/wbs/data-management',          require('./wbs-datamanagement'));
 module.exports = router;

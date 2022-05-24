@@ -2,7 +2,7 @@
 
 const router = require('express').Router();
 const { masterService } = require('../services/hw');
-const { roleService, reasoncodeService, moduleService, reportService } = require('../services/nyx');
+const { roleService, reasoncodeService, moduleService, reportService, quickCodeService, userService, employeeService} = require('../services/nyx');
 
 router.get('/administration/:type', async(req,res) => {
 	try {
@@ -72,8 +72,13 @@ router.get('/reasoncode/:type', async(req,res) => {
 			throw new Error(`Select type: '${type}', found 0 results from reason code table.`)
 		}
 
-		let selectData = await resultData.map(item => { return {value	:item.rc_id,
-																label	:`${item.rc_code} : ${item.rc_desc}`}})
+		let selectData = resultData.map(item => 
+			{ 
+				return {
+					value	:item.rc_id,
+					label	:`${item.rc_code} : ${item.rc_desc}`
+				}
+			})
 
 		return res.status(200).json({
 			data:selectData
@@ -119,5 +124,91 @@ router.get('/masterdata/:type', async(req,res) => {
 		})
 	}
 })
+
+router.get('/quick-code/:type', async(req,res)=>{
+	try{
+		const {type} = req.params;
+
+		const data = await quickCodeService.getAllQuickCodes({
+			filters:{
+				qc_type:type,
+				qc_status:'ACTIVE'
+			}
+		})
+
+		res.status(200).json({
+			data:data.map(item => {
+				return {
+					label:item.qc_name,
+					value:item.qc_code
+				}
+			})
+		})
+
+	}
+	catch(e){
+		console.log(e);
+		res.status(500).json({
+			message:`${e}`
+		})
+	}
+})
+
+router.get('/employee', async(req,res)=>{
+	try{
+		const data = await employeeService.getAllEmployees({
+			filters:{
+				emp_status:'ACTIVE'
+			}
+		})
+
+		res.status(200).json({
+			data:data.map(item => {
+				return {
+					label:item.user_email,
+					value:item.emp_id
+				}
+			})
+		})
+	}
+	catch(e){
+		console.log(e);
+		res.status(500).json({
+			message:`${e}`
+		})
+	}
+})
+
+router.get('/user', async(req,res)=>{
+	try{
+		const {type} = req.params;
+
+		const data = await userService.getAllUser({
+			filters:{
+				user_status:true,
+				has_wbs:true
+			}
+		})
+
+		res.status(200).json({
+			data:data.map(item => {
+				return {
+					label:item.user_email,
+					value:item.user_id
+				}
+			})
+		})
+
+	}
+	catch(e){
+		console.log(e);
+		res.status(500).json({
+			message:`${e}`
+		})
+	}
+})
+
+
+
 
 module.exports = router;
