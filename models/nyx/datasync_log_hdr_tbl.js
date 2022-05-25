@@ -3,9 +3,10 @@
 module.exports = (sequelize, DataTypes) => {
 	const datasync_log_hdr_tbl = sequelize.define("datasync_log_hdr_tbl", {
 		datasync_id: {
-			type: DataTypes.STRING(50),
+			type: DataTypes.UUID,
 			allowNull: false,
-			primaryKey: true
+			primaryKey: true,
+			defaultValue: DataTypes.UUIDV4
 		},
 		report_id: {
 			type: DataTypes.STRING,

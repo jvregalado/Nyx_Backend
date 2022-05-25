@@ -34,7 +34,7 @@ router.get('/', async(req,res) => {
 				...query
 			},
 		})
-		
+
 		res.status(200).json({
 			data:rows,
 			rows:count

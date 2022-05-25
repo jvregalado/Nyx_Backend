@@ -1,7 +1,7 @@
 "use strict";
 
 const router = require('express').Router();
-const { reportService,tmsconverterService } = require('../services/nyx');
+const { reportService,tmsConverterService } = require('../services/nyx');
 const path = require('path');
 const fs = require('fs');
 const { Console } = require('console');
@@ -96,7 +96,7 @@ router.post('/', async(req,res) => {
 					console.log(dir,"\n\n\n\n\n Can not write to above file:\n\n",err);
 				}
 				else {
-					tmsconverterService.rtv_converter_to_excel({
+					tmsConverterService.rtv_converter_to_excel({
 						pdfFile:dir,
 						customerCode,
 						ConversionCode,
@@ -104,17 +104,17 @@ router.post('/', async(req,res) => {
 						JSONExcel,res})
 					//console.log(data)
 					if(!reupload)
-						tmsconverterService.createRTVhdr({...data})
+						tmsConverterService.createRTVhdr({...data})
 				}
 			});
 		}
 		else{
 			//console.log(fileDir)
 			//console.log("dir",dir,"customerCode",customerCode,"ConversionCode",ConversionCode,"reupload",reupload);
-			tmsconverterService.rtv_converter_to_excel({pdfFile:dir,customerCode,ConversionCode,reupload,JSONExcel,res})
+			tmsConverterService.rtv_converter_to_excel({pdfFile:dir,customerCode,ConversionCode,reupload,JSONExcel,res})
 			
 		}
-		tmsconverterService.updateRTVhdr({
+		tmsConverterService.updateRTVhdr({
 			filters:{
 				id : fileDir
 			},
@@ -139,7 +139,7 @@ router.post('/', async(req,res) => {
 	try {
 		let query = req.query;
 
-		const {count, rows} = await tmsconverterService.getPaginatedRTV({
+		const {count, rows} = await tmsConverterService.getPaginatedRTV({
 			filters:{
 				...query
 			},
@@ -162,7 +162,7 @@ router.post('/', async(req,res) => {
 	try {
 		let query = req.query;
 
-		const result = await tmsconverterService.getAllrtv({
+		const result = await tmsConverterService.getAllrtv({
 			filters:{
 				...query
 			}
@@ -197,13 +197,13 @@ router.post('/generate', async(req,res) => {
 				throw new Error(`Unable to generate file, please check the Status`)
 		}
 
-		tmsconverterService.generate_JSON_to_Excel_RTV({
+		tmsConverterService.generate_JSON_to_Excel_RTV({
 			customerCode:data.customerCode,
 			toExcel:data.toExcel,
 			fileName:data.pdfFile,
 			res})
 		
-		tmsconverterService.updateRTVhdr({
+		tmsConverterService.updateRTVhdr({
 			filters:{
 				id : data.id
 			},
@@ -218,7 +218,7 @@ router.post('/generate', async(req,res) => {
 		})
 		for(let x in insertToExcel)
 		{
-			tmsconverterService.createRTVdtl({
+			tmsConverterService.createRTVdtl({
 				id:`${data.id}${x}`,
 				header_id:data.id,
 				rtv_no:insertToExcel[x]["RTV"].replace('\'',''),

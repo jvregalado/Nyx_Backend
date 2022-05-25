@@ -1,7 +1,7 @@
 "use strict";
 
 const router = require('express').Router();
-const { reportService,tmsreporthubService } = require('../services/nyx');
+const { reportService,tmsReporthubService } = require('../services/nyx');
 const helper = require('../services/helper/helper');
 const path = require('path');
 const fs = require('fs');
@@ -37,8 +37,8 @@ router.post('/sp_DFDailyMonitoring_cdi', async(req,res) => {
 		let ReportName = data.report.label.split(':').pop().replace(/\s/g, '')
 		// let processor = req.processor;
 
-		let result = await tmsreporthubService.sp_DFDailyMonitoring_cdi({ dateFrom:data.dateFrom })
-		
+		let result = await tmsReporthubService.sp_DFDailyMonitoring_cdi({ dateFrom:data.dateFrom })
+
 		if(result.length<=1){
 			throw new Error(`No data for this date`)
 		}
@@ -46,10 +46,10 @@ router.post('/sp_DFDailyMonitoring_cdi', async(req,res) => {
 		let TripIDpickArray = [...new Set(result.map(x => `${x['TripIDpick']}`))];
 		let TripIDlineArray = [...new Set(result.map(x => `${x['TripIDline']}`))];
 		let TripIDdelArray = [...new Set(result.map(x => `${x['TripIDdel']}`))];
-		
-		let KronosTripIDpick = await tmsreporthubService.getDFpick({TripIDpickArray})
-		let KronosTripIDline= await tmsreporthubService.getDFline({TripIDlineArray})
-		let KronosTripIDdel= await tmsreporthubService.getDFdel({TripIDdelArray})
+
+		let KronosTripIDpick = await tmsReporthubService.getDFpick({TripIDpickArray})
+		let KronosTripIDline= await tmsReporthubService.getDFline({TripIDlineArray})
+		let KronosTripIDdel= await tmsReporthubService.getDFdel({TripIDdelArray})
 
 		let DFreport = [];
 		for (let x in result) 
@@ -123,8 +123,6 @@ router.post('/sp_DFDailyMonitoring_cdi', async(req,res) => {
 				"Remarks":KronosTripIDdel[del]?.Remarks||""												//40
 			})
 		}
-
-		
 
 		res.status(200).json({
 			data:await helper.generate_JSON_to_Excel({JSONdata:DFreport,ReportName})

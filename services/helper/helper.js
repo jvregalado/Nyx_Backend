@@ -35,9 +35,9 @@ exports.formatDateAndTime = async({
 exports.remove_File = async({fileDir})=>
 fs.unlink(fileDir, function (err) {
 	if (err) {
-	  console.error(err);
+		console.error(err);
 	} else {
-	  console.log("File removed:",fileDir);
+		console.log("File removed:",fileDir);
 	}
 });
 
@@ -87,19 +87,19 @@ exports.generate_JSON_to_CSV = async({
 		
 		fs.unlink(pdfFile, function (err) {
 			if (err) {
-			  console.error(err);
+				console.error(err);
 			} else {
-			  console.log("File removed:", pdfFile);
+				console.log("File removed:", pdfFile);
 			}
-		  });
-		  
+		});
+
 		fs.unlink(fileName, function (err) {
 			if (err) {
-			  console.error(err);
+				console.error(err);
 			} else {
-			  console.log("File removed:", fileName);
+				console.log("File removed:", fileName);
 			}
-		  });
+		});
 		res.status(500).json({
 			message:`${e}`
 		})
@@ -119,23 +119,22 @@ exports.read_PreConverted = async({fileName})=>{
 exports.getData_from_other_API = async({
 	customerCode
 }) => {
-
-		//Temporary code only
-		let c = 'PCC-000617';
-		if(customerCode.toUpperCase()=='MDLZ')
-			{
-				c = 'PCC-000617'
-			}
-		if(customerCode.toUpperCase()=='PNG')
-			{
-				c = 'PCC-000639'
-			}
+	//Temporary code only
+	let c = 'PCC-000617';
+	if(customerCode.toUpperCase()=='MDLZ')
+		{
+			c = 'PCC-000617'
+		}
+	if(customerCode.toUpperCase()=='PNG')
+		{
+			c = 'PCC-000639'
+		}
 	const response = await fetch(`http://eridanus.aeolus.ph:8005/customer-primaries/${c}/customer-secondaries`, {
 	//await fetch(`http://bellatrix.aeolus.ph:8002/customer-primaries/${c}/customer-secondaries`, {
 		method: 'post',
 		//body: JSON.stringify(body),
 		method: 'GET',
-		  headers: {
+		headers: {
 		'Content-Type': 'application/json',
 		'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNGY1Y2I5MjAyM2ZhZTA5OTc2MTI4NTg0Nzc4M2M1ODgxMjNjMjk0ZmVjNTM2NjMzOTI4NWQyMTM1YjdkMjAzMjU2M2JkNTRlZWI3MzE4M2E5YzVmM2JmODM3NWZlODJmZGM3Yzg4ZWU4MWMzZTA3NTIzMzMzMTJkNjQ5MTUzMjFlYmM4MTMwNDcxZGE2MmE5ZjRiYmMyNjViMTFmOGM1YjA1OWQxODBiYmY2NTYyZjIwOWQyNzA1NWU0MWRiNzJlYzUyZjkzMmE1ZmE0YTE0ZGJmOWM4NjdjNzhiYzc4MzVjNjgyMTZjNmFhYWIwZTljNTYzOTMyZTFjOTMzMDgxYjU0Yjg2NjI1YWJhZjkxZWQ3OTk1Mzc5ZTBiOGVmMmY5NTRhMDRkZmQ1MDA2MTVkYzA0ZmEyZmIwNTY1MGFhMmE1MjZjNDUwYWFhZjk3OTg5ZGQ1ODZiNjJhN2UzMWZkYmJkOTg3OWI2OGNhYmU0OGRjYmZlMmQ0ZjExOGEyMDYzOWMxMGYxYTc0ZTNhNzkxMTRjOWYyN2M5MDMwY2U5NDIxNmIxZTJmZjk0MjJmYWQ5YzUxNGUxMDU1YTFiNTdmN2ViZWRhMGNmOTNkNDg0YWQ5MjlmYmNhMTFmODNjMThjY2ZmN2I5MGJjZDM3MzcyMWFlN2QxZjcxZWQ5ZmIyZTIiLCJpYXQiOjE2NTI2ODg2NTUsImV4cCI6MTY3MDgzMjY1NX0.IlGrodV4tdgJpa_e7lLnyNzh_lIk-f10VbqtrPMqXbo'
 		//'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNGY1Y2I5MjAyM2ZhZTA5OTc2MTI4NTg0Nzc4M2M1ODgxMjNjMjk0ZmVjNTM2NjMzOTI4NWQyMTM1YjdkMjAzMjU2M2JkNTRlZWI3MzE4M2E5YzVmM2JmODM3NWZlODJmZGM3Yzg4ZWU4MWMzZTA3NTIzMzMzMTJkNjQ5MTUzMjFlYmM4MTMwNDcxZGE2MmE5ZjRiYmMyNjViMTFmOGM1YjA1OWQxODBiYmY2NTYyZjIwOWQyNzA1NWU0MWRiNzJlYzUyZjkzMmE1ZmE0YTE0ZGJmOWM4NjdjNzhiYzc4MzVjNjgyMTZjNmFhYWIwZTljNTYzOTMyZTFjOTMzMDgxYjU0Yjg2NjI1YWJhZjkxZWQ3OTk1Mzc5ZTBiOGVmMmY5NTRhMDRkZmQ1MDA2MTVkYzA0ZmEyZmIwNTY1MGFhMmE1MjZjNDUwYWFhZjk3OTg5ZGQ1ODZiNjJhN2UzMWZkYmJkOTg3OWI2OGNhYmU0OGRjYmZlMmQ0ZjExOGEyMDYzOWMxMGYxYTc0ZTNhNzkxMTRjOWYyN2M5MDMwY2U5NDIxNmIxZTJmZjk0MjJmYWQ5YzUxNGUxMDU1YTFiNTdmNzdkZGYwZjdmYzQyMDAyOWRlZmQwNzIzOWE5NmE1ODM1ZGUzZDQzMDcxMTQzMGJmNjlmNzk2NzY5OTU2NjQ3OTIiLCJpYXQiOjE2NTE1NTkwODIsImV4cCI6MTY2OTcwMzA4Mn0.knHfFzzi0j_8JGR1HFjHCQpabGbv97jsVxlyUDHiRv0'

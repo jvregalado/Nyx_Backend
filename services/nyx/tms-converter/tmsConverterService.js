@@ -182,7 +182,7 @@ exports.rtv_converter_to_excel = async({
 					"Site Code": "'"+siteCode[0],
 					"Site Name": site2[0],
 					"Site Address": site2[1]
-				  })
+				})
 		}
 		if(ext=='pdf' && !JSONExcel)
 		{
@@ -410,7 +410,7 @@ exports.rtv_converter_to_excel = async({
 		{
 			//Find the position of unmaintained STC
 			//let pos = findUnique.multiIndexOf(v => v['Site Code'].replace('\'','') == getMaintined[x]['ship_to_code_primary'])
-			//let pos = findUnique.map((elm, idx) => elm['Site Code'].replace('\'','') ==  getMaintined[x]['ship_to_code_primary'] ? idx : '').filter(String);
+			//let pos = findUnique.map((elm, idx) => elm['Site Code'].replace('\'','') == getMaintined[x]['ship_to_code_primary'] ? idx : '').filter(String);
 			let pos = findUnique.reduce((c, v, i) => v['Site Name'].replace('\'','') == getMaintined[x]['ship_to_name'] ? c.concat(i) : c, []);
 			//Change value of Status 
 			if(pos)

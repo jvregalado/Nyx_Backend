@@ -3,9 +3,9 @@
 module.exports = (sequelize, DataTypes) => {
 	const datasync_log_dtl_tbl = sequelize.define("datasync_log_dtl_tbl", {
 		datasync_dtl_id: {
+			type: DataTypes.UUID,
 			allowNull: false,
 			primaryKey: true,
-			type: DataTypes.UUID,
 			defaultValue: DataTypes.UUIDV4
 		},
 		datasync_id: {
@@ -18,11 +18,16 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		datasync_latest_upsert: {
 			type: DataTypes.DATE,
-			allowNull: false
+			allowNull: true
 		},
 		datasync_status: {
 			type: DataTypes.BOOLEAN,
 			defaultValue: false
+		},
+		datasync_data_rows: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+			defaultValue: 0
 		},
 		datasync_dtl_remarks1: {
 			type: DataTypes.STRING

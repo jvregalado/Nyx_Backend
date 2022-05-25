@@ -9,7 +9,7 @@ const { aelousZeus2_DBConfig,
 		aelousArtemis_DBConfig,
 		aelousEros_DBConfig } = require('../../config/config');
 
-const aelousZeus2DB = new Sequelize({
+const aelousZeus2 = new Sequelize({
 	...aelousZeus2_DBConfig,
 	logging: false
 	// logging: function(str) {
@@ -17,7 +17,7 @@ const aelousZeus2DB = new Sequelize({
 	// }
 });
 
-const aelousZeus1DB = new Sequelize({
+const aelousZeus1 = new Sequelize({
 	...aelousZeus1_DBConfig,
 	logging: false
 	// logging: function(str) {
@@ -25,7 +25,7 @@ const aelousZeus1DB = new Sequelize({
 	// }
 });
 
-const aelousArtemisDB = new Sequelize({
+const aelousArtemis = new Sequelize({
 	...aelousArtemis_DBConfig,
 	logging: false
 	// logging: function(str) {
@@ -33,7 +33,7 @@ const aelousArtemisDB = new Sequelize({
 	// }
 });
 
-const aelousErosDB = new Sequelize({
+const aelousEros = new Sequelize({
 	...aelousEros_DBConfig,
 	logging: false
 	// logging: function(str) {
@@ -42,10 +42,10 @@ const aelousErosDB = new Sequelize({
 });
 
 let db = {
-	aelousZeus2DB,
-	aelousZeus1DB,
-	aelousArtemisDB,
-	aelousErosDB};
+	aelousZeus2,
+	aelousZeus1,
+	aelousArtemis,
+	aelousEros};
 
 for(let i in db) {
 	fs.readdirSync(__dirname)
@@ -56,7 +56,7 @@ for(let i in db) {
 			let model = require(path.join(__dirname,file))(db[i]/**sequelize*/, Sequelize.DataTypes);
 			db[i][model.name] = model;
 		});
+	db[i].Sequelize = Sequelize;
 }
-db.Sequelize = Sequelize;
 
 module.exports = db;

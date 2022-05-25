@@ -2,7 +2,119 @@
 
 module.exports = (sequelize, DataTypes) => {
 	const customer_secondary = sequelize.define("customer_secondary", {
-		
+		id: {
+			type: DataTypes.STRING,
+			allowNull: true,
+			primaryKey: true
+		},
+		customer_primary_id: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		customer_category_id: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		prioritization: {
+			type: DataTypes.INTEGER,
+			allowNull: true
+		},
+		name_trade: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		name_registered: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		name_alias: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		address_billing: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		ship_to_code: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		ship_to_name: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		ship_to_address: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		contact_person_name: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		account_manager_name: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		cluster_id: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
+		documents_for_return: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		acceptance_time_start: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		acceptance_time_end: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		delivery_days: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		status: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		created_by: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		updated_by: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		created: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
+		updated: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		deleted: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		account_manager_number: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		area_id: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		city_id: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		contact_person_number: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
 	},
 	{
 		freezeTableName : true,

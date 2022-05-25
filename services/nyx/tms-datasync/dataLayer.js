@@ -1,7 +1,7 @@
 "use strict";
 
 const models = require('../../../models/nyx');
-const {sequelize,Sequelize} = models;
+const {sequelize, Sequelize} = models;
 
 const formatFilters = ({
 	model,
@@ -13,22 +13,22 @@ const formatFilters = ({
 			formattedFilters = {
 				[Sequelize.Op.or]: [
 					{
-						datasync_: {
+						report_code: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
 					},
 					{
-						user_last_name: {
+						datasync_hdr_remarks1: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
 					},
 					{
-						user_contact_no: {
+						datasync_hdr_remarks2: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
 					},
 					{
-						user_remarks1: {
+						datasync_hdr_remarks3: {
 							[Sequelize.Op.like]: `%${filters.search}%`
 						}
 					}
@@ -60,12 +60,31 @@ const formatFilters = ({
 }
 
 exports.createDataSyncLog = async({
-	...data
+	logsToInsert_Header,
+	logsToInsert_Detail
 }) => {
 	try {
-		return await models.user_tbl.create({
-			...data
-		}).then(result => JSON.parse(JSON.stringify(result)))
+		return await sequelize.transaction(async(t1) => {
+
+			//## HEADER
+			let insert_result = await models.datasync_log_hdr_tbl.bulkCreate(logsToInsert_Header,
+				{logging: false, transaction : t1
+			}).then(result => JSON.parse(JSON.stringify(result)));
+
+			// console.log('insert_result',insert_result)
+			logsToInsert_Detail = logsToInsert_Detail.map(foo => {
+				return {
+					...foo,
+					datasync_id : insert_result[0].datasync_id
+				}
+			})
+
+			//## DETAIL
+			return await models.datasync_log_dtl_tbl.bulkCreate(
+				logsToInsert_Detail, {logging: false, transaction : t1})
+				.then(result => JSON.parse(JSON.stringify(result)));
+
+		})
 	}
 	catch(e){
 		throw e
@@ -80,32 +99,17 @@ exports.getPaginatedDataSyncLog = async({
 }) => {
 	try {
 		let newFilter = formatFilters({
-			model:models.user_tbl.rawAttributes,
+			model:models.datasync_log_hdr_tbl.rawAttributes,
 			filters
 		});
 
-		const {count,rows} = await models.user_tbl.findAndCountAll({
+		const {count,rows} = await models.datasync_log_hdr_tbl.findAndCountAll({
 			where:{
 				...newFilter
 			},
 			offset	:parseInt(page) * parseInt(totalPage),
 			limit	:parseInt(totalPage),
 			include:[
-				{
-					model:models.role_hdr_tbl,
-					attributes:['role_name'],
-					as:'role'
-				},
-				{
-					model:models.reason_code_tbl,
-					attributes:['rc_id','rc_desc'],
-					as:'user_position_fk'
-				},
-				{
-					model:models.reason_code_tbl,
-					attributes:['rc_id','rc_desc'],
-					as:'user_whLocation_fk'
-				},
 				{
 					model:models.user_tbl,
 					attributes:['user_email'],
@@ -119,20 +123,13 @@ exports.getPaginatedDataSyncLog = async({
 					required:false
 				}
 			]
-			// ,order	:[[orderBy]]
+			,order	:[[orderBy]]
 		})
 		.then(result => {
-			let {count,rows} = JSON.parse(JSON.stringify(result))
-		
+			let {count, rows} = JSON.parse(JSON.stringify(result))
 			return {
-				rows: rows.map(item => {
-					const {role,...users} = item
-					return {
-						...users,
-						role_name:role?.role_name
-					}
-				}), 
-				count
+				count,
+				rows
 			}
 		})
 
@@ -147,21 +144,16 @@ exports.getPaginatedDataSyncLog = async({
 }
 
 exports.updateDataSyncLog = async({
-	filters,
-	data,
-	option
+	data
 }) => {
 	try{
-		return await models.user_tbl.update(
-			{
-				...data
-			},
-			{
-				where:{
-					...filters
-				}
-			}
-		).then(result => JSON.parse(JSON.stringify(result)))
+		await models.datasync_log_dtl_tbl.bulkCreate(
+			data
+		,{
+			updateOnDuplicate: [
+				"datasync_status"
+			]
+		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){
 		throw e

@@ -145,8 +145,7 @@ db.role_hdr_tbl.hasOne(db.user_tbl, {
 	as:'modifier'
 })
 
-//rtv
-
+/**RTV*/
 db.rtv_stored_converted_hdr.hasOne(db.user_tbl, {
 	sourceKey: 'uploaded_by',
 	foreignKey: 'user_id',
@@ -162,10 +161,34 @@ db.rtv_stored_converted_hdr.hasOne(db.user_tbl, {
 	foreignKey: 'user_id',
 	as:'generate'
 })
-
 db.rtv_stored_converted_hdr.hasOne(db.user_tbl, {
 	sourceKey: 'last_generated_by',
 	foreignKey: 'user_id',
 	as:'lastgenerate'
 })
+
+
+/**DATASYNC LOGS*/
+db.datasync_log_hdr_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'createdBy',
+	foreignKey: 'user_id',
+	as:'creator'
+})
+db.datasync_log_hdr_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'updatedBy',
+	foreignKey: 'user_id',
+	as:'modifier'
+})
+db.datasync_log_dtl_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'createdBy',
+	foreignKey: 'user_id',
+	as:'creator'
+})
+db.datasync_log_dtl_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'updatedBy',
+	foreignKey: 'user_id',
+	as:'modifier'
+})
+
+
 module.exports = db;

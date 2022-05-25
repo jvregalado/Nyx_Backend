@@ -14,7 +14,7 @@ router.use(async(req,res,next) => {
 		const userRole = await userService.getUser({ filters: {	user_id		: processor.user_id,
 																user_email	: processor.user_email }})
 
-		/**SUPERADMIN PROCEEDS AS IS WITH HIGHEST ACCESS  */
+		/**SUPERADMIN PROCEEDS AS IS WITH HIGHEST ACCESS */
 		if(userRole?.role?.role_code === 'Superadmin') {
 			return next()
 		}
@@ -25,10 +25,10 @@ router.use(async(req,res,next) => {
 			}
 			else {
 				let allowed_modules = await userRole?.role?.role_dtl_fk?.map(x => x.role_module_fk[0]?.module_code)
-	
-				/**DERIVED FROM request path="/wms/reporthub" output will be  "wms reporthub" */
+
+				/**DERIVED FROM request path="/wms/reporthub" output will be "wms reporthub" */
 				const req_module_code = `${path.split('/')[1]} ${path.split('/')[2]}`
-	
+
 				if(!allowed_modules.includes(req_module_code)){
 					throw new Error(`You do not have access on module: ${req_module_code}`)
 				}
