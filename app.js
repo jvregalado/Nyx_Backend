@@ -14,14 +14,14 @@ const modulePermisionChecker = require('./middleware/modulePermissionChecker');
 
 const api = require('./api');
 
-const { sequelize } = require('./models/nyx')
+// const { sequelize } = require('./models/nyx')
 // const db = require('./models/crossdock')
 
 const PORT = process.env.PORT || 31000;
 
-//app.use(morgan('dev'));
-app.use(express.json({limit: '50mb'}));
-app.use(express.urlencoded({limit: '50mb', extended:true}));
+app.use(morgan('dev'));
+app.use(express.json({limit: '200mb'}));
+app.use(express.urlencoded({limit: '200mb', extended:true}));
 app.use(cors({ credentials: true, origin: true }))
 app.use(helmet());
 
@@ -41,7 +41,7 @@ app.listen(
 )
 
 /**load DB here */
-sequelize.sync()
+// sequelize.sync()
 
 
 

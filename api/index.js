@@ -21,9 +21,9 @@ router.use('/wms/reporthub',				require('./wms-reporthub'));
 // router.use('/wms/dashboard',				require('./wms-dashboard'));
 // router.use('/wms/interface',				require('./wms-interface'));
 
-// router.use('/tms/reporthub',				require('./tms-reporthub'));
-// router.use('/tms/converter',				require('./tms-converter'));
-router.use('/tms/datasync',				require('./tms-datasync'));
+router.use('/tms/reporthub',				require('./tms-reporthub'));
+router.use('/tms/converter',				require('./tms-converter'));
+router.use('/tms/datasync',					require('./tms-datasync'));
 // router.use('/tms/interface',				require('./tms-interface'));
 
 module.exports = router;

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
 	const customer_primary = sequelize.define("customer_primary", {
 		id : {
 			type: DataTypes.STRING,
-			allowNull: true,
+			allowNull: false,
 			primaryKey: true
 		},
 		code : {
@@ -68,7 +68,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: true
 		},
 		check_expiry : {
-			type: DataTypes.INTEGER,
+			type: DataTypes.INTEGER(1),
 			allowNull: true
 		},
 		countering_requirements : {
@@ -120,11 +120,11 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: true
 		},
 		credit_limit : {
-			type: DataTypes.STRING,
+			type: DataTypes.FLOAT,
 			allowNull: true
 		},
 		receivables : {
-			type: DataTypes.STRING,
+			type: DataTypes.FLOAT,
 			allowNull: true
 		},
 		documents_for_return : {
@@ -227,7 +227,7 @@ module.exports = (sequelize, DataTypes) => {
 	{
 		freezeTableName : true,
 		hasTrigger: true,
-		ti
+		timestamps: false
 	})
 
 	return customer_primary;

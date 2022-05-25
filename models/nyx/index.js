@@ -39,6 +39,7 @@ db.role_hdr_tbl.belongsTo(db.user_tbl, {
 	foreignKey:'role_id'
 })
 
+
 /**ROLE_HDR TO ROLE_DTL TO MODULE_TBL ASSOCIATION */
 db.role_hdr_tbl.hasMany(db.role_dtl_tbl, {
 	sourceKey:'role_id',
@@ -143,5 +144,51 @@ db.role_hdr_tbl.hasOne(db.user_tbl, {
 	foreignKey: 'user_id',
 	as:'modifier'
 })
+
+/**RTV*/
+db.rtv_stored_converted_hdr.hasOne(db.user_tbl, {
+	sourceKey: 'uploaded_by',
+	foreignKey: 'user_id',
+	as:'creator'
+})
+db.rtv_stored_converted_hdr.hasOne(db.user_tbl, {
+	sourceKey: 'checked_by',
+	foreignKey: 'user_id',
+	as:'checker'
+})
+db.rtv_stored_converted_hdr.hasOne(db.user_tbl, {
+	sourceKey: 'generated_by',
+	foreignKey: 'user_id',
+	as:'generate'
+})
+db.rtv_stored_converted_hdr.hasOne(db.user_tbl, {
+	sourceKey: 'last_generated_by',
+	foreignKey: 'user_id',
+	as:'lastgenerate'
+})
+
+
+/**DATASYNC LOGS*/
+db.datasync_log_hdr_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'createdBy',
+	foreignKey: 'user_id',
+	as:'creator'
+})
+db.datasync_log_hdr_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'updatedBy',
+	foreignKey: 'user_id',
+	as:'modifier'
+})
+db.datasync_log_dtl_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'createdBy',
+	foreignKey: 'user_id',
+	as:'creator'
+})
+db.datasync_log_dtl_tbl.hasOne(db.user_tbl, {
+	sourceKey: 'updatedBy',
+	foreignKey: 'user_id',
+	as:'modifier'
+})
+
 
 module.exports = db;

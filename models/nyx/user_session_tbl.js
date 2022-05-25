@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 			unique: true
 		},
 		user_token: {
-			type: DataTypes.TEXT('tiny'),
+			type: DataTypes.STRING,
 			allowNull: true
 		},
 		user_token_expiry: {

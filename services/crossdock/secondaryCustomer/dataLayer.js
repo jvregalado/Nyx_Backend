@@ -3,7 +3,7 @@
 const {aelousZeus2, aelousZeus1, aelousArtemis, aelousEros} = require('../../../models/crossdock');
 // const {sequelize, Sequelize} = models;
 
-exports.getLatestMaterial = async({
+exports.getLatestSecondaryCustomer = async({
 	server
 }) => {
 	try{
@@ -28,8 +28,8 @@ exports.getLatestMaterial = async({
 					updated,
 					created,
 					IF(updated>created, updated,created) 'lastMovementDate',
-					'Material' AS 'data_sync_master_table'
-			FROM material
+					'Secondary Customer' AS 'data_sync_master_table'
+			FROM customer_secondary
 			ORDER BY IF(updated>created, updated, created) DESC
 			LIMIT 1`
 		,{ type: seq_db.Sequelize.QueryTypes.SELECT })
@@ -40,11 +40,11 @@ exports.getLatestMaterial = async({
 	}
 }
 
-exports.getAllMaterial_fromZeus2_byDate = async({
+exports.getAllSecondaryCustomer_fromZeus2_byDate = async({
 	date
 }) => {
 	try{
-		return await aelousZeus2.material.findAll({
+		return await aelousZeus2.customer_secondary.findAll({
 			where:{
 				[aelousZeus2.Sequelize.Op.or]: [
 					{
@@ -66,7 +66,7 @@ exports.getAllMaterial_fromZeus2_byDate = async({
 	}
 }
 
-exports.upsertMaterial = async({
+exports.upsertSecondaryCustomer = async({
 	server,
 	data
 }) => {
@@ -87,32 +87,37 @@ exports.upsertMaterial = async({
 				throw new Error(`Unknown server for syncing.`)
 		}
 
-		return await seq_db.material.bulkCreate(
+		return await seq_db.customer_secondary.bulkCreate(
 			data
 		,{
 			updateOnDuplicate: [
-				"material_category_id",
-				"description",
-				"case_length",
-				"case_width",
-				"case_height",
-				"case_weight",
-				"case_barcode",
-				"piece_weight",
-				"piece_barcode",
-				"pallet_max_layer",
-				"pallet_max_case",
-				"layer_max_case",
-				"weight_unit",
-				"unit_measure",
-				"unit_conversion",
-				"status",
+				"customer_primary_id",
+				"customer_category_id",
+				"prioritization",
+				"name_trade",
+				"name_alias",
+				"address_billing",
+				"ship_to_code",
+				"ship_to_name",
+				"ship_to_address",
+				"contact_person_name",
+				"account_manager_name",
 				"cluster_id",
+				"documents_for_return",
+				"acceptance_time_start",
+				"acceptance_time_end",
+				"delivery_days",
+				"status",
 				"created_by",
 				"updated_by",
 				"created",
 				"updated",
-				"deleted" ]
+				"deleted",
+				"account_manager_number",
+				"area_id",
+				"city_id",
+				"contact_person_number"
+			]
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
 	catch(e){

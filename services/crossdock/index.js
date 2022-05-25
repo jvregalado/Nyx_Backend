@@ -1,6 +1,6 @@
 module.exports = {
-	// materialService		: require('./auth/material'),
-	// primaryCustService	: require('./auth/primaryCustomer'),
-	// secondaryCustService	: require('./auth/secondaryCustomer'),
-	priSecMapService		: require('./auth/primarySecondaryMap')
+	materialService		: require('./material'),
+	primaryCustService	: require('./primaryCustomer'),
+	secondaryCustService: require('./secondaryCustomer'),
+	priSecMapService	: require('./primarySecondaryMap')
 }
