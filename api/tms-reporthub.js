@@ -29,6 +29,7 @@ router.get('/report-sourcecode', async(req,res) => {
 
 router.post('/sp_DFDailyMonitoring_cdi', async(req,res) => {
 	try {
+		
 		let {report_id} = req.query;
 		let {data} = req.body;
 		if(!data.dateFrom){
@@ -37,9 +38,9 @@ router.post('/sp_DFDailyMonitoring_cdi', async(req,res) => {
 		let ReportName = data.report.label.split(':').pop().replace(/\s/g, '')
 		// let processor = req.processor;
 
-		let result = await tmsReporthubService.sp_DFDailyMonitoring_cdi({ dateFrom:data.dateFrom })
-
-		if(result.length<=1){
+		let result = await tmsreporthubService.sp_DFDailyMonitoring_cdi({ dateFrom:data.dateFrom })
+		
+		if(result.length<=0){
 			throw new Error(`No data for this date`)
 		}
 
@@ -57,70 +58,104 @@ router.post('/sp_DFDailyMonitoring_cdi', async(req,res) => {
 			const pick = KronosTripIDpick.findIndex(p => p.tripIDpick === result[x].TripIDpick);
 			const line = KronosTripIDline.findIndex(p => p.tripIDline === result[x].TripIDline);
 			const del = KronosTripIDdel.findIndex(p => p.tripIDdel === result[x].TripIDdel);
+			// console.log("pick",pick);
+			// console.log("line",line);
+			// console.log("del",del);
+			// console.log("KronosTripIDdel",KronosTripIDdel);
 			//Pick Computation
 			const CallTimeToDate = new Date(result[x].CallTime);
 			const CallTimeStart = new Date(Date.parse(result[x].PickUpdate+' '+CallTimeToDate.toLocaleTimeString()))
+			const CallTimeStartDate = await helper.formatDateAndTime({toFormat:CallTimeStart})
 			
-			const ATA = new Date(KronosTripIDpick[pick]?.ataPickLoc)
+			const ATAnum = new Date(KronosTripIDpick[pick]?.ataPickLoc);
+			const ATA = await helper.formatDateAndTime({toFormat:ATAnum})
 
-			const CallTimeDuration = (CallTimeStart-ATA) / (1000 * 60 * 60 ); 
-			const CompliancetoCallTime = Number(((ATA/CallTimeStart)*100)).toFixed(2)
-
+			const CallTimeDuration = ((CallTimeStart-ATAnum) / (1000 * 60 * 60 )).toFixed(2); 
+			const CompliancetoCallTime = (((24+Number(CallTimeDuration))/24)*100).toFixed(2);;
 			//Line Computation
 			const LCTToDate = new Date(Date.parse(result[x].LCT));
-			const LCTStart = new Date(Date.parse(result[x].PickUpdate+' '+LCTToDate.toLocaleTimeString()))
-			// console.log("LCTStart",LCTStart)
-			const ATAdel = new Date(KronosTripIDdel[del]?.ataInYard)
+			const LCTStartnum = new Date(Date.parse(result[x].PickUpdate+' '+LCTToDate.toLocaleTimeString()))
+			const LCTStart = await helper.formatDateAndTime({toFormat:LCTStartnum})
+			
+			const ATApicknum = new Date(KronosTripIDpick[pick]?.ataInYard)
+			const ATApick = await helper.formatDateAndTime({toFormat:ATApicknum})
 
-			const LCTDuration = (LCTStart-ATAdel) / (1000 * 60 * 60 ); 
-			const CompliancetoLCT = Number(((ATAdel/LCTStart)*100)).toFixed(2)
+			const LCTDuration = (LCTStartnum-ATApicknum) / (1000 * 60 * 60 ).toFixed(2); 
+			const CompliancetoLCT = (((24+Number(LCTDuration))/24)*100).toFixed(2);
 
-			const ActualRDD = new Date(KronosTripIDdel[del]?.ADelConsignee)
+			const ActualRDDnum = new Date(KronosTripIDdel[del]?.ADelConsignee)
+			const ActualRDD = await helper.formatDateAndTime({toFormat:ActualRDDnum})
 			const RDD = new Date(result[x].RDD)
-			const RDDduration = (ActualRDD-RDD) / (1000 * 60 * 60 ); 
-			const CompliancetoRDD = Number(((ActualRDD/RDD)*100)).toFixed(2)
-			//console.log(KronosTripIDpick[pick]?.ataPickLoc)
+			const RDDduration = Number((RDD-ActualRDDnum) / (1000 * 60 * 60 * 24)).toFixed(2); 
+			const RDDdurationHR = Number((RDD-ActualRDDnum) / (1000 * 60 * 60)).toFixed(2); 
+			const CompliancetoRDD = (((24+Number(RDDdurationHR))/24)*100).toFixed(2);
+
+			const ETDOriginTime = new Date(KronosTripIDline[line]?.ETDoriginTime||null);
+			const ETDOriginnum = new Date(Date.parse(KronosTripIDline[line]?.ETDoriginDate||null+' '+ETDOriginTime.toLocaleTimeString()))
+			const ETDOrigin = await helper.formatDateAndTime({toFormat:ETDOriginnum})
+
+			const ATAOriginnum = new Date(KronosTripIDline[line]?.ATDorigin);
+			const ATAOrigin = await helper.formatDateAndTime({toFormat:ATAOriginnum})
+
+			const DeparturePerformance = Number((ETDOriginnum-ATAOriginnum) / (1000 * 60 * 60 * 24)).toFixed(2);
+			
+			const ETDDestinationTime = new Date(KronosTripIDline[line]?.ETDdestTime||null)
+			const ETDDestinationnum = new Date(Date.parse(KronosTripIDline[line]?.ETDdestDate||null+' '+ETDDestinationTime.toLocaleTimeString()))
+			const ETDDestination = await helper.formatDateAndTime({toFormat:ETDDestinationnum})
+
+			const ATADestinationnum = new Date(KronosTripIDline[line]?.ATDdest);
+			const ATADestination = await helper.formatDateAndTime({toFormat:ATADestinationnum})
+
+			const ArrivalPerformance = Number((ETDDestinationnum-ATADestinationnum) / (1000 * 60 * 60 * 24)).toFixed(2); 
+
+			const ApulloutPiernum = new Date(KronosTripIDdel[del]?.ApulloutPier)
+			const ApulloutPier = await helper.formatDateAndTime({toFormat:ApulloutPiernum})
+
+			const StorageDwell = Number((ATADestinationnum-ApulloutPiernum) / (1000 * 60 * 60 * 24)).toFixed(2); 
+			
 			DFreport.push({
-				"Booking Date":result[x].BookingDate||"",												//1
-				"Pickup Date":result[x].PickUpdate||"",													//2
-				"Call Time":CallTimeToDate.toLocaleTimeString('en-US', { timeZone: 'Africa/Abidjan', hour12: true })||"",												//3
-				"Container Size":result[x].ContainerSize||"",											//4
-				"Principal":result[x].Principal||"",													//5
-				"Pickup Site":result[x].ShipFrom||"",													//6
-				"Origin":result[x].ShipTo||"",															//7
-				"Destination":result[x].Destination||"",												//8
-				"Delivery Address":result[x].DeliveryAddress||"",										//9
-				"RDD":result[x].RDD||"",																//10
-				"Trucker Assignment":KronosTripIDpick[pick]?.TruckAssignment||"",						//11
-				"Plate No. Pick":KronosTripIDpick[pick]?.PlateNo||"",										//12
-				"ATA @ Pickup Location": await helper.formatDateAndTime({toFormat:KronosTripIDpick[pick]?.ataPickLoc}),					//13
-				"Call Time duration":CallTimeDuration,													//14
-				"Compliance to Call Time":CompliancetoCallTime,											//15
-				"LCT":LCTToDate.toLocaleTimeString('en-US', { timeZone: 'Africa/Abidjan', hour12: true })||"",				//16
-				"ATA @ Pier for In-Yard":ATAdel,														//17
-				"LCT Duration":LCTDuration,																//18
-				"Compliance to LCT or In-Yard":CompliancetoLCT,											//19
-				"Booking in SL":result[x].BookingSL||"",												//20
-				"Container no.":KronosTripIDpick[pick]?.ContainerNo||"",								//21
-				"Vessel & Voyage":KronosTripIDline[line]?.Voyage||"",									//22
-				"Carrier":KronosTripIDline[line]?.Carrier||"",											//23
-				"ETD Origin":`${KronosTripIDline[line]?.ETDoriginDate||""}-${KronosTripIDline[line]?.ETDoriginTime||""}`,	//24
-				"ATD Origin":await helper.formatDateAndTime({toFormat:KronosTripIDline[line]?.ATDorigin}),								//25
-				"ETA Destination":`${KronosTripIDline[line]?.ETDdestDate||""}-${KronosTripIDline[line]?.ETDdestTime||""}`,	//26
-				"ATA Destination":await helper.formatDateAndTime({toFormat:KronosTripIDline[line]?.ATDdest}),							//27
-				"Discharge Port":result[x].DischargePort,												//28
-				"Actual Pullout from Pier":await helper.formatDateAndTime({toFormat:KronosTripIDdel[del]?.ApulloutPier}),				//29
-				"Trucker":KronosTripIDdel[del]?.trucker||"",											//30
-				"Plate No. Del":KronosTripIDdel[del]?.PlateNo||"",											//31
-				"Actual delivery to consignee":await helper.formatDateAndTime({toFormat:KronosTripIDdel[del]?.ADelConsignee}),			//32
-				"RDD Duration":RDDduration,																//33
-				"Compliance to RDD":CompliancetoRDD,													//34
-				"Dwell Time":"",						//35
-				"Storage dwell time (2 days free)":"",	//36		
-				"Shipment No.":result[x].ShipmentNo||"",												//37
-				"Received by":result[x].ReceivedBy,														//38
-				"Status":KronosTripIDdel[del]?.Remarks||"",												//39
-				"Remarks":KronosTripIDdel[del]?.Remarks||""												//40
+				"Booking Date":result[x].BookingDate||"",																	//1
+				"Pickup Date":result[x].PickUpdate||"",																		//2
+				"Call Time":CallTimeStartDate,																				//3
+				"Container Size":result[x].ContainerSize||"",																//4
+				"Principal":result[x].Principal||"",																		//5
+				"Pickup Site":result[x].ShipFrom||"",																		//6
+				"Origin":result[x].ShipTo||"",																				//7
+				"Destination":result[x].Destination||"",																	//8
+				"Delivery Address":result[x].DeliveryAddress||"",															//9
+				"RDD":result[x].RDD||"",																					//10
+				"Trucker Assignment":KronosTripIDpick[pick]?.TruckAssignment||"",											//11
+				"Plate No. Pick":KronosTripIDpick[pick]?.PlateNo||"",														//12
+				"ATA @ Pickup Location": ATA,																				//13
+				"Call Time duration":ATA?`${CallTimeDuration} Hour(s)`:null,												//14
+				"Compliance to Call Time":ATA?`${CompliancetoCallTime} %`:null,												//15
+				"LCT":LCTStart,																								//16
+				"ATA @ Pier for In-Yard":ATApick,																			//17
+				"LCT Duration":(ATApick&&LCTStart)?`${LCTDuration} Hour(s)`:null,														//18
+				"Compliance to LCT or In-Yard":(ATApick&&LCTStart)?CompliancetoLCT:null,												//19
+				"Booking in SL":result[x].BookingSL||"",																	//20
+				"Container no.":KronosTripIDpick[pick]?.ContainerNo||"",													//21
+				"Vessel & Voyage":KronosTripIDline[line]?.Voyage||"",														//22
+				"Carrier":KronosTripIDline[line]?.Carrier||"",																//23
+				"ETD Origin":ETDOrigin,																						//24
+				"ATD Origin":ATAOrigin,																						//25
+				"Departure Reliability Performance":ETDOrigin?`${DeparturePerformance} Day(s)`:null,						//26
+				"ETA Destination":ETDDestination,																			//27
+				"ATA Destination":ATADestination,																			//28
+				"Arrival Reliability Performance":ETDDestination?`${ArrivalPerformance} Day(s)`:null,						//29
+				"Discharge Port":result[x].DischargePort,																	//30
+				"Actual Pullout from Pier":ApulloutPier,																	//31
+				"Trucker":KronosTripIDdel[del]?.trucker||"",																//32
+				"Plate No. Del":KronosTripIDdel[del]?.PlateNo||"",															//33
+				"Actual delivery to consignee":ActualRDD,																	//34
+				"RDD Duration":ActualRDD?`${RDDduration} Day(s)`:"",														//35
+				"Compliance to RDD":ActualRDD?`${CompliancetoRDD}%`:"",														//36
+				//"Dwell Time":"",																							//37
+				"Storage dwell time (2 days free)":(ATADestination&&ApulloutPier)?`${StorageDwell} Day(s)`:null,		//38
+				"Shipment No.":result[x].ShipmentNo||"",																	//39
+				"Received by":result[x].ReceivedBy,																			//40
+				"Status":KronosTripIDdel[del]?.Remarks||"",																	//42
+				"Remarks":KronosTripIDdel[del]?.Remarks||""																	//43
 			})
 		}
 

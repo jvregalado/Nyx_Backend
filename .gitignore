@@ -2,7 +2,8 @@ node_modules
 ecosystem.config.js
 assets/convertedFiles/*
 assets/dump/*
-assets/templateFiles/*
+assets/SavedFiles/*
+assets/ReportGenerated/*
 assets/uploadedFiles/*
 logs/*
 .env

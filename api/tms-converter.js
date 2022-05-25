@@ -64,7 +64,7 @@ router.post('/', async(req,res) => {
 
 		//console.log(data.id);
 
-		var fd=path.join(__dirname,`../SavedFiles/${fileDirSplit[0]}`);
+		var fd=path.join(__dirname,`../assets/SavedFiles/${fileDirSplit[0]}`);
 
 		if (!fs.existsSync(fd)) 
 			fs.mkdirSync(fd, { recursive: true })

@@ -453,7 +453,7 @@ exports.rtv_converter_to_excel = async({
 exports.generate_JSON_to_Excel_RTV = async({customerCode,toExcel,fileName,res})=>{
 	try
 	{
-		const TempBRpath = path.join(__dirname,'../../../TemplateFiles', 'TempBR.xlsx')
+		const TempBRpath = path.join(__dirname,'../../../assets/TemplateFiles', 'TempBR.xlsx')
 		
 		const TempBRread = xlsx.readFile(TempBRpath);
 		const BasicInfoSheet = TempBRread.Sheets["Basic Info"];

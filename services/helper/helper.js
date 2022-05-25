@@ -24,12 +24,24 @@ exports.sortByProperty = async({
 exports.formatDateAndTime = async({
 	toFormat
 }) => {
-	if(!toFormat)
+	const defaultDate = new Date(null)
+	if(!toFormat||toFormat=="Invalid Date"||defaultDate.toString()===toFormat.toString())
 	{
 		return '';
 	}
 	const newDate = new Date(toFormat)
 	return newDate.toLocaleString('en-US', { timeZone: 'Africa/Abidjan', hour12: true })
+}
+exports.formatTime = async({
+	toFormat
+}) => {
+	const defaultDate = new Date(null)
+	if(!toFormat||toFormat=="Invalid Date"||defaultDate.toString()===toFormat.toString())
+	{
+		return '';
+	}
+	const newDate = new Date(toFormat)
+	return newDate.toLocaleTimeString('en-US', { timeZone: 'Africa/Abidjan', hour12: true })
 }
 
 exports.remove_File = async({fileDir})=>
