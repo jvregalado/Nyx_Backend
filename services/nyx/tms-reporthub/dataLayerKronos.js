@@ -71,7 +71,7 @@ exports.getDFline = async({
 	try {
 		//const nullTripIDlineArray = TripIDlineArray||['']
 		return await sequelize.query(
-			`git SELECT 
+			`SELECT 
 			trp.trip_log_id			tripIDline,
 			ss.voyage				Voyage,					-- 22
 			ss.shipping_line		Carrier,				-- 23

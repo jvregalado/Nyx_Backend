@@ -80,7 +80,7 @@ router.post('/sp_DFDailyMonitoring_cdi', async(req,res) => {
 			const ATApicknum = new Date(KronosTripIDpick[pick]?.ataInYard)
 			const ATApick = await helper.formatDateAndTime({toFormat:ATApicknum})
 
-			const LCTDuration = (LCTStartnum-ATApicknum) / (1000 * 60 * 60 ); 
+			const LCTDuration = (LCTStartnum-ATApicknum) / (1000 * 60 * 60 ).toFixed(2); 
 			const CompliancetoLCT = (((24+Number(LCTDuration))/24)*100).toFixed(2);
 
 			const ActualRDDnum = new Date(KronosTripIDdel[del]?.ADelConsignee)
@@ -125,22 +125,22 @@ router.post('/sp_DFDailyMonitoring_cdi', async(req,res) => {
 				"Trucker Assignment":KronosTripIDpick[pick]?.TruckAssignment||"",											//11
 				"Plate No. Pick":KronosTripIDpick[pick]?.PlateNo||"",														//12
 				"ATA @ Pickup Location": ATA,																				//13
-				"Call Time duration":ATA?CallTimeDuration:null,																//14
+				"Call Time duration":ATA?`${CallTimeDuration} Hour(s)`:null,																//14
 				"Compliance to Call Time":ATA?`${CompliancetoCallTime} %`:null,												//15
 				"LCT":LCTStart,																								//16
 				"ATA @ Pier for In-Yard":ATApick,																			//17
-				"LCT Duration":LCTDuration,																					//18
-				"Compliance to LCT or In-Yard":CompliancetoLCT,																//19
+				"LCT Duration":ATApick?`${LCTDuration} Hour(s)`:null,																					//18
+				"Compliance to LCT or In-Yard":ATApick?CompliancetoLCT:null,																//19
 				"Booking in SL":result[x].BookingSL||"",																	//20
 				"Container no.":KronosTripIDpick[pick]?.ContainerNo||"",													//21
 				"Vessel & Voyage":KronosTripIDline[line]?.Voyage||"",														//22
 				"Carrier":KronosTripIDline[line]?.Carrier||"",																//23
 				"ETD Origin":ETDOrigin,																						//24
 				"ATD Origin":ATAOrigin,																						//25
-				"Departure Reliability Performance":DeparturePerformance,													//26
+				"Departure Reliability Performance":ETDOrigin?`${DeparturePerformance} Day(s)`:null,													//26
 				"ETA Destination":ETDDestination,																			//27
 				"ATA Destination":ATADestination,																			//28
-				"Arrival Reliability Performance":ArrivalPerformance,														//29
+				"Arrival Reliability Performance":ETDDestination?`${ArrivalPerformance} Day(s)`:null,														//29
 				"Discharge Port":result[x].DischargePort,																	//30
 				"Actual Pullout from Pier":ApulloutPier,	//31
 				"Trucker":KronosTripIDdel[del]?.trucker||"",																//32
