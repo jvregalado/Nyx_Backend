@@ -24,8 +24,7 @@ app.use(express.json({limit: '200mb'}));
 app.use(express.urlencoded({limit: '200mb', extended:true}));
 app.use(cors({ credentials: true, origin: true }))
 app.use(helmet());
-// adding a comment
-//add another comment
+
 /**app setup here */
 app.use(tokenAuthenticator); 		/**middleware setups here {40-50ms increase in response time} */
 app.use(addRequestID); 				/**middleware setups here {1-2ms increase in response time} */ 
