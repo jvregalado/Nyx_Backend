@@ -8,7 +8,7 @@ const { nyxDBConfig } = require('../../config/config');
 
 const sequelize = new Sequelize({
 	...nyxDBConfig,
-	logging: false
+	// logging: false
 	// logging: function(str) {
 	// console.log(`\nNYX MySQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`);
 	// }
@@ -128,17 +128,20 @@ db.module_tbl.hasOne(db.user_tbl, {
 	foreignKey: 'user_id',
 	as:'creator'
 })
+
 db.module_tbl.hasOne(db.user_tbl, {
 	sourceKey: 'updatedBy',
 	foreignKey: 'user_id',
 	as:'modifier'
 })
+
 /**5: ROLE*/
 db.role_hdr_tbl.hasOne(db.user_tbl, {
 	sourceKey: 'createdBy',
 	foreignKey: 'user_id',
 	as:'creator'
 })
+
 db.role_hdr_tbl.hasOne(db.user_tbl, {
 	sourceKey: 'updatedBy',
 	foreignKey: 'user_id',
@@ -190,5 +193,85 @@ db.datasync_log_dtl_tbl.hasOne(db.user_tbl, {
 	as:'modifier'
 })
 
+
+//wbs-employee
+db.wbs_employee_tbl.hasOne(db.user_tbl,{
+	sourceKey:'emp_nyx_user_id',
+	foreignKey:'user_id',
+	as:'user_tbl'
+})
+
+db.wbs_employee_tbl.hasMany(db.wbs_employee_role_dtl_tbl,{
+	sourceKey:'emp_id',
+	foreignKey:'emp_id',
+	as:'employee_role'
+})
+
+db.wbs_employee_tbl.hasMany(db.wbs_employee_vl_tbl,{
+	sourceKey:'emp_id',
+	foreignKey:'emp_id',
+	as:'vacation_leave'
+})
+
+db.wbs_employee_tbl.hasMany(db.wbs_employee_work_hours,{
+	sourceKey:'emp_id',
+	foreignKey:'emp_id',
+	as:'working_hours'
+})
+
+//wbs-role-detail
+db.wbs_employee_role_dtl_tbl.hasOne(db.wbs_employee_tbl,{
+	sourceKey:'emp_id',
+	foreignKey:'emp_id',
+	as:'emp_tbl'
+})
+
+
+//wbs project codes
+db.wbs_project_hdr_tbl.hasMany(db.wbs_project_resource_role_tbl,{
+	sourceKey:'project_code',
+	foreignKey:'project_code',
+	as:'project_roles'
+})
+
+
+//project role resource
+db.wbs_project_resource_role_tbl.hasOne(db.wbs_employee_role_tbl,{
+	sourceKey:'project_role',
+	foreignKey:'role_id',
+	as:'role'
+})
+
+db.wbs_project_resource_role_tbl.hasOne(db.wbs_service_catalogs_hdr_tbl,{
+	sourceKey:'project_service_catalog',
+	foreignKey:'catalog_id',
+	as:'service_catalog'
+})
+
+
+//project emp
+db.wbs_project_resource_emp_tbl.hasOne(db.wbs_employee_tbl,{
+	sourceKey:'emp_id',
+	foreignKey:'emp_id',
+	as:'employee'
+})
+
+db.wbs_project_resource_emp_tbl.hasOne(db.wbs_project_hdr_tbl,{
+	sourceKey:'project_code',
+	foreignKey:'project_code',
+	as:'project'
+})
+
+db.wbs_project_resource_emp_tbl.hasOne(db.wbs_employee_role_tbl,{
+	sourceKey:'project_role',
+	foreignKey:'role_id',
+	as:'employee_role'
+})
+
+db.wbs_project_resource_emp_tbl.hasOne(db.wbs_project_resource_role_tbl,{
+	sourceKey:'project_code',
+	foreignKey:'project_code',
+	as:'project_roles'
+})
 
 module.exports = db;
