@@ -4,6 +4,7 @@ const router = require('express').Router();
 const { masterService } = require('../services/hw');
 const { employeeRoleService, reasoncodeService, moduleService, reportService, quickCodeService, userService, employeeService} = require('../services/nyx');
 const serviceCatalogService = require('../services/nyx/wbs-serviceCatalog')
+
 router.get('/administration/:type', async(req,res) => {
 	try {
 		const {type} = req.params;

@@ -123,8 +123,9 @@ router.post('/', async(req,res) => {
 		})
 	}
 
- })
- router.get('/', async(req,res) => {
+})
+
+router.get('/', async(req,res) => {
 	try {
 		let query = req.query;
 
@@ -147,7 +148,7 @@ router.post('/', async(req,res) => {
 	}
 })
 
- router.get('/details', async(req,res) => {
+router.get('/details', async(req,res) => {
 	try {
 		let query = req.query;
 

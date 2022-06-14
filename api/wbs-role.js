@@ -62,6 +62,7 @@ router.get('/',async(req,res)=>{
 		})
 	}
 })
+
 router.get('/:role_id',async(req,res)=>{
 	try {
 		const {role_id} = req.params;
