@@ -5,6 +5,4 @@ assets/dump/*
 assets/SavedFiles/*
 assets/ReportGenerated/*
 assets/uploadedFiles/*
-logs/*
 .env
-*.log
