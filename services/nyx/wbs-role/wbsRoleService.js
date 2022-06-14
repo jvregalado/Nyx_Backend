@@ -37,6 +37,16 @@ exports.getRole = async({filters})=>{
     }
 }
 
+exports.getAllRoles = async({filters})=>{
+    try{
+        return await dataLayer.getAllRoles({filters})
+
+    }
+    catch(e){
+        throw e
+    }
+}
+
 exports.getRoleDetails = async({filters}) => {
     try{
         return await dataLayer.getRoleDetails({filters})

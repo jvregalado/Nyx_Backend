@@ -2,8 +2,8 @@
 
 const router = require('express').Router();
 const { masterService } = require('../services/hw');
-const { roleService, reasoncodeService, moduleService, reportService, quickCodeService, userService, employeeService} = require('../services/nyx');
-
+const { employeeRoleService, reasoncodeService, moduleService, reportService, quickCodeService, userService, employeeService} = require('../services/nyx');
+const serviceCatalogService = require('../services/nyx/wbs-serviceCatalog')
 router.get('/administration/:type', async(req,res) => {
 	try {
 		const {type} = req.params;
@@ -179,9 +179,33 @@ router.get('/employee', async(req,res)=>{
 	}
 })
 
+router.get('/employee/:role',async(req,res)=>{
+	try{
+		const {role} = req.params
+		const data = await employeeService.getAllEmployees({
+			filters:{
+				emp_status:'ACTIVE',
+				'$employee_role.role_id$':role
+			}
+		})
+
+		res.status(200).json({
+			data:data.map(item => {
+				return {
+					label:item.user_email,
+					value:item.emp_id
+				}
+			})
+		})
+	}
+	catch(e){
+
+	}
+})
+
 router.get('/user', async(req,res)=>{
 	try{
-		const {type} = req.params;
+		//const {type} = req.params;
 
 		const data = await userService.getAllUser({
 			filters:{
@@ -207,6 +231,91 @@ router.get('/user', async(req,res)=>{
 		})
 	}
 })
+
+router.get('/role', async(req,res) => {
+	try{
+
+		const data = await employeeRoleService.getAllRoles({
+			filters:{
+				role_status:'ACTIVE'
+			}
+		})
+
+		res.status(200).json({
+			data:data.map(item => {
+				return {
+					label:item.role_name,
+					value:item.role_id
+				}
+			})
+		})
+
+	}
+	catch(e){
+		console.log(e);
+		res.status(500).json({
+			message:`${e}`
+		})
+	}
+})
+
+router.get('/service-catalog', async(req,res) => {
+	try{
+
+		const data = await serviceCatalogService.getAllServiceCatalog({
+			filters:{
+				cat_status:'ACTIVE'
+			}
+		})
+
+		res.status(200).json({
+			data:data.map(item => {
+				return {
+					label:item.cat_name,
+					value:item.catalog_id
+				}
+			})
+		})
+
+	}
+	catch(e){
+		console.log(e);
+		res.status(500).json({
+			message:`${e}`
+		})
+	}
+})
+
+router.get('/l2-service-catalog/:service_catalog',async(req,res)=>{
+	try{
+		const {service_catalog} = req.params;
+
+		const data = await serviceCatalogService.getSubServiceCatalog({
+			filters:{
+				catalog_id: service_catalog
+			}
+		})
+
+		res.status(200).json({
+			data:data.map(item => {
+				return {
+					label: item.sub_catalog_name,
+					value: item.id
+				}
+			})
+		})
+
+
+	}
+	catch(e){
+		console.log(e);
+		res.status(500).json({
+			message:`${e}`
+		})
+	}
+})
+
+
 
 
 

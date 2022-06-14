@@ -9,6 +9,8 @@ module.exports = {
 	employeeService		: require('./wbs-employee'),
 	employeeRoleService : require('./wbs-role'),
 	calendarService		: require('./wbs-calendar'),
-	catalogService		: require('./wbs-serviceCatalog')
+	catalogService		: require('./wbs-serviceCatalog'),
+	projectService		: require('./wbs-project'),
+	techHoursService    : require('./wbs-techHours')
 
 }

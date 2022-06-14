@@ -1,19 +1,32 @@
 'use strict';
+
 module.exports=(sequelize,DataTypes) => {
-    const wbs_service_catalogs_hdr_tbl = sequelize.define('wbs_service_catalogs_hdr_tbl',{
-        catalog_id:{
+    const wbs_employee_vl_tbl = sequelize.define('wbs_employee_vl_tbl',{
+        id:{
             allowNull: false,
 			primaryKey: true,
 			type: DataTypes.UUID,
 			defaultValue: DataTypes.UUIDV4  
         },
-        cat_name:{
+        emp_id:{
             type: DataTypes.STRING,
-			//allowNull: false
+			allowNull: false
         },
-        cat_status:{
+        vl_reason:{
             type: DataTypes.STRING,
+			// allowNull: false
         },  
+        vl_date_from:{
+            type: DataTypes.DATEONLY,
+			// allowNull: false
+        },
+        vl_date_to:{
+            type:DataTypes.DATEONLY,
+        },
+        is_active:{
+            type: DataTypes.STRING,
+			// allowNull: false
+        },
         createdAt:DataTypes.DATE,
         updatedAt:DataTypes.DATE,
         created_by:{
@@ -28,5 +41,5 @@ module.exports=(sequelize,DataTypes) => {
        
     })
 
-    return wbs_service_catalogs_hdr_tbl
+    return wbs_employee_vl_tbl
 }

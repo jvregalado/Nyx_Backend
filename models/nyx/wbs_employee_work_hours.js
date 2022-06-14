@@ -1,19 +1,35 @@
 'use strict';
+
 module.exports=(sequelize,DataTypes) => {
-    const wbs_service_catalogs_hdr_tbl = sequelize.define('wbs_service_catalogs_hdr_tbl',{
-        catalog_id:{
+    const wbs_employee_vl_tbl = sequelize.define('wbs_employee_work_hours',{
+        id:{
             allowNull: false,
 			primaryKey: true,
 			type: DataTypes.UUID,
 			defaultValue: DataTypes.UUIDV4  
         },
-        cat_name:{
+        emp_id:{
             type: DataTypes.STRING,
-			//allowNull: false
+			allowNull: false
         },
-        cat_status:{
+        day_of_week:{
             type: DataTypes.STRING,
+			// allowNull: false
         },  
+        work_hours:{
+            type:DataTypes.DECIMAL
+			// allowNull: false
+        },
+        scrum_hours:{
+            type:DataTypes.DECIMAL
+        },
+        lunch_break:{
+            type:DataTypes.DECIMAL
+			// allowNull: false
+        },
+        support_hours:{
+            type:DataTypes.DECIMAL
+        },
         createdAt:DataTypes.DATE,
         updatedAt:DataTypes.DATE,
         created_by:{
@@ -28,5 +44,5 @@ module.exports=(sequelize,DataTypes) => {
        
     })
 
-    return wbs_service_catalogs_hdr_tbl
+    return wbs_employee_vl_tbl
 }

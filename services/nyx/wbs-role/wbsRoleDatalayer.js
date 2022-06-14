@@ -1,18 +1,6 @@
 const models = require('../../../models/nyx');
-
 const {useFormatFilters} = require('../../../helpers');
 const {globalSearchFilter} = useFormatFilters;
-
-const createRole = async({data}) => {
-    try{
-        return await models.wbs_employee_role_tbl.create({
-            ...data
-        })
-    }
-    catch(e){
-        throw e
-    }
-}
 
 const getRole = async({filters}) => {
     try{
@@ -69,24 +57,6 @@ const getPaginatedRole = async({
     }
 }
 
-const bulkCreateRoleDetails = async({
-    data,
-    options
-}) => {
-    try{
-        return await models.wbs_employee_role_dtl_tbl.bulkCreate(
-            data
-        ,{
-            ...options
-        })
-
-    }
-    catch(e){
-        throw e
-    }
-
-}
-
 const getRoleDetails = async({
     filters
 }) => {
@@ -129,10 +99,55 @@ const getRoleDetails = async({
     }
 }
 
+const createRole = async({data}) => {
+    try{
+        return await models.wbs_employee_role_tbl.create({
+            ...data
+        })
+    }
+    catch(e){
+        throw e
+    }
+}
+
+const bulkCreateRoleDetails = async({
+    data,
+    options
+}) => {
+    try{
+        return await models.wbs_employee_role_dtl_tbl.bulkCreate(
+            data
+        ,{
+            ...options
+        })
+
+    }
+    catch(e){
+        throw e
+    }
+}
+
+const getAllRoles = async({filters})=>{
+    try{
+        return await models.wbs_employee_role_tbl.findAll({
+            where:{
+                ...filters
+            }
+        })
+        .then(result => JSON.parse(JSON.stringify(result)))
+    }
+    catch(e){
+        throw e
+    }
+}
+
+
 module.exports = {
     getPaginatedRole,
     getRole,
     getRoleDetails,
+    getAllRoles,
     createRole,
     bulkCreateRoleDetails
+
 }

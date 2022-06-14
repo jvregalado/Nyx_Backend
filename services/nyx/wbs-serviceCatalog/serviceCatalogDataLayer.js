@@ -18,7 +18,7 @@ const createCategory = async({data,options}) => {
     }
 }
 
-const createSubCategory = async({data,options}) => {
+const bulkCreateSubCategory = async({data,options}) => {
     try{
         return await models.wbs_sub_service_catalog_dtl_tbl.bulkCreate(
             data,
@@ -28,6 +28,18 @@ const createSubCategory = async({data,options}) => {
     }
     catch(e){
         throw e
+    }
+}
+
+const bulkCreateL3Catalog = async({data,options})=>{
+    try {
+        return await models.wbs_service_catalog_l3_dtl_tbl.bulkCreate(data,
+            {
+                ...options
+            })    
+    } 
+    catch (error) {
+        throw error
     }
 }
 
@@ -41,7 +53,7 @@ const createCategoryTransaction =async({header,details}) => {
                 }
             })
 
-            await createSubCategory({
+            await bulkCreateSubCategory({
                 data:details.map(item => {
                     return {
                         ...item,
@@ -91,11 +103,6 @@ const getPaginatedServiceCatalogs = async({
 			count,
 			rows
 		}
-
-        
-
-
-
     }
     catch(e){
         throw e
@@ -132,9 +139,100 @@ const getServiceCatalog = async({filters})=>{
     }
 }
 
+const getAllServiceCatalog = async({filters})=>{
+    try{
+        return await models.wbs_service_catalogs_hdr_tbl.findAll({
+            where:{
+                ...filters
+            }
+        })
+    }
+    catch(e){
+        throw e
+    }
+}
+
+const getAllL3ServiceCatalog = async({filters})=>{
+    try{
+        return await models.wbs_service_catalog_l3_dtl_tbl.findAll({
+           where:{
+               ...filters
+           }
+        })
+        .then(result => JSON.parse(JSON.stringify(result)))
+    }
+    catch(e){
+        throw e
+    }
+}
+
+
+const updateServiceCatalog = async({
+    filters,
+    data,
+    options
+}) => {
+    try{
+
+        return await models.wbs_service_catalogs_hdr_tbl.update({
+            ...data
+        },
+        {
+            where:{
+                ...filters
+            },
+            ...options
+        })
+
+    }
+    catch(e){
+        throw e
+    }
+}
+
+const updateServiceCatalogTransaction = async({
+    header,
+    filters,
+    details
+})=>{
+    try{
+        return await sequelize.transaction(async t=> {
+            await updateServiceCatalog({
+                data:{
+                    ...header
+                },
+                filters:{
+                    ...filters
+                },
+                options:{
+                    transaction : t
+                }
+            })
+
+            await bulkCreateSubCategory({
+                data:details,
+                options:{
+                    transaction:t,
+                    updateOnDuplicate:['is_active','updated_by']
+                }
+            })
+
+
+        })
+    }
+    catch(e){
+        throw e
+    }
+}
+
 module.exports = {
     createCategoryTransaction,
+    bulkCreateL3Catalog,
     getPaginatedServiceCatalogs,
     getSubServiceCatalog,
-    getServiceCatalog
+    getServiceCatalog,
+    getAllServiceCatalog,
+    getAllL3ServiceCatalog,
+    updateServiceCatalog,
+    updateServiceCatalogTransaction
 }
