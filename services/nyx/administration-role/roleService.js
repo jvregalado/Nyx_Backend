@@ -6,12 +6,12 @@ const dataLayer = require('./dataLayer');
 exports.createRole = async({
 	...data
 }) => {
-	try{
+	try {
 		return await dataLayer.createRole({
 			...data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -19,7 +19,7 @@ exports.createRole = async({
 exports.getPaginatedRole = async({
 	filters
 }) => {
-	try{
+	try {
 		let {orderBy,page,totalPage,...newFilters} = filters
 		return await dataLayer.getPaginatedRole({
 			//orderBy:orderBy.split(','),
@@ -30,7 +30,7 @@ exports.getPaginatedRole = async({
 			}
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -38,12 +38,12 @@ exports.getPaginatedRole = async({
 exports.getAllRole = async({
 	filters
 }) => {
-	try{
+	try {
 		return await dataLayer.getAllRole({
 			filters
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -52,13 +52,13 @@ exports.updateRole = async({
 	filters,
 	data
 }) => {
-	try{
+	try {
 		return await dataLayer.updateRole({
 			filters,
 			data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -66,12 +66,12 @@ exports.updateRole = async({
 exports.getRoleDetails = async({
 	filters
 }) => {
-	try{
+	try {
 		return await dataLayer.getRoleDetails({
 			filters
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -79,12 +79,12 @@ exports.getRoleDetails = async({
 exports.getRoleDetailsAndAllModules = async({
 	filters
 }) => {
-	try{
+	try {
 		return await dataLayer.getRoleDetailsAndAllModules({
 			filters
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -92,12 +92,12 @@ exports.getRoleDetailsAndAllModules = async({
 exports.putRoleDetails = async({
 	data
 }) => {
-	try{
+	try {
 		return await dataLayer.putRoleDetails({
 			data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

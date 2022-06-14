@@ -1,118 +1,115 @@
 const Sequelize = require('sequelize')
 
 const defaultFilter = ({
-    model,
-    filters
+	model,
+	filters
 }) => {
 
-    let formattedFilters = filters;
-        const attributes = Object.keys(model)
-        Object.keys(filters).map(field => {
-            if(field === 'delivery_date'){
-                formattedFilters={
-                    ...formattedFilters,
-                    delivery_date: {
-                        [Sequelize.Op.between]:filters.delivery_date.split(',')
-                    }
-                }
-            }
-            if(field==='search'){
-                let fields = {}
-                attributes.map(item => (fields[item] = filters.search))
-                formattedFilters={
-                    ...formattedFilters,
-                    [Sequelize.Op.or]:fields
-                }
+	let formattedFilters = filters;
+		const attributes = Object.keys(model)
+		Object.keys(filters).map(field => {
+			if(field === 'delivery_date'){
+				formattedFilters={
+					...formattedFilters,
+					delivery_date: {
+						[Sequelize.Op.between]:filters.delivery_date.split(',')
+					}
+				}
+			}
+			if(field==='search'){
+				let fields = {}
+				attributes.map(item => (fields[item] = filters.search))
+				formattedFilters={
+					...formattedFilters,
+					[Sequelize.Op.or]:fields
+				}
 
-                delete formattedFilters["search"]
-            }
-        })
+				delete formattedFilters["search"]
+			}
+		})
 
-        return formattedFilters
+		return formattedFilters
 }
 
 const revenueLeakFilter = ({model,
-    filters}) => {
-        let formattedFilters = filters;
-        const attributes = Object.keys(model)
-        Object.keys(filters).map(field => {
-         
-            if(field==='search'){
-                let fields = {}
-                attributes.map(item => (fields[`$invoice.${item}$`] = filters.search))
-                formattedFilters={
-                    ...formattedFilters,
-                    [Sequelize.Op.or]:fields
-                }
+	filters}) => {
+		let formattedFilters = filters;
+		const attributes = Object.keys(model)
+		Object.keys(filters).map(field => {
 
-                delete formattedFilters["search"]
-            }
+			if(field==='search'){
+				let fields = {}
+				attributes.map(item => (fields[`$invoice.${item}$`] = filters.search))
+				formattedFilters={
+					...formattedFilters,
+					[Sequelize.Op.or]:fields
+				}
 
-            if(attributes.includes(field)){
-                const att = attributes.filter(att => att === field)
-                formattedFilters={
-                    ...formattedFilters,
-                    [`$invoice.${att[0]}$`]:filters[field]
-                }
+				delete formattedFilters["search"]
+			}
 
-                delete formattedFilters[field]
-            }
+			if(attributes.includes(field)){
+				const att = attributes.filter(att => att === field)
+				formattedFilters={
+					...formattedFilters,
+					[`$invoice.${att[0]}$`]:filters[field]
+				}
 
-            if(field==='rdd'){
-                console.log(filters.rdd.split(','))
-                formattedFilters={
-                    ...formattedFilters,
-                    '$invoice.rdd$':{
-                        [Sequelize.Op.between]:filters.rdd.split(',')
-                    }
-                }
-                delete formattedFilters['rdd']
-            }
-            
+				delete formattedFilters[field]
+			}
 
-        })
+			if(field==='rdd'){
+				formattedFilters={
+					...formattedFilters,
+					'$invoice.rdd$':{
+						[Sequelize.Op.between]:filters.rdd.split(',')
+					}
+				}
+				delete formattedFilters['rdd']
+			}
+		})
 
-        return formattedFilters
+		return formattedFilters
 }
 
 const globalSearchFilter = ({
-    model,
-    filters
+	model,
+	filters
 }) => {
-    try{
-        
-        let formattedFilters = filters;
-        const attributes = Object.keys(model)
-        Object.keys(filters).map(field => {
-            if(field==='search'){
-                let fields = []
+	try {
 
-                for(const attribute of attributes){
-                    fields.push({
-                        [attribute]:{
-                            [Sequelize.Op.like]:'%'+filters.search+'%'
-                        }
-                    })
-                }
+		let formattedFilters = filters;
+		const attributes = Object.keys(model)
+		Object.keys(filters).map(field => {
+			if(field==='search'){
+				let fields = []
 
-                formattedFilters={
-                    ...formattedFilters,
-                    [Sequelize.Op.or]:fields
-                }
+				for(const attribute of attributes){
+					fields.push({
+						[attribute]:{
+							[Sequelize.Op.like]:'%'+filters.search+'%'
+						}
+					})
+				}
 
-                delete formattedFilters["search"]
-            }
-        })
+				formattedFilters={
+					...formattedFilters,
+					[Sequelize.Op.or]:fields
+				}
 
-        return formattedFilters
-    }
-    catch(e){
-        throw e
-    }
+				delete formattedFilters["search"]
+			}
+		})
+
+		return formattedFilters
+	}
+	catch(e) {
+		throw e
+	}
 }
 
 module.exports={
-    defaultFilter,
-    revenueLeakFilter,
-    globalSearchFilter
+	defaultFilter,
+	revenueLeakFilter,
+	globalSearchFilter
 }

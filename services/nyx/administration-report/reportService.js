@@ -5,12 +5,12 @@ const dataLayer = require('./dataLayer');
 exports.createReport = async({
 	...data
 }) => {
-	try{
+	try {
 		return await dataLayer.createReport({
 			...data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -18,7 +18,7 @@ exports.createReport = async({
 exports.getPaginatedReport = async({
 	filters
 }) => {
-	try{
+	try {
 		let {orderBy,page,totalPage,...newFilters} = filters
 		return await dataLayer.getPaginatedReport({
 			orderBy:orderBy.split(','),
@@ -29,7 +29,7 @@ exports.getPaginatedReport = async({
 			}
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -37,12 +37,12 @@ exports.getPaginatedReport = async({
 exports.getAllReport = async({
 	filters
 }) => {
-	try{
+	try {
 		return await dataLayer.getAllReport({
 			filters
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -51,13 +51,13 @@ exports.updateReport = async({
 	filters,
 	data
 }) => {
-	try{
+	try {
 		return await dataLayer.updateReport({
 			filters,
 			data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

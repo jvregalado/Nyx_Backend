@@ -1,7 +1,7 @@
 {
  "name": "Nyx App",
  "version": "0.0.1",
- "description": "Node js app for the internal reporting, interfacing of Kerry Logistikus Inc.",
+ "description": "Node js app for the internal reporting, interfacing and middleware of Kerry Logistikus Inc.",
  "main": "app.js",
  "scripts": {
   "server": "env-cmd -f ./.env nodemon app.js",

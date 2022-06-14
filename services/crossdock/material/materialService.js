@@ -5,12 +5,12 @@ const dataLayer = require('./dataLayer');
 exports.getLatestMaterial = async({
 	server
 }) => {
-	try{
+	try {
 		return await dataLayer.getLatestMaterial({
 			server
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -18,12 +18,12 @@ exports.getLatestMaterial = async({
 exports.getAllMaterial_fromZeus2_byDate = async({
 	date
 }) => {
-	try{
+	try {
 		return await dataLayer.getAllMaterial_fromZeus2_byDate({
 			date
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -32,13 +32,13 @@ exports.upsertMaterial = async({
 	server,
 	data
 }) => {
-	try{
+	try {
 		return await dataLayer.upsertMaterial({
 			server,
 			data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

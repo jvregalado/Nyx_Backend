@@ -10,7 +10,7 @@ exports.generateToken = async({
 	user_id,
 	user_email
 }) => {
-	try{
+	try {
 		const token = jwt.sign({user_email:user_email,user_id:user_id},secret,{
 			expiresIn:token_expiry
 		})
@@ -21,7 +21,7 @@ exports.generateToken = async({
 			expiry:decode.exp
 		}
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -32,7 +32,7 @@ exports.saveUserSession = async({
 	user_token,
 	user_token_expiry
 }) => {
-	try{
+	try {
 
 		return await dataLayer.upsertUserSession({
 			user_id,
@@ -42,7 +42,7 @@ exports.saveUserSession = async({
 		})
 
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -52,7 +52,7 @@ exports.getUserSession = async({
 	user_email,
 	user_token
 }) => {
-	try{
+	try {
 
 		return await dataLayer.getUserSession({
 			user_id,
@@ -61,7 +61,7 @@ exports.getUserSession = async({
 		})
 
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

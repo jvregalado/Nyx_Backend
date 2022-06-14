@@ -15,7 +15,6 @@ exports.getHWmaintainedSKUs = async({
 				type:sequelize.QueryTypes.SELECT
 			})
 		.then((result) => {
-			//console.log(result)
 			return JSON.parse(JSON.stringify(result))
 		})
 	}

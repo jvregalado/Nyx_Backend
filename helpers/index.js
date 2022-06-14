@@ -1,3 +1,3 @@
 module.exports = {
-    useFormatFilters:require('./useFormatFilters')
+	useFormatFilters:require('./useFormatFilters')
 }

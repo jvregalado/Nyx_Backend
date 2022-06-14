@@ -19,7 +19,7 @@ router.get('/report-sourcecode', async(req,res) => {
 			data:result
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -43,7 +43,7 @@ router.get('/', async(req,res) => {
 		})
 
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -60,7 +60,7 @@ router.get('/details', async(req,res) => {
 
 		res.status(200).json()
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -131,7 +131,6 @@ router.post('/', async(req,res) => {
 			logsToInsert_Header,
 			logsToInsert_Detail,
 		})
-		// console.log('logs',logs)
 
 		/**UPSERT DATA TO TARGER SERVER */
 		await primaryCustService.upsertPrimaryCustomer({ server: targetCode, data: dataToInsert_priCust })
@@ -148,7 +147,6 @@ router.post('/', async(req,res) => {
 				datasync_status			: true
 			}
 		})
-		// console.log('update_logs',update_logs)
 
 		await tmsDataSyncService.updateDataSyncLog({
 			data : update_logs
@@ -156,7 +154,7 @@ router.post('/', async(req,res) => {
 
 		res.status(200).end()
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`

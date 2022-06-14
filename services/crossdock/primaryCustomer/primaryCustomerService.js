@@ -5,12 +5,12 @@ const dataLayer = require('./dataLayer');
 exports.getLatestPrimaryCustomer = async({
 	server
 }) => {
-	try{
+	try {
 		return await dataLayer.getLatestPrimaryCustomer({
 			server
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -18,12 +18,12 @@ exports.getLatestPrimaryCustomer = async({
 exports.getAllPrimaryCustomer_fromZeus2_byDate = async({
 	date
 }) => {
-	try{
+	try {
 		return await dataLayer.getAllPrimaryCustomer_fromZeus2_byDate({
 			date
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -32,13 +32,13 @@ exports.upsertPrimaryCustomer = async({
 	server,
 	data
 }) => {
-	try{
+	try {
 		return await dataLayer.upsertPrimaryCustomer({
 			server,
 			data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

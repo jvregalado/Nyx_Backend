@@ -6,12 +6,12 @@ const models = require('../../../models/nyx');
 exports.createDataSyncLog = async({
 	...data
 }) => {
-	try{
+	try {
 		return await dataLayer.createDataSyncLog({
 			...data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -19,7 +19,7 @@ exports.createDataSyncLog = async({
 exports.getPaginatedDataSyncLog = async({
 	filters
 }) => {
-	try{
+	try {
 		let {orderBy,page,totalPage,...newFilters} = filters
 		return await dataLayer.getPaginatedDataSyncLog({
 			orderBy:orderBy.split(','),
@@ -30,7 +30,7 @@ exports.getPaginatedDataSyncLog = async({
 			}
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -39,14 +39,14 @@ exports.updateDataSyncLog = async({
 	filters,
 	data
 }) => {
-	try{
+	try {
 
 		return await dataLayer.updateDataSyncLog({
 			filters,
 			data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

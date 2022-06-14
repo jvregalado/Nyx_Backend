@@ -7,7 +7,11 @@ const Sequelize = require('sequelize');
 
 const {hwConfig} = require('../../config/config');
 const sequelize = new Sequelize({
-	...hwConfig
+	...hwConfig,
+	// logging: false
+	// logging: function(str) {
+	// console.log(`\nHWS MySQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`);
+	// }
 });
 
 let db = {};

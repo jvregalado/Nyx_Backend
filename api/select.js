@@ -22,7 +22,6 @@ router.get('/administration/:type', async(req,res) => {
 				break;
 			case 'report':
 				resultData = await reportService.getAllReport({filters:{report_status:true}})
-				//console.log('resultData',resultData.length)
 				selectData = await resultData.reduce((acc, cur) => {
 					if(cur.report_module_fk?.module_code === module_code) {
 						acc.push({	value : cur.report_id,
@@ -31,7 +30,6 @@ router.get('/administration/:type', async(req,res) => {
 					}
 					return acc;
 				},[])
-				//console.log('selectData',selectData.length)
 				break;
 			case 'role':
 				resultData = await roleService.getAllRole({filters:{role_status:true}})
@@ -50,7 +48,7 @@ router.get('/administration/:type', async(req,res) => {
 			data:selectData
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -72,8 +70,8 @@ router.get('/reasoncode/:type', async(req,res) => {
 			throw new Error(`Select type: '${type}', found 0 results from reason code table.`)
 		}
 
-		let selectData = resultData.map(item => 
-			{ 
+		let selectData = resultData.map(item =>
+			{
 				return {
 					value	:item.rc_id,
 					label	:`${item.rc_code} : ${item.rc_desc}`
@@ -84,7 +82,7 @@ router.get('/reasoncode/:type', async(req,res) => {
 			data:selectData
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -117,7 +115,7 @@ router.get('/masterdata/:type', async(req,res) => {
 		}
 
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -126,7 +124,7 @@ router.get('/masterdata/:type', async(req,res) => {
 })
 
 router.get('/quick-code/:type', async(req,res)=>{
-	try{
+	try {
 		const {type} = req.params;
 
 		const data = await quickCodeService.getAllQuickCodes({
@@ -146,7 +144,7 @@ router.get('/quick-code/:type', async(req,res)=>{
 		})
 
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -155,7 +153,7 @@ router.get('/quick-code/:type', async(req,res)=>{
 })
 
 router.get('/employee', async(req,res)=>{
-	try{
+	try {
 		const data = await employeeService.getAllEmployees({
 			filters:{
 				emp_status:'ACTIVE'
@@ -171,7 +169,7 @@ router.get('/employee', async(req,res)=>{
 			})
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -180,7 +178,7 @@ router.get('/employee', async(req,res)=>{
 })
 
 router.get('/employee/:role',async(req,res)=>{
-	try{
+	try {
 		const {role} = req.params
 		const data = await employeeService.getAllEmployees({
 			filters:{
@@ -198,13 +196,13 @@ router.get('/employee/:role',async(req,res)=>{
 			})
 		})
 	}
-	catch(e){
+	catch(e) {
 
 	}
 })
 
 router.get('/user', async(req,res)=>{
-	try{
+	try {
 		//const {type} = req.params;
 
 		const data = await userService.getAllUser({
@@ -224,7 +222,7 @@ router.get('/user', async(req,res)=>{
 		})
 
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -233,7 +231,7 @@ router.get('/user', async(req,res)=>{
 })
 
 router.get('/role', async(req,res) => {
-	try{
+	try {
 
 		const data = await employeeRoleService.getAllRoles({
 			filters:{
@@ -251,7 +249,7 @@ router.get('/role', async(req,res) => {
 		})
 
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -260,7 +258,7 @@ router.get('/role', async(req,res) => {
 })
 
 router.get('/service-catalog', async(req,res) => {
-	try{
+	try {
 
 		const data = await serviceCatalogService.getAllServiceCatalog({
 			filters:{
@@ -278,7 +276,7 @@ router.get('/service-catalog', async(req,res) => {
 		})
 
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -287,7 +285,7 @@ router.get('/service-catalog', async(req,res) => {
 })
 
 router.get('/l2-service-catalog/:service_catalog',async(req,res)=>{
-	try{
+	try {
 		const {service_catalog} = req.params;
 
 		const data = await serviceCatalogService.getSubServiceCatalog({
@@ -304,20 +302,13 @@ router.get('/l2-service-catalog/:service_catalog',async(req,res)=>{
 				}
 			})
 		})
-
-
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
 		})
 	}
 })
-
-
-
-
-
 
 module.exports = router;

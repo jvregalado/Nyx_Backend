@@ -6,7 +6,7 @@ const {aelousZeus2, aelousZeus1, aelousArtemis, aelousEros} = require('../../../
 exports.getLatestMaterial = async({
 	server
 }) => {
-	try{
+	try {
 		let seq_db;
 
 		switch(server) {
@@ -35,7 +35,7 @@ exports.getLatestMaterial = async({
 		,{ type: seq_db.Sequelize.QueryTypes.SELECT })
 		.then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -43,7 +43,7 @@ exports.getLatestMaterial = async({
 exports.getAllMaterial_fromZeus2_byDate = async({
 	date
 }) => {
-	try{
+	try {
 		return await aelousZeus2.material.findAll({
 			where:{
 				[aelousZeus2.Sequelize.Op.or]: [
@@ -61,7 +61,7 @@ exports.getAllMaterial_fromZeus2_byDate = async({
 			}
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -70,7 +70,7 @@ exports.upsertMaterial = async({
 	server,
 	data
 }) => {
-	try{
+	try {
 		let seq_db;
 
 		switch(server) {
@@ -115,7 +115,7 @@ exports.upsertMaterial = async({
 				"deleted" ]
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

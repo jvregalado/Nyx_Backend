@@ -13,7 +13,7 @@ const aelousZeus2 = new Sequelize({
 	...aelousZeus2_DBConfig,
 	logging: false
 	// logging: function(str) {
-	// console.log(`\nNYX MySQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`);
+	// console.log(`\nAelous_Zeus2 MySQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`);
 	// }
 });
 
@@ -21,7 +21,7 @@ const aelousZeus1 = new Sequelize({
 	...aelousZeus1_DBConfig,
 	logging: false
 	// logging: function(str) {
-	// console.log(`\nNYX MySQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`);
+	// console.log(`\nAelous_Zeus1 MySQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`);
 	// }
 });
 
@@ -29,7 +29,7 @@ const aelousArtemis = new Sequelize({
 	...aelousArtemis_DBConfig,
 	logging: false
 	// logging: function(str) {
-	// console.log(`\nNYX MySQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`);
+	// console.log(`\nAelous_Artemis MySQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`);
 	// }
 });
 
@@ -37,7 +37,7 @@ const aelousEros = new Sequelize({
 	...aelousEros_DBConfig,
 	logging: false
 	// logging: function(str) {
-	// console.log(`\nNYX MySQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`);
+	// console.log(`\nAelous_Eros MySQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`);
 	// }
 });
 

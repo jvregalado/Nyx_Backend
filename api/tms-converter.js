@@ -18,7 +18,7 @@ router.get('/report-sourcecode', async(req,res) => {
 			data:result
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -27,29 +27,23 @@ router.get('/report-sourcecode', async(req,res) => {
 })
 
 router.post('/', async(req,res) => {
-	try 
+	try
 	{
 
 		const {data} = req.body;
 		const processor = req.processor;
-		
+
 		if(!data.fileName){
 			throw new Error(`Please upload a file`)
 		}
-		//console.log(data)
 		const file = data.file;
 		const JSONExcel = data.JSONExcel;
-		//console.log(data);
 		const value = data?.value;
 		const fileDir = data.id;
 		const ext = data.fileName.split('.').pop().toLowerCase();
 		const reupload = data.reupload;
 		if((ext!='csv') && (reupload))
 			throw new Error(`You can only re-upload the CSV file!`)
-		// console.log("data",data)
-		// console.log("data.id",data.id)
-		// console.log("data.c_status",data.c_status)
-		// console.log("data.rtvType",data.rtvType)
 		const conversionType = value?.rtvType?.label||data.rtvType
 		if(!conversionType) {
 			throw new Error(`Select Conversion Type!`)
@@ -66,7 +60,7 @@ router.post('/', async(req,res) => {
 
 		var fd=path.join(__dirname,`../assets/SavedFiles/${fileDirSplit[0]}`);
 
-		if (!fs.existsSync(fd)) 
+		if (!fs.existsSync(fd))
 			fs.mkdirSync(fd, { recursive: true })
 
 		const fileName = fileDir+`.`+ext;
@@ -79,7 +73,7 @@ router.post('/', async(req,res) => {
 		data.rtv_type=ConversionCode;
 		data.checked_file_name = `${fileDir}.csv`;
 		data.checked_by = processor.user_id;
-		
+
 		//console.log(data)
 		if(file)
 		{
@@ -90,7 +84,7 @@ router.post('/', async(req,res) => {
 				base64Data = file.replace(/^data:text\/csv;base64,/, "");
 			if(ext==`pdf`)
 				base64Data = file.replace(/^data:application\/pdf;base64,/, "");
-			
+
 			fs.writeFile(dir, base64Data,'base64', function(err) {
 				if (err){
 					console.log(dir,"\n\n\n\n\n Can not write to above file:\n\n",err);
@@ -102,17 +96,14 @@ router.post('/', async(req,res) => {
 						ConversionCode,
 						reupload,
 						JSONExcel,res})
-					//console.log(data)
 					if(!reupload)
 						tmsConverterService.createRTVhdr({...data})
 				}
 			});
 		}
 		else{
-			//console.log(fileDir)
-			//console.log("dir",dir,"customerCode",customerCode,"ConversionCode",ConversionCode,"reupload",reupload);
 			tmsConverterService.rtv_converter_to_excel({pdfFile:dir,customerCode,ConversionCode,reupload,JSONExcel,res})
-			
+
 		}
 		tmsConverterService.updateRTVhdr({
 			filters:{
@@ -125,7 +116,7 @@ router.post('/', async(req,res) => {
 		})
 		//res.status(200).end()
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -133,8 +124,6 @@ router.post('/', async(req,res) => {
 	}
 
  })
-
-
  router.get('/', async(req,res) => {
 	try {
 		let query = req.query;
@@ -150,7 +139,7 @@ router.post('/', async(req,res) => {
 			rows:count
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -172,16 +161,16 @@ router.post('/', async(req,res) => {
 			data:result
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
 		})
 	}
 })
- 
+
 router.post('/generate', async(req,res) => {
-	try 
+	try
 	{
 
 		const {data} = req.body;
@@ -190,7 +179,7 @@ router.post('/generate', async(req,res) => {
 		if(!data.pdfFile){
 			throw new Error(`Please upload a file`)
 		}
-		
+
 		for(let x in insertToExcel)
 		{
 			if(insertToExcel[x]["Status"]!=='OK')
@@ -202,7 +191,7 @@ router.post('/generate', async(req,res) => {
 			toExcel:data.toExcel,
 			fileName:data.pdfFile,
 			res})
-		
+
 		tmsConverterService.updateRTVhdr({
 			filters:{
 				id : data.id
@@ -228,9 +217,9 @@ router.post('/generate', async(req,res) => {
 				customer_code:data.customerCode
 			})
 		}
-		
+
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`

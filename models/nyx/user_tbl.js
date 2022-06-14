@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		has_wbs:{
 			type:DataTypes.BOOLEAN,
-			
+
 		},
 		user_email: {
 			type: DataTypes.STRING,

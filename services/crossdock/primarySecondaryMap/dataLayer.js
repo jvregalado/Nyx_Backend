@@ -6,7 +6,7 @@ const {aelousZeus2, aelousZeus1, aelousArtemis, aelousEros} = require('../../../
 exports.getLatestPriSecMap = async({
 	server
 }) => {
-	try{
+	try {
 		let seq_db;
 
 		switch(server) {
@@ -35,7 +35,7 @@ exports.getLatestPriSecMap = async({
 		,{ type: seq_db.Sequelize.QueryTypes.SELECT })
 		.then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -43,7 +43,7 @@ exports.getLatestPriSecMap = async({
 exports.getAllPriSecMap_fromZeus2_byDate = async({
 	date
 }) => {
-	try{
+	try {
 		return await aelousZeus2.primary_secondary_map.findAll({
 			where:{
 				[aelousZeus2.Sequelize.Op.or]: [
@@ -61,7 +61,7 @@ exports.getAllPriSecMap_fromZeus2_byDate = async({
 			}
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -70,7 +70,7 @@ exports.upsertPriSecMap = async({
 	server,
 	data
 }) => {
-	try{
+	try {
 		let seq_db;
 
 		switch(server) {
@@ -104,7 +104,7 @@ exports.upsertPriSecMap = async({
 			]
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

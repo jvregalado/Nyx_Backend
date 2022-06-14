@@ -11,10 +11,10 @@ router.post('/sign-out',(req, res) => {
 })
 
 router.post('/connection',async(req,res) => {
-	try{
+	try {
 		res.status(200).end()
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -23,7 +23,7 @@ router.post('/connection',async(req,res) => {
 })
 
 router.post('/token', async(req,res) => {
-	try{
+	try {
 		const {user_email, user_password, system} = req.body;
 
 		const getUser = await userService.getUser({
@@ -31,8 +31,6 @@ router.post('/token', async(req,res) => {
 				user_email
 			}
 		})
-
-		// console.log(getUser)
 
 		if(!getUser){
 			return res.status(404).json({
@@ -84,7 +82,7 @@ router.post('/token', async(req,res) => {
 			role
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -93,7 +91,7 @@ router.post('/token', async(req,res) => {
 })
 
 router.post('/password_change', async(req, res) => {
-	try{
+	try {
 		const {user_email, user_old_password, user_new_password} = req.body?.data;
 
 		const getUser = await userService.getUser({
@@ -127,7 +125,7 @@ router.post('/password_change', async(req, res) => {
 
 		res.status(200).end()
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`

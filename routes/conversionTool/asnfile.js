@@ -5,13 +5,9 @@ const fs = require('fs');
 const router = require('express').Router();
 
 const masterServices = require('../../services/hw/master/masterServices');
-
-
 const TempASNHoneywell = path.join(__dirname, '../../files/temporaryTemplates/', 'TempASNHoneywell.xlsx')
 const TempASNwb = xlsx.readFile(TempASNHoneywell);
 const WStempASN = TempASNwb.Sheets["ASN Details"];
-
-
 function generatingFile(res, fileName, data) {
 	try {
 		const newBook = xlsx.utils.book_new();
@@ -64,8 +60,6 @@ router.post("/ASNConvert", async (req, res) => {
 			userID
 		} = req.query;
 		const datetime = new Date().toLocaleString();
-
-
 		fromData.sort(sortByProperty("Product Code"));
 		fromData.sort(sortByProperty("Material Document Reference"));
 		fromData.sort(sortByProperty("Trucking Details"));
@@ -98,7 +92,7 @@ router.post("/ASNConvert", async (req, res) => {
 					'Warehouse ID Item': WarehouseID,
 					'ASN LineNO': c,
 					'Customer ID Item': 'CIC',
-                    'SKU': unmaintainedSKU.includes(skuCode) ? `Error: Unmaintained SKU, ${ skuCode}` : skuCode,
+					'SKU': unmaintainedSKU.includes(skuCode) ? `Error: Unmaintained SKU, ${ skuCode}` : skuCode,
 					'Pack ID':skuCode,
 					'SKU Descr(L)': fromData[x]['Description'],
 					'Line Status': '00',
@@ -114,7 +108,7 @@ router.post("/ASNConvert", async (req, res) => {
 					'ASN Reference3': fromData[x]['Plant Code'],
 					'Date Converted': datetime,
 					'Conversion Type': valcon,
-                    'user':userID
+					'user':userID
 				})
 			}
 		}
@@ -151,7 +145,7 @@ router.post("/ASNConvertCMIP", async (req, res) => {
 		for (let x in fromData) {
 			let PrirefDoc = `${fromData[x]['Container Number']}`;
 			let skuCode = `${fromData[x]['Product Code']}`;
-            
+
 			if (refdoc === PrirefDoc) {
 				c++;
 			} else {
@@ -188,7 +182,7 @@ router.post("/ASNConvertCMIP", async (req, res) => {
 					'ASN Reference3': fromData[x]['Invoice Reference'],
 					'Date Converted': datetime,
 					'Conversion Type': valcon,
-                    'user':userID
+					'user':userID
 				})
 			}
 		}
@@ -201,7 +195,7 @@ router.post("/ASNConvertCMIP", async (req, res) => {
 	}
 });
 
-//ASN PO 
+//ASN PO
 router.post("/ASNPo", async (req, res) => {
 	try {
 		var data = xlsx.utils.sheet_to_json(WStempASN);
@@ -334,7 +328,7 @@ router.post("/ASNsto", async (req, res) => {
 			skus: uniqueSKUs
 		})
 
-        var c = 0;
+		var c = 0;
 		var refdoc = '';
 
 		for (let x in fromData) {

@@ -5,12 +5,12 @@ const dataLayer = require('./dataLayer');
 exports.createModule = async({
 	...data
 }) => {
-	try{
+	try {
 		return await dataLayer.createModule({
 			...data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -18,7 +18,7 @@ exports.createModule = async({
 exports.getPaginatedModule = async({
 	filters
 }) => {
-	try{
+	try {
 		let {orderBy,page,totalPage,...newFilters} = filters
 		return await dataLayer.getPaginatedModule({
 			orderBy:orderBy.split(','),
@@ -29,7 +29,7 @@ exports.getPaginatedModule = async({
 			}
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -37,12 +37,12 @@ exports.getPaginatedModule = async({
 exports.getAllModule = async({
 	filters
 }) => {
-	try{
+	try {
 		return await dataLayer.getAllModule({
 			filter:filters
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -51,13 +51,13 @@ exports.updateModule = async({
 	filters,
 	data
 }) => {
-	try{
+	try {
 		return await dataLayer.updateModule({
 			filters,
 			data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

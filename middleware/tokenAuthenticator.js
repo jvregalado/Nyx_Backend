@@ -6,7 +6,7 @@ const secret = process.env.JWT_SECRET;
 const { authService } = require('../services/nyx')
 
 router.use(async(req,res,next) => {
-	try{
+	try {
 		const path = req.originalUrl
 		if(!['/auth/token','/auth/sign-out'].includes(path))
 		{
@@ -48,7 +48,7 @@ router.use(async(req,res,next) => {
 
 		next()
 	}
-	catch(e){
+	catch(e) {
 		console.log(e)
 		return res.status(403).json({
 			message:`${e}`

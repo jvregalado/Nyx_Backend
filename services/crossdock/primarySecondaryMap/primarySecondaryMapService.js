@@ -5,12 +5,12 @@ const dataLayer = require('./dataLayer');
 exports.getLatestPriSecMap = async({
 	server
 }) => {
-	try{
+	try {
 		return await dataLayer.getLatestPriSecMap({
 			server
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -18,12 +18,12 @@ exports.getLatestPriSecMap = async({
 exports.getAllPriSecMap_fromZeus2_byDate = async({
 	date
 }) => {
-	try{
+	try {
 		return await dataLayer.getAllPriSecMap_fromZeus2_byDate({
 			date
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -32,13 +32,13 @@ exports.upsertPriSecMap = async({
 	server,
 	data
 }) => {
-	try{
+	try {
 		return await dataLayer.upsertPriSecMap({
 			server,
 			data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

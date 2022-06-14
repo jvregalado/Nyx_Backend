@@ -10,7 +10,7 @@ const sequelize = new Sequelize({
 	...scmdb_tms,
 	logging: false
 	// logging: function(str) {
-	// console.log(`\nSCMDB MsSQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`);
+	// console.log(`\nSCMDB_TMS MsSQL ${moment().format('YY-MM-DD_HH:mm:ss')}: ${str}`);
 	// }
 });
 

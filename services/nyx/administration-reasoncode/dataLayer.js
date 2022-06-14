@@ -54,7 +54,7 @@ const formatFilters = ({
 
 		return formattedFilters
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -67,7 +67,7 @@ exports.createReasonCode = async({
 			...data
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -127,14 +127,14 @@ exports.getPaginatedReasonCode = async({
 exports.getAllReasonCode = async({
 	filter
 }) => {
-	try{
+	try {
 		return await models.reason_code_tbl.findAll({
 			where:{
 				...filter
 			}
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -144,7 +144,7 @@ exports.updateReasonCode = async({
 	data,
 	option
 }) => {
-	try{
+	try {
 		return await models.reason_code_tbl.update(
 			{
 				...data
@@ -156,7 +156,7 @@ exports.updateReasonCode = async({
 			}
 		).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

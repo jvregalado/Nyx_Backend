@@ -7,17 +7,15 @@ const Excel = require('exceljs');
 const path = require('path');
 const fs = require('fs');
 const xlsx = require('xlsx');
-
-
 exports.getAllrtv = async({
 	filters
 }) => {
-	try{
+	try {
 		return await dataLayer.getAllrtv({
 			filters
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -25,7 +23,7 @@ exports.getAllrtv = async({
 exports.getPaginatedRTV = async({
 	filters
 }) => {
-	try{
+	try {
 
 		let {orderBy,page,totalPage,...newFilters} = filters
 		return await dataLayer.getPaginatedRTV({
@@ -38,7 +36,7 @@ exports.getPaginatedRTV = async({
 		})
 
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -47,13 +45,13 @@ exports.updateRTVhdr = async({
 	filters,
 	data
 }) => {
-	try{
+	try {
 		return await dataLayer.updateRTVhdr({
 			filters,
 			data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -61,12 +59,12 @@ exports.updateRTVhdr = async({
 exports.createRTVhdr = async({
 	...data
 }) => {
-	try{
+	try {
 		return await dataLayer.createRTVhdr({
 			...data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -74,12 +72,12 @@ exports.createRTVhdr = async({
 exports.createRTVdtl = async({
 	...data
 }) => {
-	try{
+	try {
 		return await dataLayer.createRTVdtl({
 			...data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -104,17 +102,11 @@ exports.rtv_converter_to_excel = async({
 			customerCode
 		}) => {
 			let maintainedSTCs = await helper.getData_from_other_API({customerCode});
-		
+
 			let getSTC = maintainedSTCs.data.items;
 
 			let uniqueSTCs = getSTC.filter( i => siteName.includes((i.ship_to_name).toLowerCase()));
 
-			//console.log("uniqueSTCs",uniqueSTCs)
-
-			//let ship_to_code_logistikus = getSTC.filter( i => siteName.includes(i.name_trade))
-
-			//let uniqueSTCs =ship_to_code_primary.concat(ship_to_code_logistikus);
-			//console.log("uniqueSTCs",uniqueSTCs)
 			return uniqueSTCs
 		}
 
@@ -123,13 +115,13 @@ exports.rtv_converter_to_excel = async({
 			customerCode
 		}) => {
 			try {
-		
+
 				let storedRTV = await dataLayer.getStoredRTV({ rtvnoArray,customerCode });
-		
+
 				let uniqueRTV = [... new Set(storedRTV.map(x => x.rtv_no))];
-		
+
 				let difference = rtvnoArray.filter(x => uniqueRTV.includes(x));
-		
+
 				return difference
 			}
 			catch(e) {
@@ -140,7 +132,7 @@ exports.rtv_converter_to_excel = async({
 		let toExcel=[];
 		const filePath = pdfFile.replace('.pdf','.xlsx').replace('.html','.xlsx');
 		const ext = pdfFile.split('.').pop().toLowerCase();
-		//console.log("pdfFile",pdfFile)
+
 		if(reupload)
 		{
 			toExcel=await helper.read_PreConverted({fileName:pdfFile})
@@ -148,31 +140,29 @@ exports.rtv_converter_to_excel = async({
 		if(ConversionCode==`MDLZ-Puregold-HTML`)
 		{
 			const html = fs.readFileSync(pdfFile, 'utf8').replace(/(\r\n|\n|\r)/gm, "");
-			//console.log(html)
 
 			const siteCode1 = `<td width="100"></td><td width="250"></td><td width="200" align="center"><font face="Tahoma" size="2"><b>`
 			const siteCode2 = `</b></font></td><td width="300"></td></tr><tr><td width="100"></td><td width="250"></td><td width="200" align="center"><font face="Tahoma" size="2"><b>*** RTV Shipping Manifest ***`
-			
+
 			const site = html.substring(
-				html.indexOf(siteCode1) + siteCode1.length, 
+				html.indexOf(siteCode1) + siteCode1.length,
 				html.lastIndexOf(siteCode2));
 
-			//console.log(site);
 			const siteCode = site.split(`_`);
 			const site2 = siteCode[1].split(`<br>`);
-			
+
 			const rtv1 = `RTV Number:</b></font></td><td width="175" align="left"><font face="Tahoma" size="2">`
 			const rtv2 = `</font></td></tr><tr style="line-height:100%"><td width="150"></td><td width="100"><font face="Tahoma" size="2"><b>`
-			
+
 			const rtv = html.substring(
-				html.indexOf(rtv1) + rtv1.length, 
+				html.indexOf(rtv1) + rtv1.length,
 				html.lastIndexOf(rtv2));
-			
+
 			const rtvD1 =`Ship Date:</b></font></td><td width="175" align="left"><font face="Tahoma" size="2">`;
 			const rtvD2 = `</font></td></tr></table><hr width="950" align="left"><table><tr><td width="100" align="center"><font face="Tahoma" size="2"><b>`
-			
+
 			const rtvD = html.substring(
-				html.indexOf(rtvD1) + rtvD1.length, 
+				html.indexOf(rtvD1) + rtvD1.length,
 				html.lastIndexOf(rtvD2));
 				toExcel.push({
 					RTV: "'"+rtv,
@@ -191,7 +181,7 @@ exports.rtv_converter_to_excel = async({
 
 			/* read excel */
 			const wb = new Excel.Workbook();
-			
+
 			await wb.xlsx.readFile(filePath).then(function a(){
 				var sh = wb.getWorksheet("Sheet1");
 
@@ -201,11 +191,10 @@ exports.rtv_converter_to_excel = async({
 				if(ConversionCode==`MDLZ-Alfamart-PDF`)
 				{
 					console
-					for (let i = 1; i <= sh.rowCount; i++) 
+					for (let i = 1; i <= sh.rowCount; i++)
 					{
 						if(sh.getRow(i).getCell(8).value=="RTV Number:")
 						{
-							//console.log(sh.getRow(i).getCell(9).value);
 							rtv=sh.getRow(i).getCell(9).value;
 							const rtvDate=sh.getRow(i-8).getCell(4).value;
 							site=sh.getRow(i-4).getCell(1).value;
@@ -216,8 +205,6 @@ exports.rtv_converter_to_excel = async({
 							toExcel.push({
 								RTV: "'"+rtv,
 								"RTV Date": rtvDate.trim(),
-								// "Vendor Code": vendorCode[0],
-								// "Vendor Name": vendorName,
 								"Site Code":"'"+siteCode[0],
 								"Site Name":siteName,
 								"Site Address": siteAddress
@@ -228,7 +215,7 @@ exports.rtv_converter_to_excel = async({
 				if(ConversionCode==`MDLZ-Waltermart-PDF`)
 				{
 					let recordInFile=``;
-					for (let i = 1; i <= sh.rowCount; i++) 
+					for (let i = 1; i <= sh.rowCount; i++)
 					{
 						for(let x = 1; x <= 100;x++)
 						{
@@ -242,18 +229,18 @@ exports.rtv_converter_to_excel = async({
 							if(findValue.includes(`Total articles in this RTV:`))
 							{
 								const rtv = recordInFile.substring(
-									recordInFile.indexOf("RTV NO:") + 7, 
+									recordInFile.indexOf("RTV NO:") + 7,
 									recordInFile.lastIndexOf(" WALTERMART SUPERMARKETAnnouncement"));
 								const rtvDate = recordInFile.substring(
-									recordInFile.indexOf("RO Date:") + 8, 
+									recordInFile.indexOf("RO Date:") + 8,
 									recordInFile.lastIndexOf("Amount:"));
 								const site = recordInFile.substring(
-									recordInFile.indexOf(`Site Code & Name:`) + 17, 
+									recordInFile.indexOf(`Site Code & Name:`) + 17,
 									recordInFile.lastIndexOf("Site Address:"));
 								const siteCode = site.split(' ');
 								const siteName = site.replace(siteCode[0],"").trim();
 								const siteAddress = recordInFile.substring(
-									recordInFile.indexOf(`Site Address:`) + 13, 
+									recordInFile.indexOf(`Site Address:`) + 13,
 									recordInFile.lastIndexOf("Reasons:"));
 								toExcel.push({
 									RTV: "'"+rtv,
@@ -271,7 +258,7 @@ exports.rtv_converter_to_excel = async({
 				}
 				if(ConversionCode==`MDLZ-SM-PDF`)
 				{
-					for (let i = 1; i <= sh.rowCount; i++) 
+					for (let i = 1; i <= sh.rowCount; i++)
 					{
 						if(sh.getRow(i).getCell(8).value)
 						{
@@ -306,7 +293,7 @@ exports.rtv_converter_to_excel = async({
 				{
 					let site;
 					let siteAddress;
-					for (let i = 1; i <= sh.rowCount; i++) 
+					for (let i = 1; i <= sh.rowCount; i++)
 					{
 						if(sh.getRow(i).getCell(8).value=="RTV NO:")
 						{
@@ -344,7 +331,7 @@ exports.rtv_converter_to_excel = async({
 					let site
 					let siteCode
 					let siteName
-					for (let i = 1; i <= sh.rowCount; i++) 
+					for (let i = 1; i <= sh.rowCount; i++)
 					{
 						if(sh.getRow(i).getCell(2).value)
 						{
@@ -356,7 +343,7 @@ exports.rtv_converter_to_excel = async({
 								site=sh.getRow(i).getCell(12).value;
 								siteCode = site.split('-');
 								siteName = site.replace(siteCode[0],"").trim().substring(1);
-						
+
 								//siteAddress="";
 							}
 							else
@@ -380,10 +367,9 @@ exports.rtv_converter_to_excel = async({
 								"Site Name":siteName,
 								//"Site Address": ""
 							})
-						 }
+						}
 					}
 				}
-				
 			});
 		}
 
@@ -396,13 +382,11 @@ exports.rtv_converter_to_excel = async({
 		let uniqueRTV = [...new Set(findUnique.map(x => `${x['RTV'].replace('\'','')}`))];
 
 		let getMaintined = await getMaintainedSTC({siteName:uniqueSiteName,customerCode})
-		
-		let getStored = await getStoredRTV({rtvnoArray:uniqueRTV,customerCode})
-		//console.log("getStored",getStored)
 
-		for (let x in findUnique) 
+		let getStored = await getStoredRTV({rtvnoArray:uniqueRTV,customerCode})
+
+		for (let x in findUnique)
 		{
-			//console.log("(getStored.includes(findUnique[x].RTV.replace('\'','')))",(getStored.includes(findUnique[x].RTV.replace('\'',''))))
 			findUnique[x].Status=(getStored.includes(findUnique[x].RTV.replace('\'','')))?'Duplicate':'Unmaintained'
 		}
 
@@ -412,7 +396,7 @@ exports.rtv_converter_to_excel = async({
 			//let pos = findUnique.multiIndexOf(v => v['Site Code'].replace('\'','') == getMaintined[x]['ship_to_code_primary'])
 			//let pos = findUnique.map((elm, idx) => elm['Site Code'].replace('\'','') == getMaintined[x]['ship_to_code_primary'] ? idx : '').filter(String);
 			let pos = findUnique.reduce((c, v, i) => v['Site Name'].replace('\'','') == getMaintined[x]['ship_to_name'] ? c.concat(i) : c, []);
-			//Change value of Status 
+			//Change value of Status
 			if(pos)
 			{
 				for(let i of pos)
@@ -441,7 +425,7 @@ exports.rtv_converter_to_excel = async({
 			toExcel:findUnique
 		})
 	}
-	catch(e){
+	catch(e) {
 		helper.remove_File({fileDir:pdfFile});
 		helper.remove_File({fileDir:pdfFile.toLowerCase().replace('.pdf','.xlsx').replace('.html','.xlsx')});
 		res.status(500).json({
@@ -454,11 +438,11 @@ exports.generate_JSON_to_Excel_RTV = async({customerCode,toExcel,fileName,res})=
 	try
 	{
 		const TempBRpath = path.join(__dirname,'../../../assets/TemplateFiles', 'TempBR.xlsx')
-		
+
 		const TempBRread = xlsx.readFile(TempBRpath);
 		const BasicInfoSheet = TempBRread.Sheets["Basic Info"];
 		const BasicInfoJSON = xlsx.utils.sheet_to_json(BasicInfoSheet);
-		
+
 		const ConsignmentDetailsSheet = TempBRread.Sheets["Consignment Details"];
 		const ConsignmentDetailsJSON = xlsx.utils.sheet_to_json(ConsignmentDetailsSheet);
 
@@ -472,7 +456,7 @@ exports.generate_JSON_to_Excel_RTV = async({customerCode,toExcel,fileName,res})=
 				'Please DO NOT DELETE THIS Column':1,
 				'Rec No':recno,
 				'Location':'ZEUS',//to change. should not be hardcoded
-				'BR Priority':'Normal',	
+				'BR Priority':'Normal',
 				'Customer ID':'10005',//to change. should not be hardcoded
 				'Cust Ref No':toExcel[x]["rtv"],
 				'Service Type': 'REVERSE LOGISTICS',
@@ -485,7 +469,6 @@ exports.generate_JSON_to_Excel_RTV = async({customerCode,toExcel,fileName,res})=
 			})
 		}
 		//BasicInfoJSON.shift()
-		//console.log(BasicInfoJSON)
 		const newBook = xlsx.utils.book_new();
 		const BasicInfo = xlsx.utils.json_to_sheet(BasicInfoJSON);
 		const ConsignmentDetails = xlsx.utils.json_to_sheet(ConsignmentDetailsJSON);
@@ -496,13 +479,10 @@ exports.generate_JSON_to_Excel_RTV = async({customerCode,toExcel,fileName,res})=
 		xlsx.utils.book_append_sheet(newBook, AddressDetails, "Address Details");
 		const fileoutput = fileName.replace('.xlsx','Generated.xlsx').replace('.pdf','Generated.xlsx').replace('.html','Generated.xlsx').replace('.csv','Generated.xlsx');
 		xlsx.writeFile(newBook, fileoutput)
-		//res.status(200).json({ })
-		//console.log(fileoutput);
 		const contents = fs.readFileSync(fileoutput, {encoding: 'base64'});
-		//console.log("contents",contents)
 		res.status(200).json({contents});
 	}
-	catch(e){
+	catch(e) {
 		res.status(500).json({
 			message:`${e}`
 		})

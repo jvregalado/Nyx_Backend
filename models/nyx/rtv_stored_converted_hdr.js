@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: true,
 			defaultValue: DataTypes.NOW
 		},
-		
+
 		checked_file_name: {
 			type: DataTypes.STRING,
 			allowNull: true

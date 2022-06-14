@@ -4,17 +4,15 @@ const dataLayer = require('./dataLayer');
 const dataLayerKronos = require('./dataLayerKronos');
 const helper = require('../../helper/helper');
 
-
-
 exports.sp_DFDailyMonitoring_cdi = async({
 	dateFrom
 }) => {
-	try{
+	try {
 		return await dataLayer.sp_DFDailyMonitoring_cdi({
 			dateFrom
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -22,12 +20,12 @@ exports.sp_DFDailyMonitoring_cdi = async({
 exports.getDFpick = async({
 	TripIDpickArray
 }) => {
-	try{
+	try {
 		return await dataLayerKronos.getDFpick({
 			TripIDpickArray
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -35,12 +33,12 @@ exports.getDFpick = async({
 exports.getDFline = async({
 	TripIDlineArray
 }) => {
-	try{
+	try {
 		return await dataLayerKronos.getDFline({
 			TripIDlineArray
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -48,12 +46,12 @@ exports.getDFline = async({
 exports.getDFdel = async({
 	TripIDdelArray
 }) => {
-	try{
+	try {
 		return await dataLayerKronos.getDFdel({
 			TripIDdelArray
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

@@ -47,14 +47,14 @@ const formatFilters = ({
 						[Sequelize.Op.or]:fields
 					}
 
-				 	delete formattedFilters["search"]
+					delete formattedFilters["search"]
 				}
 			})
 		}
 
 		return formattedFilters
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -67,7 +67,7 @@ exports.createReport = async({
 			...data
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -140,7 +140,7 @@ exports.getPaginatedReport = async({
 exports.getAllReport = async({
 	filters
 }) => {
-	try{
+	try {
 		return await models.report_tbl.findAll({
 			where:{
 				...filters
@@ -160,7 +160,7 @@ exports.getAllReport = async({
 			]
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -170,7 +170,7 @@ exports.updateReport = async({
 	data,
 	option
 }) => {
-	try{
+	try {
 		return await models.report_tbl.update(
 			{
 				...data
@@ -182,7 +182,7 @@ exports.updateReport = async({
 			}
 		).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

@@ -15,6 +15,6 @@ module.exports = {
 	calendarService		: require('./wbs-calendar'),
 	catalogService		: require('./wbs-serviceCatalog'),
 	projectService		: require('./wbs-project'),
-	techHoursService    : require('./wbs-techHours')
+	techHoursService	: require('./wbs-techHours')
 
 }

@@ -1,10 +1,7 @@
 const router = require('express').Router();
 const winstoLog = require('../middleware/winstoLog');
-
-
 router.use(async(req, res, next) => {
 	let method = req.method;
-	//let processor_email = req.processor?.user_email || 'unknown_user@gmail.com';
 	let route = req.url;
 
 	res.on('finish', function() {
