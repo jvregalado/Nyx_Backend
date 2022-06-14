@@ -183,7 +183,7 @@ exports.convert_CIMP_to_ASN = async({
 			outputFilePath
 		}
 
-	} catch (e) {
+	} catch(e) {
 		console.log(e);
 		throw e;
 	}
@@ -312,7 +312,7 @@ exports.convert_PO_to_ASN = async({
 			outputFilePath
 		}
 
-	} catch (e) {
+	} catch(e) {
 		console.log(e);
 		throw e;
 	}
@@ -400,7 +400,7 @@ exports.convert_STO_to_ASN = async({
 			outputFilePath
 		}
 
-	} catch (e) {
+	} catch(e) {
 		console.log(e);
 		throw e;
 	}

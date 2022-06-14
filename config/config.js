@@ -92,7 +92,7 @@ const aelousArtemis_DBConfig = {
 	database	: process.env.DB_AELOUS_ARTEMIS_NAME,
 	host		: process.env.DB_AELOUS_ARTEMIS_HOST,
 	dialect		: "mysql",
-	pool		:{
+	pool		: {
 		max: 10,
 		min: 1,
 		idle: 2000000,
