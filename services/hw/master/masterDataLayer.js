@@ -1,6 +1,6 @@
 "use strict";
 
-const models = require('../../../models/HW/index');
+const models = require('../../../models/hw/index');
 const { sequelize } = models;
 
 exports.getHWmaintainedSKUs = async({
@@ -16,6 +16,24 @@ exports.getHWmaintainedSKUs = async({
 			})
 		.then((result) => {
 			//console.log(result)
+			return JSON.parse(JSON.stringify(result))
+		})
+	}
+	catch(e) {
+		console.log(e)
+		throw e
+	}
+}
+
+exports.getWhseID = async() => {
+	try {
+		return await sequelize.query(
+			`SELECT * FROM BSM_WAREHOUSE
+			WHERE activeFlag = 'Y'`,
+			{
+				type:sequelize.QueryTypes.SELECT
+			})
+		.then((result) => {
 			return JSON.parse(JSON.stringify(result))
 		})
 	}

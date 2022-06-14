@@ -1,5 +1,10 @@
 node_modules
 ecosystem.config.js
-files/generatedTemplates/*.*
-files/generatedTemplates/*
+assets/convertedFiles/*
+assets/dump/*
+assets/SavedFiles/*
+assets/ReportGenerated/*
+assets/uploadedFiles/*
+logs/*
 .env
+*.log
