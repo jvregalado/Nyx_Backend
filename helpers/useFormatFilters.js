@@ -31,47 +31,6 @@ const defaultFilter = ({
 		return formattedFilters
 }
 
-const revenueLeakFilter = ({model,
-	filters}) => {
-		let formattedFilters = filters;
-		const attributes = Object.keys(model)
-		Object.keys(filters).map(field => {
-
-			if(field==='search'){
-				let fields = {}
-				attributes.map(item => (fields[`$invoice.${item}$`] = filters.search))
-				formattedFilters={
-					...formattedFilters,
-					[Sequelize.Op.or]:fields
-				}
-
-				delete formattedFilters["search"]
-			}
-
-			if(attributes.includes(field)){
-				const att = attributes.filter(att => att === field)
-				formattedFilters={
-					...formattedFilters,
-					[`$invoice.${att[0]}$`]:filters[field]
-				}
-
-				delete formattedFilters[field]
-			}
-
-			if(field==='rdd'){
-				formattedFilters={
-					...formattedFilters,
-					'$invoice.rdd$':{
-						[Sequelize.Op.between]:filters.rdd.split(',')
-					}
-				}
-				delete formattedFilters['rdd']
-			}
-		})
-
-		return formattedFilters
-}
-
 const globalSearchFilter = ({
 	model,
 	filters
@@ -110,6 +69,5 @@ const globalSearchFilter = ({
 
 module.exports={
 	defaultFilter,
-	revenueLeakFilter,
 	globalSearchFilter
 }

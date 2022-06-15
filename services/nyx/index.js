@@ -9,6 +9,7 @@ module.exports = {
 	tmsConverterService	: require('./tms-converter'),
 	tmsReporthubService	: require('./tms-reporthub'),
 	tmsDataSyncService	: require('./tms-datasync'),
+
 	quickCodeService	: require('./wbs-quickCodes'),
 	employeeService		: require('./wbs-employee'),
 	employeeRoleService : require('./wbs-role'),
