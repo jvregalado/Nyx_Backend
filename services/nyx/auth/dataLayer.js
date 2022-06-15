@@ -11,7 +11,7 @@ exports.upsertUserSession = async({
 			...data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -26,7 +26,7 @@ exports.getUserSession = async({
 			}
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

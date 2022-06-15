@@ -4,7 +4,7 @@ const router = require('express').Router();
 const { reportService } = require('../services/nyx');
 
 router.post('/', async(req,res) => {
-	try{
+	try {
 		const {data} = req.body;
 		const processor = req.processor;
 
@@ -17,7 +17,7 @@ router.post('/', async(req,res) => {
 
 		res.status(200).end()
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -40,7 +40,7 @@ router.get('/', async(req,res) => {
 			rows:count
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -62,7 +62,7 @@ router.get('/details', async(req,res) => {
 			data:result
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -71,7 +71,7 @@ router.get('/details', async(req,res) => {
 })
 
 router.patch('/', async(req,res) => {
-	try{
+	try {
 		const {data} = req.body;
 		const processor = req.processor;
 
@@ -94,7 +94,7 @@ router.patch('/', async(req,res) => {
 		})
 		res.status(200).end()
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`

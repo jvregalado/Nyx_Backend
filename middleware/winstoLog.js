@@ -40,7 +40,7 @@ exports.logger = async({
 		})
 
 	}
-	catch(e){
+	catch(e) {
 		console.log(e)
 		throw e
 	}

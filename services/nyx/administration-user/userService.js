@@ -6,7 +6,7 @@ const dataLayer = require('./dataLayer');
 exports.createUser = async({
 	...data
 }) => {
-	try{
+	try {
 
 		const hashPassword = bcrypt.hashSync(data.password,10);
 
@@ -16,7 +16,7 @@ exports.createUser = async({
 		})
 
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -24,7 +24,7 @@ exports.createUser = async({
 exports.getPaginatedUser = async({
 	filters
 }) => {
-	try{
+	try {
 
 		let {orderBy,page,totalPage,...newFilters} = filters
 		return await dataLayer.getPaginatedUser({
@@ -37,7 +37,7 @@ exports.getPaginatedUser = async({
 		})
 
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -46,12 +46,12 @@ exports.getPaginatedUser = async({
 exports.getUser = async({
 	filters
 }) => {
-	try{
+	try {
 		return await dataLayer.getUser({
 			filters
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -59,12 +59,12 @@ exports.getUser = async({
 exports.getAllUser = async({
 	filters
 }) => {
-	try{
+	try {
 		return await dataLayer.getAllUser({
 			filters
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -73,7 +73,7 @@ exports.updateUser = async({
 	filters,
 	data
 }) => {
-	try{
+	try {
 		const user_password = data.user_new_password ? bcrypt.hashSync(data.user_new_password,10) : undefined;
 
 		return await dataLayer.updateUser({
@@ -84,7 +84,7 @@ exports.updateUser = async({
 			}
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

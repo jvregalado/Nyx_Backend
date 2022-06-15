@@ -49,7 +49,7 @@ const formatFilters = ({
 
 		return formattedFilters
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -62,7 +62,7 @@ exports.createRole = async({
 			...data
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -123,14 +123,14 @@ exports.getPaginatedRole = async({
 exports.getAllRole = async({
 	filters
 }) => {
-	try{
+	try {
 		return await models.role_hdr_tbl.findAll({
 			where:{
 				...filters
 			}
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -140,7 +140,7 @@ exports.updateRole = async({
 	data,
 	option
 }) => {
-	try{
+	try {
 		return await models.role_hdr_tbl.update(
 			{
 				...data
@@ -152,7 +152,7 @@ exports.updateRole = async({
 			}
 		).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -179,7 +179,7 @@ exports.getRoleDetails = async({
 			]
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -198,7 +198,7 @@ exports.getRoleDetailsAndAllModules = async({
 			return JSON.parse(JSON.stringify(result))
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -213,7 +213,7 @@ exports.putRoleDetails = async({
 			updateOnDuplicate: ["role_module_status", "updatedBy", "updatedAt"]
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

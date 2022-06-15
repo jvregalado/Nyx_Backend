@@ -11,10 +11,10 @@ router.post('/sign-out',(req, res) => {
 })
 
 router.post('/connection',async(req,res) => {
-	try{
+	try {
 		res.status(200).end()
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -23,8 +23,8 @@ router.post('/connection',async(req,res) => {
 })
 
 router.post('/token', async(req,res) => {
-	try{
-		const {user_email, user_password} = req.body;
+	try {
+		const {user_email, user_password, system} = req.body;
 
 		const getUser = await userService.getUser({
 			filters:{
@@ -50,6 +50,14 @@ router.post('/token', async(req,res) => {
 			})
 		}
 
+		if(String(system).toUpperCase() === 'WBS'){
+			if(!getUser.has_wbs){
+				return res.status(400).json({
+					message:'User has no access to wbs'
+				})
+			}
+		}
+
 		const token = await authService.generateToken({
 			user_email	: getUser.user_email,
 			user_id		: getUser.user_id
@@ -69,10 +77,12 @@ router.post('/token', async(req,res) => {
 		res.status(200).json({
 			user_email,
 			token,
+			has_wbs:getUser.has_wbs,
+			system,
 			role
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -81,7 +91,7 @@ router.post('/token', async(req,res) => {
 })
 
 router.post('/password_change', async(req, res) => {
-	try{
+	try {
 		const {user_email, user_old_password, user_new_password} = req.body?.data;
 
 		const getUser = await userService.getUser({
@@ -115,7 +125,7 @@ router.post('/password_change', async(req, res) => {
 
 		res.status(200).end()
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`

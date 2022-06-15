@@ -14,7 +14,7 @@ router.get('/report-sourcecode', async(req,res) => {
 			data:result
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -33,13 +33,12 @@ router.post('/', async(req,res) => {
 
 		res.status(200).end()
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
 		})
 	}
 })
-
 
 module.exports = router;

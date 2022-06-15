@@ -27,7 +27,7 @@ router.use(async(req, res, next) => {
 
 		next();
 	}
-	catch(e){
+	catch(e) {
 		console.log(e)
 		return res.status(403).json({
 			message:`${e}`

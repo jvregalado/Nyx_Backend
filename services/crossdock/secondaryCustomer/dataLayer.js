@@ -6,7 +6,7 @@ const {aelousZeus2, aelousZeus1, aelousArtemis, aelousEros} = require('../../../
 exports.getLatestSecondaryCustomer = async({
 	server
 }) => {
-	try{
+	try {
 		let seq_db;
 
 		switch(server) {
@@ -35,7 +35,7 @@ exports.getLatestSecondaryCustomer = async({
 		,{ type: seq_db.Sequelize.QueryTypes.SELECT })
 		.then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -43,7 +43,7 @@ exports.getLatestSecondaryCustomer = async({
 exports.getAllSecondaryCustomer_fromZeus2_byDate = async({
 	date
 }) => {
-	try{
+	try {
 		return await aelousZeus2.customer_secondary.findAll({
 			where:{
 				[aelousZeus2.Sequelize.Op.or]: [
@@ -61,7 +61,7 @@ exports.getAllSecondaryCustomer_fromZeus2_byDate = async({
 			}
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -70,7 +70,7 @@ exports.upsertSecondaryCustomer = async({
 	server,
 	data
 }) => {
-	try{
+	try {
 		let seq_db;
 
 		switch(server) {
@@ -120,7 +120,7 @@ exports.upsertSecondaryCustomer = async({
 			]
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

@@ -27,7 +27,7 @@ app.use(helmet());
 
 /**app setup here */
 app.use(tokenAuthenticator); 		/**middleware setups here {40-50ms increase in response time} */
-app.use(addRequestID); 				/**middleware setups here {1-2ms increase in response time} */ 
+app.use(addRequestID); 				/**middleware setups here {1-2ms increase in response time} */
 app.use(responseRequestID); 		/**middleware setups here {1-2ms increase in response time} */
 app.use(modulePermisionChecker); 	/**middleware setups here */
 
@@ -42,7 +42,5 @@ app.listen(
 
 /**load DB here */
 // sequelize.sync()
-
-
 
 /**load CRON here */

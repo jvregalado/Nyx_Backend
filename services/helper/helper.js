@@ -7,8 +7,6 @@ const fs = require('fs');
 const fetch = require('node-fetch');
 const nodeDate = require('date-and-time');
 const { stringify } = require('querystring');
-
-
 exports.sortByProperty = async({
 	property
 }) => {
@@ -59,9 +57,9 @@ exports.generate_JSON_to_Excel = async({
 }) => {
 
 	const JSONtoExcel = JSON.parse(JSON.stringify(JSONdata))
-	
+
 	const fd=path.join(__dirname,'../../assets/ReportGenerated');
-	if (!fs.existsSync(fd)) 
+	if (!fs.existsSync(fd))
 		fs.mkdirSync(fd, { recursive: true })
 
 	const newBook = xlsx.utils.book_new();
@@ -91,12 +89,12 @@ exports.generate_JSON_to_CSV = async({
 	try {
 		const newBook = xlsx.utils.book_new();
 		const newSheet = xlsx.utils.json_to_sheet(toExcel);
-		
+
 		const stream = xlsx.stream.to_csv(newSheet);
 		stream.pipe(fs.createWriteStream(fileName));
 	}
-	catch(e){
-		
+	catch(e) {
+
 		fs.unlink(pdfFile, function (err) {
 			if (err) {
 				console.error(err);

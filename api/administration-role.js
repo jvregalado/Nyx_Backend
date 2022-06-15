@@ -4,7 +4,7 @@ const router = require('express').Router();
 const { roleService } = require('../services/nyx');
 
 router.post('/', async(req,res) => {
-	try{
+	try {
 		const {data} = req.body;
 		const processor = req.processor;
 
@@ -17,7 +17,7 @@ router.post('/', async(req,res) => {
 
 		res.status(200).end()
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -40,7 +40,7 @@ router.get('/', async(req,res) => {
 			rows:count
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -49,7 +49,7 @@ router.get('/', async(req,res) => {
 })
 
 router.patch('/', async(req,res) => {
-	try{
+	try {
 		const {data} = req.body;
 		const processor = req.processor;
 
@@ -73,7 +73,7 @@ router.patch('/', async(req,res) => {
 		})
 		res.status(200).end()
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -95,7 +95,7 @@ router.get('/details', async(req,res) => {
 			data:result
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -117,7 +117,7 @@ router.get('/assignment', async(req,res) => {
 			data:result
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -130,7 +130,7 @@ router.put('/assignment', async(req,res) => {
 		const {data} = req.body;
 		const processor = req.processor;
 
-		let bindProcessor = data.map(module => { return {...module, 
+		let bindProcessor = data.map(module => { return {...module,
 			updatedBy: processor.user_id,
 			createdBy: processor.user_id
 		}})
@@ -141,7 +141,7 @@ router.put('/assignment', async(req,res) => {
 
 		res.status(200).end()
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`

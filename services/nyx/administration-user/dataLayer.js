@@ -59,7 +59,7 @@ const formatFilters = ({
 
 		return formattedFilters
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -72,7 +72,7 @@ exports.createUser = async({
 			...data
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -128,7 +128,7 @@ exports.getPaginatedUser = async({
 		})
 		.then(result => {
 			let {count,rows} = JSON.parse(JSON.stringify(result))
-		
+
 			return {
 				rows: rows.map(item => {
 					const {role,...users} = item
@@ -136,7 +136,7 @@ exports.getPaginatedUser = async({
 						...users,
 						role_name:role?.role_name
 					}
-				}), 
+				}),
 				count
 			}
 		})
@@ -154,7 +154,7 @@ exports.getPaginatedUser = async({
 exports.getUser = async({
 	filters
 }) => {
-	try{
+	try {
 		return await models.user_tbl.findOne({
 			where:{
 				...filters
@@ -188,7 +188,7 @@ exports.getUser = async({
 			]
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -196,7 +196,7 @@ exports.getUser = async({
 exports.getAllUser = async({
 	filters
 }) => {
-	try{
+	try {
 		return await models.user_tbl.findAll({
 			where:{
 				...filters
@@ -223,7 +223,7 @@ exports.getAllUser = async({
 			]
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -233,7 +233,7 @@ exports.updateUser = async({
 	data,
 	option
 }) => {
-	try{
+	try {
 		return await models.user_tbl.update(
 			{
 				...data
@@ -245,7 +245,7 @@ exports.updateUser = async({
 			}
 		).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

@@ -54,7 +54,7 @@ const formatFilters = ({
 
 		return formattedFilters
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -71,7 +71,6 @@ exports.createDataSyncLog = async({
 				{logging: false, transaction : t1
 			}).then(result => JSON.parse(JSON.stringify(result)));
 
-			// console.log('insert_result',insert_result)
 			logsToInsert_Detail = logsToInsert_Detail.map(foo => {
 				return {
 					...foo,
@@ -86,7 +85,7 @@ exports.createDataSyncLog = async({
 
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -146,7 +145,7 @@ exports.getPaginatedDataSyncLog = async({
 exports.updateDataSyncLog = async({
 	data
 }) => {
-	try{
+	try {
 		await models.datasync_log_dtl_tbl.bulkCreate(
 			data
 		,{
@@ -155,7 +154,7 @@ exports.updateDataSyncLog = async({
 			]
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

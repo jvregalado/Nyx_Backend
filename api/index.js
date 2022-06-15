@@ -26,4 +26,10 @@ router.use('/tms/converter',				require('./tms-converter'));
 router.use('/tms/datasync',					require('./tms-datasync'));
 // router.use('/tms/interface',				require('./tms-interface'));
 
+router.use('/wbs/employee',					require('./wbs-employee'));
+router.use('/wbs/role',						require('./wbs-role'));
+router.use('/wbs/calendar',					require('./wbs-calendar'));
+router.use('/wbs/data-management',			require('./wbs-datamanagement'));
+router.use('/wbs/work-hours',				require('./wbs-workhours'));
+
 module.exports = router;

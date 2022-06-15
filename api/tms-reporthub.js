@@ -19,7 +19,7 @@ router.get('/report-sourcecode', async(req,res) => {
 			data:result
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`
@@ -29,7 +29,7 @@ router.get('/report-sourcecode', async(req,res) => {
 
 router.post('/sp_DFDailyMonitoring_cdi', async(req,res) => {
 	try {
-		
+
 		let {report_id} = req.query;
 		let {data} = req.body;
 		if(!data.dateFrom){
@@ -39,7 +39,7 @@ router.post('/sp_DFDailyMonitoring_cdi', async(req,res) => {
 		// let processor = req.processor;
 
 		let result = await tmsreporthubService.sp_DFDailyMonitoring_cdi({ dateFrom:data.dateFrom })
-		
+
 		if(result.length<=0){
 			throw new Error(`No data for this date`)
 		}
@@ -53,41 +53,37 @@ router.post('/sp_DFDailyMonitoring_cdi', async(req,res) => {
 		let KronosTripIDdel= await tmsReporthubService.getDFdel({TripIDdelArray})
 
 		let DFreport = [];
-		for (let x in result) 
+		for (let x in result)
 		{
 			const pick = KronosTripIDpick.findIndex(p => p.tripIDpick === result[x].TripIDpick);
 			const line = KronosTripIDline.findIndex(p => p.tripIDline === result[x].TripIDline);
 			const del = KronosTripIDdel.findIndex(p => p.tripIDdel === result[x].TripIDdel);
-			// console.log("pick",pick);
-			// console.log("line",line);
-			// console.log("del",del);
-			// console.log("KronosTripIDdel",KronosTripIDdel);
 			//Pick Computation
 			const CallTimeToDate = new Date(result[x].CallTime);
 			const CallTimeStart = new Date(Date.parse(result[x].PickUpdate+' '+CallTimeToDate.toLocaleTimeString()))
 			const CallTimeStartDate = await helper.formatDateAndTime({toFormat:CallTimeStart})
-			
+
 			const ATAnum = new Date(KronosTripIDpick[pick]?.ataPickLoc);
 			const ATA = await helper.formatDateAndTime({toFormat:ATAnum})
 
-			const CallTimeDuration = ((CallTimeStart-ATAnum) / (1000 * 60 * 60 )).toFixed(2); 
+			const CallTimeDuration = ((CallTimeStart-ATAnum) / (1000 * 60 * 60 )).toFixed(2);
 			const CompliancetoCallTime = (((24+Number(CallTimeDuration))/24)*100).toFixed(2);;
 			//Line Computation
 			const LCTToDate = new Date(Date.parse(result[x].LCT));
 			const LCTStartnum = new Date(Date.parse(result[x].PickUpdate+' '+LCTToDate.toLocaleTimeString()))
 			const LCTStart = await helper.formatDateAndTime({toFormat:LCTStartnum})
-			
+
 			const ATApicknum = new Date(KronosTripIDpick[pick]?.ataInYard)
 			const ATApick = await helper.formatDateAndTime({toFormat:ATApicknum})
 
-			const LCTDuration = (LCTStartnum-ATApicknum) / (1000 * 60 * 60 ).toFixed(2); 
+			const LCTDuration = (LCTStartnum-ATApicknum) / (1000 * 60 * 60 ).toFixed(2);
 			const CompliancetoLCT = (((24+Number(LCTDuration))/24)*100).toFixed(2);
 
 			const ActualRDDnum = new Date(KronosTripIDdel[del]?.ADelConsignee)
 			const ActualRDD = await helper.formatDateAndTime({toFormat:ActualRDDnum})
 			const RDD = new Date(result[x].RDD)
-			const RDDduration = Number((RDD-ActualRDDnum) / (1000 * 60 * 60 * 24)).toFixed(2); 
-			const RDDdurationHR = Number((RDD-ActualRDDnum) / (1000 * 60 * 60)).toFixed(2); 
+			const RDDduration = Number((RDD-ActualRDDnum) / (1000 * 60 * 60 * 24)).toFixed(2);
+			const RDDdurationHR = Number((RDD-ActualRDDnum) / (1000 * 60 * 60)).toFixed(2);
 			const CompliancetoRDD = (((24+Number(RDDdurationHR))/24)*100).toFixed(2);
 
 			const ETDOriginTime = new Date(KronosTripIDline[line]?.ETDoriginTime||null);
@@ -98,7 +94,7 @@ router.post('/sp_DFDailyMonitoring_cdi', async(req,res) => {
 			const ATAOrigin = await helper.formatDateAndTime({toFormat:ATAOriginnum})
 
 			const DeparturePerformance = Number((ETDOriginnum-ATAOriginnum) / (1000 * 60 * 60 * 24)).toFixed(2);
-			
+
 			const ETDDestinationTime = new Date(KronosTripIDline[line]?.ETDdestTime||null)
 			const ETDDestinationnum = new Date(Date.parse(KronosTripIDline[line]?.ETDdestDate||null+' '+ETDDestinationTime.toLocaleTimeString()))
 			const ETDDestination = await helper.formatDateAndTime({toFormat:ETDDestinationnum})
@@ -106,13 +102,13 @@ router.post('/sp_DFDailyMonitoring_cdi', async(req,res) => {
 			const ATADestinationnum = new Date(KronosTripIDline[line]?.ATDdest);
 			const ATADestination = await helper.formatDateAndTime({toFormat:ATADestinationnum})
 
-			const ArrivalPerformance = Number((ETDDestinationnum-ATADestinationnum) / (1000 * 60 * 60 * 24)).toFixed(2); 
+			const ArrivalPerformance = Number((ETDDestinationnum-ATADestinationnum) / (1000 * 60 * 60 * 24)).toFixed(2);
 
 			const ApulloutPiernum = new Date(KronosTripIDdel[del]?.ApulloutPier)
 			const ApulloutPier = await helper.formatDateAndTime({toFormat:ApulloutPiernum})
 
-			const StorageDwell = Number((ATADestinationnum-ApulloutPiernum) / (1000 * 60 * 60 * 24)).toFixed(2); 
-			
+			const StorageDwell = Number((ATADestinationnum-ApulloutPiernum) / (1000 * 60 * 60 * 24)).toFixed(2);
+
 			DFreport.push({
 				"Booking Date":result[x].BookingDate||"",																	//1
 				"Pickup Date":result[x].PickUpdate||"",																		//2
@@ -163,7 +159,7 @@ router.post('/sp_DFDailyMonitoring_cdi', async(req,res) => {
 			data:await helper.generate_JSON_to_Excel({JSONdata:DFreport,ReportName})
 		})
 	}
-	catch(e){
+	catch(e) {
 		console.log(e);
 		res.status(500).json({
 			message:`${e}`

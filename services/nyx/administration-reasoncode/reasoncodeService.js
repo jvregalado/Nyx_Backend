@@ -5,12 +5,12 @@ const dataLayer = require('./dataLayer');
 exports.createReasonCode = async({
 	...data
 }) => {
-	try{
+	try {
 		return await dataLayer.createReasonCode({
 			...data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -18,7 +18,7 @@ exports.createReasonCode = async({
 exports.getPaginatedReasonCode = async({
 	filters
 }) => {
-	try{
+	try {
 		let {orderBy,page,totalPage,...newFilters} = filters
 		return await dataLayer.getPaginatedReasonCode({
 			orderBy:orderBy.split(','),
@@ -29,7 +29,7 @@ exports.getPaginatedReasonCode = async({
 			}
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -37,12 +37,12 @@ exports.getPaginatedReasonCode = async({
 exports.getAllReasonCode = async({
 	filters
 }) => {
-	try{
+	try {
 		return await dataLayer.getAllReasonCode({
 			filter:filters
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -51,13 +51,13 @@ exports.updateReasonCode = async({
 	filters,
 	data
 }) => {
-	try{
+	try {
 		return await dataLayer.updateReasonCode({
 			filters,
 			data
 		})
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

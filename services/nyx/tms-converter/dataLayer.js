@@ -44,7 +44,7 @@ const formatFilters = ({
 
 		return formattedFilters
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -52,7 +52,7 @@ const formatFilters = ({
 exports.getAllrtv = async({
 	filters
 }) => {
-	try{
+	try {
 		return await models.rtv_stored_converted_hdr.findAll({
 			where:{
 				...filters
@@ -84,7 +84,7 @@ exports.getAllrtv = async({
 			]
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -137,14 +137,14 @@ exports.getPaginatedRTV = async({
 		})
 		.then(result => {
 			let {count,rows} = JSON.parse(JSON.stringify(result))
-		
+
 			return {
 				rows: rows.map(item => {
 					const {...rtv} = item
 					return {
 						...rtv
 					}
-				}), 
+				}),
 				count
 			}
 		})
@@ -167,7 +167,7 @@ exports.createRTVhdr = async({
 			...data
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -179,7 +179,7 @@ exports.createRTVdtl = async({
 			...data
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }
@@ -197,7 +197,6 @@ exports.getStoredRTV = async({
 				type:sequelize.QueryTypes.SELECT
 			})
 		.then((result) => {
-			//console.log(result)
 			return JSON.parse(JSON.stringify(result))
 		})
 	}
@@ -211,7 +210,7 @@ exports.updateRTVhdr = async({
 	filters,
 	data
 }) => {
-	try{
+	try {
 		return await models.rtv_stored_converted_hdr.update(
 			{
 				...data
@@ -223,7 +222,7 @@ exports.updateRTVhdr = async({
 			}
 		).then(result => JSON.parse(JSON.stringify(result)))
 	}
-	catch(e){
+	catch(e) {
 		throw e
 	}
 }

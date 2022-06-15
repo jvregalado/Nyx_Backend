@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.UUID,
 			defaultValue: DataTypes.UUIDV4
 		},
+		has_wbs:{
+			type:DataTypes.BOOLEAN,
+
+		},
 		user_email: {
 			type: DataTypes.STRING,
 			allowNull: false,

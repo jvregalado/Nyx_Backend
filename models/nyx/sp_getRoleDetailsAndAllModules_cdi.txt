@@ -17,15 +17,13 @@ SELECT
 FROM role_hdr_tbl as rh, module_tbl m
 
 		LEFT JOIN module_tbl module ON module.module_id = m.module_id
-		
+
 		LEFT JOIN report_tbl r ON r.module_id = module.module_id
 
-		LEFT JOIN LATERAL ( SELECT role_dtl_tbl.role_module_status FROM role_dtl_tbl 
-								WHERE role_dtl_tbl.role_id = rh.role_id 
+		LEFT JOIN LATERAL ( SELECT role_dtl_tbl.role_module_status FROM role_dtl_tbl
+								WHERE role_dtl_tbl.role_id = rh.role_id
 									AND role_dtl_tbl.module_id = module.module_id ) rd ON 1=1
 
  WHERE rh.role_code = param_role_code OR rh.role_code IS null;
-
-
 END //
 DELIMITER ;
