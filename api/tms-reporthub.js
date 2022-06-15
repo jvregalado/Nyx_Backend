@@ -38,7 +38,7 @@ router.post('/sp_DFDailyMonitoring_cdi', async(req,res) => {
 		let ReportName = data.report.label.split(':').pop().replace(/\s/g, '')
 		// let processor = req.processor;
 
-		let result = await tmsreporthubService.sp_DFDailyMonitoring_cdi({ dateFrom:data.dateFrom })
+		let result = await tmsReporthubService.sp_DFDailyMonitoring_cdi({ dateFrom:data.dateFrom })
 
 		if(result.length<=0){
 			throw new Error(`No data for this date`)
