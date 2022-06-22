@@ -68,6 +68,7 @@ router.get('/details', async(req,res) => {
 	}
 })
 
+//## Manual Trigger Sync
 router.post('/', async(req,res) => {
 	try {
 		let {data} = req.body;
