@@ -1,9 +1,10 @@
 "use strict";
 
 const router = require('express').Router();
+const accessWeightChecker = require('../middleware/accessWeightChecker')
 const { reportService } = require('../services/nyx');
 
-router.get('/report-sourcecode', async(req,res) => {
+router.get('/report-sourcecode', accessWeightChecker, async(req,res) => {
 	try {
 		let {report_id} = req.query;
 		// let processor = req.processor;
