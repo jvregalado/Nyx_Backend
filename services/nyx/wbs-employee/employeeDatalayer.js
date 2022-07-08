@@ -1,6 +1,7 @@
 const models = require('../../../models/nyx');
 const {useFormatFilters} = require('../../../helpers');
 const {globalSearchFilter} = useFormatFilters;
+
 const createEmployee = async({data}) => {
 	try {
 		return await models.wbs_employee_tbl.create({

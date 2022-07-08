@@ -50,6 +50,25 @@ const scmdb_tms = {
 	},
 }
 
+
+const scmdb_wms = {
+	username		: process.env.DB_SCMDB_WMS_USER,
+	password		: process.env.DB_SCMDB_WMS_PASSWORD,
+	database		: process.env.DB_SCMDB_WMS_NAME,
+	host			: process.env.DB_SCMDB_WMS_HOST,
+	dialect			: "mssql",
+	pool			: {
+		max: 100,
+		min: 1,
+		idle: 2000000,
+		acquire: 2000000
+	},
+	dialectOptions	: {
+			// dateStrings: true,
+			typeCast: true
+	},
+}
+
 const kronosDBConfig = {
 	username	: process.env.DB_KRONOS_USER,
 	password	: process.env.DB_KRONOS_PASSWORD,
@@ -122,5 +141,6 @@ module.exports = {
 	aelousArtemis_DBConfig,
 	aelousEros_DBConfig,
 	scmdb_tms,
+	scmdb_wms,
 	kronosDBConfig
 }

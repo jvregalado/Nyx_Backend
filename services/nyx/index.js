@@ -6,6 +6,8 @@ module.exports = {
 	reportService		: require('./administration-report'),
 	reasoncodeService	: require('./administration-reasoncode'),
 
+	wmsReporthubService	: require('./wms-reporthub'),
+
 	tmsConverterService	: require('./tms-converter'),
 	tmsReporthubService	: require('./tms-reporthub'),
 	tmsDataSyncService	: require('./tms-datasync'),

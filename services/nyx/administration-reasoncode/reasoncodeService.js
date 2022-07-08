@@ -39,7 +39,7 @@ exports.getAllReasonCode = async({
 }) => {
 	try {
 		return await dataLayer.getAllReasonCode({
-			filter:filters
+			filters
 		})
 	}
 	catch(e) {

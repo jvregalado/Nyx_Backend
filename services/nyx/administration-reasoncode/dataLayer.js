@@ -125,12 +125,12 @@ exports.getPaginatedReasonCode = async({
 }
 
 exports.getAllReasonCode = async({
-	filter
+	filters
 }) => {
 	try {
 		return await models.reason_code_tbl.findAll({
 			where:{
-				...filter
+				...filters
 			}
 		}).then(result => JSON.parse(JSON.stringify(result)))
 	}

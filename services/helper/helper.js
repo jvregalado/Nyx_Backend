@@ -3,10 +3,11 @@
 const xlsx = require('xlsx');
 const path = require('path');
 const fs = require('fs');
-//const http = require('http');
+
 const fetch = require('node-fetch');
 const nodeDate = require('date-and-time');
 const { stringify } = require('querystring');
+
 exports.sortByProperty = async({
 	property
 }) => {
@@ -30,6 +31,7 @@ exports.formatDateAndTime = async({
 	const newDate = new Date(toFormat)
 	return newDate.toLocaleString('en-US', { timeZone: 'Africa/Abidjan', hour12: true })
 }
+
 exports.formatTime = async({
 	toFormat
 }) => {
@@ -153,3 +155,25 @@ exports.getData_from_other_API = async({
 	const data = await response.json();
 	return data;
 }
+
+exports.convertArrayJson2Xlsx = async({
+	arrayJsonData
+}) => {
+	try {
+
+		let wb = xlsx.utils.book_new();
+		
+		for(let i in arrayJsonData) {
+			let ws = xlsx.utils.json_to_sheet(arrayJsonData[i].data);
+			xlsx.utils.book_append_sheet(wb, ws, arrayJsonData[i].sheetName);
+		}
+
+		let wb_opts = { bookType: 'xlsx', type : 'buffer' }
+
+		return await xlsx.write(wb, wb_opts)
+	}
+	catch(e) {
+		console.log(e)
+		throw e
+	}
+};

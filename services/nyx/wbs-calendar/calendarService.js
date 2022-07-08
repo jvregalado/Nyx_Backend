@@ -2,6 +2,7 @@ const dataLayer = require('./calendarDatalayer');
 const moment = require('moment')
 const sequelize = require('sequelize')
 const {Op} = sequelize
+
 exports.getHolidays = async({filters}) => {
 	try {
 		const year = moment().format('YYYY')
