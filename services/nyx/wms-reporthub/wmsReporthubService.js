@@ -6,22 +6,28 @@ const { json2Excel,
 
 exports.generateReport_XLSX = async({
 	report,
-	filters
+	filters,
+	filename
 }) => {
 	try {
 
 		let report_code = report[0].report_code;
 		let arrayJsonData = [];
 
+		//## Harmonize the filters
 		let newFilters = await dataFormat.normalizeFilterFromFrontend({
 			filters
 		})
 
-		let filename = `${report[0].report_code}.xlsx`
+		//## Harmonized filters vs source code (to check the isRequired field)
+		await dataFormat.validateFilters_vs_sourceCode({
+			filters : newFilters,
+			report_source_code : report[0].report_source_code
+		})
 
 		switch(report_code) {
 			case 'WMS-MGMT-A004' : //## Traceability Report
-				//## Geth the data rows
+				//## Get the data rows
 				let queryResult = await scmdb_wms_Service.sp_Traceability_cdi({
 					...newFilters
 				})
@@ -29,8 +35,9 @@ exports.generateReport_XLSX = async({
 				//## Check if data rows is empty
 				if(queryResult.length === 0) { throw new Error('No datarows found.')}
 
-				//## Insert the data rows to sheet1. Can accommodate multiple sheets.
+				//## Insert the data rows to sheet. Can accommodate multiple sheets.
 				arrayJsonData.push({ sheetName:'sampleSheetName', sheetData: queryResult })
+				// arrayJsonData.push({ sheetName:'2ndSheet', sheetData: queryResult2 }) sample
 				break;
 			default:
 				throw new Error(`No XLSX downloading for the report.`)

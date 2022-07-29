@@ -15,7 +15,7 @@ exports.normalizeFilterFromFrontend = async({
 				newFilters[key] = filters[key].replace('T', ' ').replace('Z','').slice(0,10)
 			}
 			else if(typeof filters[key] === 'object') {
-				if(filters[key].value) {
+				if(filters[key]?.value) {
 					let reasoncode = await reasoncodeService.getAllReasonCode({
 						filters : {
 							rc_id : filters[key].value
@@ -35,3 +35,59 @@ exports.normalizeFilterFromFrontend = async({
 		throw e
 	}
 }
+
+const stringToJson_report_source_code = async({
+	report_source_code
+}) => {
+	try {
+
+		if(/^[\],:{}\s]*$/.test(report_source_code.replace(/\\["\\\/bfnrtu]/g, '@').
+		replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+		replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+			return JSON.parse(report_source_code)
+		}
+
+	}
+	catch(e) {
+		throw e
+	}
+}
+
+exports.validateFilters_vs_sourceCode = async({
+	filters,
+	report_source_code
+}) => {
+	try {
+
+		let source_code = await stringToJson_report_source_code({
+			report_source_code
+		})
+
+		console.log('source_code',source_code)
+		console.log('filters',filters)
+
+		for(let dd of source_code?.dropdowns) {
+			if(dd.isRequired && !filters[dd.name]) {
+				throw new Error (`No filter provided for ${dd.label}`)
+			}
+		}
+
+		for(let tf of source_code?.textfields) {
+			if(tf.isRequired && !filters[tf.name]) {
+				throw new Error (`No filter provided for ${tf.label}`)
+			}
+		}
+
+		for(let df of source_code?.datefields) {
+			if(df.isRequired && !filters[df.name]) {
+				throw new Error (`No filter provided for ${df.label}`)
+			}
+		}
+
+	}
+	catch(e) {
+		throw e
+	}
+}
+
+exports.stringToJson_report_source_code
