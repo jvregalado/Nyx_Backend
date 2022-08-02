@@ -11,8 +11,17 @@ router.use(async(req,res,next) => {
 			return next();
 		}
 
-		const userRole = await userService.getUser({ filters: {	user_id		: processor.user_id,
-																user_email	: processor.user_email }})
+		const userRole = await userService.getUser({
+			filters: {
+				user_id		: processor.user_id,
+				user_email	: processor.user_email
+			}
+		})
+
+		/**select dropdown proceeds to next() */
+		if(path.split('/')[1] === 'select') {
+			return next()
+		}
 
 		/**SUPERADMIN PROCEEDS AS IS WITH HIGHEST ACCESS */
 		if(userRole?.role?.role_code === 'Superadmin') {
@@ -21,7 +30,7 @@ router.use(async(req,res,next) => {
 		else {
 			/**NORMAL ROLES IS NOT ALLOWED IN Administration Modules */
 			if(path.split('/')[1] === 'administration') {
-				throw new Error(`You do not have access on module: administration`)
+				return next()
 			}
 			else {
 				let allowed_modules = await userRole?.role?.role_dtl_fk?.map(x => x.role_module_fk[0]?.module_code)
