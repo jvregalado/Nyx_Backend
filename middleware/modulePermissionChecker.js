@@ -30,7 +30,7 @@ router.use(async(req,res,next) => {
 		else {
 			/**NORMAL ROLES IS NOT ALLOWED IN Administration Modules */
 			if(path.split('/')[1] === 'administration') {
-				return next()
+				throw new Error(`You do not have administrator access.`)
 			}
 			else {
 				let allowed_modules = await userRole?.role?.role_dtl_fk?.map(x => x.role_module_fk[0]?.module_code)
